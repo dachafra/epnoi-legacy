@@ -46,7 +46,7 @@
 		<URI>http://cassandraInformationStore</URI>
 		<path>cassandra</path>
 		<host>zavijava.dia.fi.upm.es</host>
-		<port>9042</port>
+		<port>9160</port>
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>

@@ -12,6 +12,8 @@ import org.epnoi.model.parameterization.*;
 import org.epnoi.uia.informationstore.InformationStoreFactory;
 import org.epnoi.uia.informationstore.SelectorHelper;
 import org.epnoi.uia.informationstore.VirtuosoInformationStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,11 +22,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Component
 public class InformationHandlerImpl implements InformationHandler {
-    private static final Logger logger = Logger.getLogger(InformationHandlerImpl.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(InformationHandlerImpl.class);
+    
     @Autowired
     private Core core;
 
@@ -55,7 +57,7 @@ public class InformationHandlerImpl implements InformationHandler {
     @PostConstruct
     public synchronized void init() throws EpnoiInitializationException {
         if (!this.initialized) {
-            logger.info("Initializing the Information Handler");
+            LOG.info("Initializing the Information Handler");
             this.wrapperFactory = new WrapperFactory(core);
             this.listeners = new ArrayList<InformationAccessListener>();
             this.informationStores = new HashMap<>();
@@ -90,7 +92,7 @@ public class InformationHandlerImpl implements InformationHandler {
             Wrapper wrapper = this.wrapperFactory.build(resource);
             wrapper.update(resource);
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
         }
     }
 
@@ -103,7 +105,7 @@ public class InformationHandlerImpl implements InformationHandler {
             resource = null;
             context.clear();
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding the resource "+resource.getUri());
         }
 
     }
@@ -120,11 +122,11 @@ public class InformationHandlerImpl implements InformationHandler {
                 Wrapper wrapper = this.wrapperFactory.build(resourceType);
                 resource = wrapper.get(URI);
             } else {
-                logger.severe("The type " + resourceType + " cannot be resolved as a valid type. A null is returned");
+                LOG.error("The type " + resourceType + " cannot be resolved as a valid type. A null is returned");
 
             }
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
 
         }
         return resource;
@@ -137,7 +139,7 @@ public class InformationHandlerImpl implements InformationHandler {
             Wrapper wrapper = this.wrapperFactory.build(resourceType);
             return wrapper.get(URI);
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when retrieving "+URI);
             return null;
         }
     }
@@ -149,7 +151,7 @@ public class InformationHandlerImpl implements InformationHandler {
             Wrapper wrapper = this.wrapperFactory.build(resourceType);
             wrapper.remove(URI);
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated with regarding "+URI);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated with regarding "+URI);
         }
     }
 
@@ -160,7 +162,7 @@ public class InformationHandlerImpl implements InformationHandler {
             Wrapper wrapper = this.wrapperFactory.build(resource);
             wrapper.remove(resource.getUri());
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+resource.getUri());
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+resource.getUri());
         }
     }
 
@@ -193,7 +195,7 @@ public class InformationHandlerImpl implements InformationHandler {
 
             return content;
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
             return null;
         }
     }
@@ -209,7 +211,7 @@ public class InformationHandlerImpl implements InformationHandler {
             Content<Object> content = wrapper.getAnnotatedContent(selector);
             return content;
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A null is returned when requesting "+selector);
             return null;
         }
     }
@@ -223,7 +225,7 @@ public class InformationHandlerImpl implements InformationHandler {
                     .getProperty(SelectorHelper.TYPE));
             wrapper.setContent(selector, content);
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
         }
     }
 
@@ -238,7 +240,7 @@ public class InformationHandlerImpl implements InformationHandler {
 
             wrapper.setAnnotatedContent(selector, annotatedContent);
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. No information was updated regarding "+selector);
         }
     }
 
@@ -254,7 +256,7 @@ public class InformationHandlerImpl implements InformationHandler {
             return wrapper.exists(URI);
 
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A default false value has been returned when asking for "+URI);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A default false value has been returned when asking for "+URI);
             return false;
         }
     }
@@ -283,7 +285,7 @@ public class InformationHandlerImpl implements InformationHandler {
 
             return queryResults;
         } else {
-            logger.severe("The InformationStores handled by the InformationHandler were not properly initialized. A simple empty list has been returned when getting the resources of type "+resourceType);
+            LOG.error("The InformationStores handled by the InformationHandler were not properly initialized. A simple empty list has been returned when getting the resources of type "+resourceType);
             return new ArrayList<>();
         }
     }
@@ -305,26 +307,26 @@ public class InformationHandlerImpl implements InformationHandler {
 
     private void _informationStoresInitialization() {
 
-        logger.info("Initializing information stores");
-        logger.info("Initializing Virtuoso information stores");
+        LOG.info("Initializing information stores");
+        LOG.info("Initializing Virtuoso information stores");
         for (VirtuosoInformationStoreParameters virtuosoInformationStoreParameters : this.parameters
                 .getVirtuosoInformationStore()) {
             _initVirtuosoInformationStore(virtuosoInformationStoreParameters);
 
         }
-        logger.info("Initializing SOLR information stores");
+        LOG.info("Initializing SOLR information stores");
         for (SOLRInformationStoreParameters solrInformationStoreParameters : this.parameters
                 .getSolrInformationStore()) {
             _initSOLRInformationStore(solrInformationStoreParameters);
 
         }
-        logger.info("Initializing Cassandra information stores");
+        LOG.info("Initializing Cassandra information stores");
         for (CassandraInformationStoreParameters cassandraInformationStoreParameters : this.parameters
                 .getCassandraInformationStore()) {
             _initCassandraInformationStore(cassandraInformationStoreParameters);
 
         }
-        logger.info("Initializing map information stores");
+        LOG.info("Initializing map information stores");
         for (MapInformationStoreParameters mapInformationStoreParameters : this.parameters.getMapInformationStore()) {
             _initMapInformationStore(mapInformationStoreParameters);
 
@@ -333,14 +335,14 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     private void _initMapInformationStore(MapInformationStoreParameters mapInformationStoreParameters) {
-        logger.info(mapInformationStoreParameters.toString());
+        LOG.info(mapInformationStoreParameters.toString());
         InformationStore newInformationStore = null;
         try {
             newInformationStore = InformationStoreFactory
                     .buildInformationStore(mapInformationStoreParameters, this.parameters);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            LOG.info("The status of the information source is " + newInformationStore.test());
         } catch (Exception e) {
-            logger.severe("Something went wrong in the MapInfomration store");
+            LOG.error("Something went wrong in the MapInfomration store",e);
         }
         this.informationStores.put(mapInformationStoreParameters.getURI(), newInformationStore);
 
@@ -349,16 +351,15 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     private void _initCassandraInformationStore(CassandraInformationStoreParameters cassandraInformationStoreParameters) {
-        logger.info(cassandraInformationStoreParameters.toString());
+        LOG.info(cassandraInformationStoreParameters.toString());
 
         InformationStore newInformationStore = null;
         try {
             newInformationStore = InformationStoreFactory
                     .buildInformationStore(cassandraInformationStoreParameters, this.parameters);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            LOG.info("The status of the information source is " + newInformationStore.test());
         } catch (Exception e) {
-            logger.severe("Something went wrong in the CassandraInformationStore initialization!");
-            // e.printStackTrace();
+            LOG.error("Something went wrong in the CassandraInformationStore initialization!",e);
         }
         this.informationStores.put(cassandraInformationStoreParameters.getURI(), newInformationStore);
 
@@ -367,15 +368,14 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     private void _initSOLRInformationStore(SOLRInformationStoreParameters solrInformationStoreParameters) {
-        logger.info(solrInformationStoreParameters.toString());
+        LOG.info(solrInformationStoreParameters.toString());
         InformationStore newInformationStore = null;
         try {
             newInformationStore = InformationStoreFactory
                     .buildInformationStore(solrInformationStoreParameters, this.parameters);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            LOG.info("The status of the information source is " + newInformationStore.test());
         } catch (Exception e) {
-            logger.severe("Something went wrong in the SOLRInformationStore initialization!");
-            //e.printStackTrace();
+            LOG.error("Something went wrong in the SOLRInformationStore initialization!",e);
         }
         this.informationStores.put(solrInformationStoreParameters.getURI(), newInformationStore);
 
@@ -384,15 +384,14 @@ public class InformationHandlerImpl implements InformationHandler {
     }
 
     private void _initVirtuosoInformationStore(VirtuosoInformationStoreParameters virtuosoInformationStoreParameters) {
-        logger.info(virtuosoInformationStoreParameters.toString());
+        LOG.info(virtuosoInformationStoreParameters.toString());
         InformationStore newInformationStore = null;
         try {
             newInformationStore = InformationStoreFactory
                     .buildInformationStore(virtuosoInformationStoreParameters, this.parameters);
-            logger.info("The status of the information source is " + newInformationStore.test());
+            LOG.info("The status of the information source is " + newInformationStore.test());
         } catch (Exception e) {
-            logger.severe("Something went wrong in the VirtuosoInfomrationStore initialization!");
-            //  e.printStackTrace();
+            LOG.error("Something went wrong in the VirtuosoInfomrationStore initialization!",e);
         }
         this.informationStores.put(virtuosoInformationStoreParameters.getURI(), newInformationStore);
 

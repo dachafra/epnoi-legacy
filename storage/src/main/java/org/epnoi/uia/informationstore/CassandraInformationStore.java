@@ -57,7 +57,7 @@ public class CassandraInformationStore implements InformationStore {
 
 	public boolean test() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	// ------------------------------------------------------------------------

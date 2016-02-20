@@ -37,7 +37,9 @@ public class FolderUtils {
                     if (temp.isDirectory()) {
                         search(temp,files);
                     } else {
-                        files.add(temp.getAbsoluteFile().toString());
+                        if (!temp.getName().startsWith(".")){
+                            files.add(temp.getAbsoluteFile().toString());
+                        }
                     }
                 }
             } else {

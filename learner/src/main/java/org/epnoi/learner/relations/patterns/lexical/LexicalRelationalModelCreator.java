@@ -7,6 +7,7 @@ import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.exceptions.EpnoiResourceAccessException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.core.CoreUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ public class LexicalRelationalModelCreator {
 
     // ----------------------------------------------------------------------------------------------------------------
     @PostConstruct
-    public void init() throws EpnoiInitializationException {
+    public void init(Core core, RelationalPatternsModelCreationParameters parameters) throws EpnoiInitializationException {
         logger.info("Initializing the LexicalRealationalModelCreator with the following parameters");
         logger.info(parameters.toString());
         this.core = core;
@@ -42,7 +43,7 @@ public class LexicalRelationalModelCreator {
         String relationalSentencesCorpusURI = (String) this.parameters
                 .getParameterValue(RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI);
         this.patternsCorpusCreator = new RelationalPatternsCorpusCreator();
-        this.patternsCorpusCreator.init(core,
+        this.patternsCorpusCreator.init(this.core,
                 new LexicalRelationalPatternGenerator());
 
         RelationalSentencesCorpus relationalSentencesCorpus = (RelationalSentencesCorpus) this.core
@@ -59,7 +60,7 @@ public class LexicalRelationalModelCreator {
 
             _buildPatternsCorpus(relationalSentencesCorpus);
         }
-        modelBuilder = new RelaxedBigramSoftPatternModelBuilder(parameters);
+        modelBuilder = new RelaxedBigramSoftPatternModelBuilder(this.parameters);
 
         _readParameters();
 
@@ -140,14 +141,14 @@ public class LexicalRelationalModelCreator {
     }
 
     // ----------------------------------------------------------------------------------------------------------------
-/*
+
     public static void main(String[] args) {
         logger.info("Starting the Lexical Relational Model creation");
         RelationalPatternsModelCreationParameters parameters = new RelationalPatternsModelCreationParameters();
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI,
-                        "http://drInventorFirstReview/relationalSentencesCorpus");
+                        "http://siggraph");
         parameters
                 .setParameter(
                         RelationalPatternsModelCreationParameters.MAX_PATTERN_LENGTH,
@@ -155,7 +156,7 @@ public class LexicalRelationalModelCreator {
 
         parameters.setParameter(
                 RelationalPatternsModelCreationParameters.MODEL_PATH,
-                "/home/rgonza/Escritorio/model.bin");
+                "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model2.bin");
 
         parameters.setParameter(
                 RelationalSentencesCorpusCreationParameters.STORE, true);
@@ -182,7 +183,7 @@ public class LexicalRelationalModelCreator {
 
         logger.info("Ending the Lexical Relational Model creation");
     }
-*/
+
     // ----------------------------------------------------------------------------------------------------------------
 
 }

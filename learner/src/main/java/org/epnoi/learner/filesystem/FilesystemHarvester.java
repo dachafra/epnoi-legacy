@@ -154,12 +154,10 @@ public class FilesystemHarvester {
             // System.out.println("..........> "
             // + Arrays.toString(filesToHarvest));
             for (String fileToHarvest : filesToHarvest) {
-                logger.info("Harvesting the file "
-                        + harvestDirectory.getAbsolutePath() + "/"
-                        + fileToHarvest);
+                logger.info("Harvesting the file " + fileToHarvest);
                 Context context = new Context();
-                Paper paper = _harvestFile(directoryToHarvest + "/"
-                        + fileToHarvest, fileToHarvest);
+                File file = new File(fileToHarvest);
+                Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
                 if (core.getInformationHandler().contains(paper.getUri(),
                         RDFHelper.PAPER_CLASS)) {
@@ -240,15 +238,18 @@ public class FilesystemHarvester {
     // ----------------------------------------------------------------------------------------
 
     private String[] scanFilesToHarverst(File directoryToHarvest) {
-        String[] filesToHarvest = directoryToHarvest.list(new FilenameFilter() {
-
-            public boolean accept(File current, String name) {
-                File file = new File(current, name);
-                return (file.isFile()) && (!file.isHidden());
-            }
-
-        });
-        return filesToHarvest;
+//        String[] filesToHarvest = directoryToHarvest.list(new FilenameFilter() {
+//
+//            public boolean accept(File current, String name) {
+//                File file = new File(current, name);
+//                return (file.isFile()) && (!file.isHidden());
+//            }
+//
+//        });
+//        return filesToHarvest;
+//
+        List<String> files = FolderUtils.listFiles(directoryToHarvest);
+        return files.toArray(new String[files.size()]);
     }
 
     // ----------------------------------------------------------------------------------------

@@ -19,7 +19,7 @@
 		</wordnet>
 		<wikidata>
 			<considered>true</considered>
-			<mode>create</mode><!-- load -->
+			<mode>load</mode><!-- load -->
 			<inMemory>false</inMemory>
 			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
 			<uri>http://www.epnoi.org/wikidataView</uri>

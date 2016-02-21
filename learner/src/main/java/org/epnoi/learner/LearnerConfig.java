@@ -23,12 +23,16 @@ import java.util.logging.Logger;
 @Configuration
 @Import(org.epnoi.EpnoiConfig.class)
 //@ComponentScan(basePackageClasses = {RelationalPatternsModelCreationParameters.class, LearnerImpl.class})
-@ComponentScan(basePackages = {"org.epnoi.learner",})
+//@ComponentScan(basePackages = {"org.epnoi.learner","org.epnoi.storage","org.epnoi.eventbus"})
 //@PropertySource("classpath:/epnoi.properties")
-@PropertySources({
-        @PropertySource("classpath:/epnoi.properties"),
-        @PropertySource("classpath:/learner.properties")
-})
+//@PropertySources({
+//        @PropertySource("classpath:/epnoi.properties"),
+//        @PropertySource("classpath:/learner.properties"),
+//        @PropertySource("classpath:eventbus.properties"),
+//        @PropertySource("classpath:storage.properties")
+//})
+@ComponentScan({"org.epnoi.learner","org.epnoi.storage","org.epnoi.eventbus"})
+@PropertySource({"classpath:epnoi.properties","classpath:learner.properties","classpath:eventbus.properties","classpath:storage.properties"})
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class
             .getName());
@@ -290,7 +294,7 @@ public class LearnerConfig {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("zavijava.dia.fi.upm.es:8082/learner/rest");
+        beanConfig.setHost("drinventor.dia.fi.upm.es:8082/learner/rest");
         beanConfig.setBasePath("/");
         beanConfig.setResourcePackage("org.epnoi.learner.service.rest");
         beanConfig.setScan(true);

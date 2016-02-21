@@ -37,6 +37,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.epnoi</groupId>
+            <artifactId>epnoi-storage</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId> <!-- spark-core_2.11 -->
             <exclusions>
@@ -227,6 +233,7 @@
 
 
             </plugin>
+
         </plugins>
     </build>
 

@@ -25,7 +25,7 @@ public class LearnerClient {
         clientConfig.getClasses().add(JacksonJsonProvider.class);
         Client client = Client.create(clientConfig);
 
-        URI serviceURI = UriBuilder.fromUri("http://zavijava.dia.fi.upm.es:8082").build();
+        URI serviceURI = UriBuilder.fromUri("http://drinventor.dia.fi.upm.es:8082").build();
         WebResource webResource = client.resource(serviceURI);
 
         _testRelations(webResource);

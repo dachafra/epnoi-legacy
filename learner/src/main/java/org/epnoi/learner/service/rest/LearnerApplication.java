@@ -34,7 +34,7 @@ public class LearnerApplication extends Application {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0.2");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("zavijava.dia.fi.upm.es:8082");
+        beanConfig.setHost("drinventor.dia.fi.upm.es:8082");
         beanConfig.setBasePath("/api");
         beanConfig.setResourcePackage("io.swagger.resources");
         beanConfig.setScan(true);

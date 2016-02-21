@@ -27,7 +27,7 @@
 	<virtuosoInformationStore>
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
-		<host>zavijava.dia.fi.upm.es</host>
+		<host>localhost</host>
 		<port>1111</port>
 		<graph>http://drInventorFirstReview</graph>
 		<user>dba</user>
@@ -36,14 +36,14 @@
 	<solrInformationStore>
 		<URI>http://solrInformationStore</URI>
 		<path>solr</path>
-		<host>zavijava.dia.fi.upm.es</host>
+		<host>localhost</host>
 		<port>8983</port>
 		<core>proofsCore</core>
 	</solrInformationStore>
 	<cassandraInformationStore>
 		<URI>http://cassandraInformationStore</URI>
 		<path>cassandra</path>
-		<host>zavijava.dia.fi.upm.es</host>
+		<host>localhost</host>
 		<port>9042</port>
 	</cassandraInformationStore>
 	<mapInformationStore>

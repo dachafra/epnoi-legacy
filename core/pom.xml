@@ -35,6 +35,11 @@
 			<artifactId>epnoi-legacy-wrappers</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.epnoi.legacy</groupId>
+			<artifactId>epnoi-legacy-storage</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 
 		<!-- External Dependencies -->

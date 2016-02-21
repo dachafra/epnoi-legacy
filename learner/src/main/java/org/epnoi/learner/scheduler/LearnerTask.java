@@ -18,6 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by cbadenes on 21/02/16.
@@ -128,7 +129,9 @@ public class LearnerTask implements Runnable{
         LOG.info("Number of terms discovered: " + terms.size());
 
 
-        for (Term term: terms){
+        List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > 0.5).collect(Collectors.toList());
+
+        for (Term term: filteredTerms){
             try{
 
                 // Check if exists in other domain

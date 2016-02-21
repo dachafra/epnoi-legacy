@@ -3,8 +3,11 @@ package org.epnoi.learner.scheduler;
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.learner.LearnerConfig;
 import org.epnoi.learner.service.LearnerService;
+import org.epnoi.model.Event;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
+import org.epnoi.model.modules.EventBus;
+import org.epnoi.model.modules.RoutingKey;
 import org.epnoi.storage.UDM;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -39,6 +42,9 @@ public class LearnerTaskTest {
     @Autowired
     UDM udm;
 
+    @Autowired
+    EventBus eventBus;
+
     @Test
     public void storeInUdm() throws InterruptedException {
 
@@ -48,7 +54,10 @@ public class LearnerTaskTest {
         udm.save(domain);
 
 
-        service.buildModels(domain);
+        LOG.info("sending post event...");
+        eventBus.post(Event.from(domain), RoutingKey.of(Resource.Type.DOMAIN,Resource.State.UPDATED));
+
+//        service.buildModels(domain);
 
 
         LOG.info("Sleeping .. ");

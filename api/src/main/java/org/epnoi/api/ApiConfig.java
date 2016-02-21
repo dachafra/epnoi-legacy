@@ -12,7 +12,8 @@ import org.springframework.context.annotation.*;
 //@ComponentScan("org.epnoi.api")
 @Import(org.epnoi.EpnoiConfig.class)
 
-@ComponentScan(basePackages = {"org.epnoi.api.thrift","org.epnoi.api.rest"})
+//@ComponentScan(basePackages = {"org.epnoi.api.thrift","org.epnoi.api.rest"})
+@ComponentScan(basePackages = {"org.epnoi.api.thrift"})
 @PropertySource("classpath:epnoi.properties")
 
 public class ApiConfig {

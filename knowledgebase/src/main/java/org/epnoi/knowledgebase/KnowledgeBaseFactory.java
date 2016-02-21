@@ -68,11 +68,11 @@ public class KnowledgeBaseFactory {
 	}
 
 	// ------------------------------------------------------------------------------------
-/*FOR_TEST
-	public static void main(String[] args) throws EpnoiInitializationException{
+
+	/*public static void main(String[] args) throws EpnoiInitializationException{
 		System.out.println("Starting the Knowledge Base test!!");
 
-		String filepath = "opt/epnoi/epnoi/epnoideployment/wordnet/dictWN3.1/";
+		String filepath = "/opt/epnoi/epnoi/epnoideployment/wordnet/dictWN3.1/";
 
 		Core core = CoreUtility.getUIACore();
 
@@ -94,7 +94,7 @@ public class KnowledgeBaseFactory {
 				true);
 		wikidataParameters.setParameter(
 				WikidataHandlerParameters.DUMP_FILE_MODE,
-				DumpProcessingMode.JSON);
+				WikidataHandlerParameters.DumpProcessingMode.JSON);
 		wikidataParameters.setParameter(WikidataHandlerParameters.TIMEOUT, 10);
 		wikidataParameters.setParameter(WikidataHandlerParameters.DUMP_PATH,
 				"/Users/rafita/Documents/workspace/wikidataParsingTest");
@@ -133,6 +133,6 @@ public class KnowledgeBaseFactory {
 		System.out.println(curatedRelationsTable.areRelated("dog", "canines ",RelationHelper.HYPERNYMY));
 
 		System.out.println("Starting the CuratedRelationsTableCreator test!!");
-	}
-	*/
+	}*/
+
 }

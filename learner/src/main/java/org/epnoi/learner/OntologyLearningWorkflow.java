@@ -41,7 +41,9 @@ public class OntologyLearningWorkflow {
 	private double hypernymRelationsThreshold;
 	private boolean extractTerms;
 	private boolean extractRelations;
-	public static final String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
+
+	//public static final String DOMAIN_URI = "http://www.epnoi.org/CGTestCorpusDomain";
+	public static final String DOMAIN_URI = "http://siggraph";
 	// ---------------------------------------------------------------------------------------------------------
 
 	public void init(Core core,

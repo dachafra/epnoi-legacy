@@ -1,6 +1,7 @@
 package org.epnoi.learner;
 
 import es.cbadenes.lab.test.IntegrationTest;
+import org.apache.commons.lang3.StringUtils;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.modules.Trainer;
 import org.epnoi.learner.service.rest.DemoResource;
@@ -31,6 +32,8 @@ import javax.ws.rs.core.Response;
 @TestPropertySource(properties = {"learner.task.terms.extract = false", "learner.task.terms.store = false", "learner.task.relations.parallel = true"})
 public class SimpleTest {
 
+    private static Integer MAX_HEADER = 20;
+
     private static final Logger LOG = LoggerFactory.getLogger(SimpleTest.class);
 
     @Autowired
@@ -45,6 +48,9 @@ public class SimpleTest {
     @Value("${learner.demo.harvester.uri}")
     String domainUri;
 
+//    @Value("${learner.corpus.sentences.maxlength}")
+//    Integer maxLength;
+
 
 
     @Test
@@ -52,43 +58,55 @@ public class SimpleTest {
         LOG.info("Starting an ontology learning task for " + domainUri);
 
         // Clean previous data
-        LOG.info("Cleaning previous data: " + domainUri);
+        head("Cleaning previous data: " + domainUri);
         Response res = demoResource.removeDemoData();
         LOG.info("Response of cleaning: " + res);
 
         // Read papers
-        LOG.info("Harvesting files from ftp folder for domain: " + domainUri);
+        head("Harvesting files from ftp folder for domain: " + domainUri);
         Response res1 = demoResource.createDemoData();
         LOG.info("Response of harvestring: " + res1);
 
+        head("Creating demo data from trainer: " + domainUri);
+        Response res5 = trainerResource.createDemoData();
+        LOG.info("Response of create demo from trainer: " + res5);
+
+        head("Creating a relational sentences corpus ...");
+        String relDomain = domainUri + "/relational-corpus";
+        int maxLength = 200;
+        Response res4 = trainerResource.createRelationalSentenceCorpus(maxLength, domainUri);
+        LOG.info("Create Relational Sentence Corpus response: " + res4);
 
         // Create model.bin
-        String modelPath = "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model3.bin";
-        LOG.info("Creating relational sentences corpus ...");
+        String modelPath = "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model.bin";
+        head("Creating a relational patterns model ...");
         Response res3 = trainerResource.createRelationalPatternsModel(modelPath);
         LOG.info("Create Relational Patterns Model response: " + res3);
 
 
         // Create corpus
-        LOG.info("Learning domain: ");
-        Response res2 = learnerResource.learnDomain(domainUri);
+        head("Learning domain ..");
+        Response res2 = learnerResource.learnDomain(relDomain);
         LOG.info("Learn response: " + res2);
 
-        int corpusMaxSize = 10;
-        LOG.info("Creating relational sentences corpus ...");
-        Response res4 = trainerResource.createRelationalSentenceCorpus(corpusMaxSize, domainUri);
-        LOG.info("Create Relational Sentence Corpus response: " + res4);
 
+        head("Getting relations..");
+        Response relations = learnerResource.getDomainRelations(domainUri);
+        LOG.info("Relations discovered: " +relations.getEntity());
 
-
-
-
-
-
-
+        head("Getting terms..");
+        Response terms = learnerResource.getDomainTerminology(domainUri);
+        LOG.info("Terms discovered: " +terms.getEntity());
 
         assert (true);
 
+    }
+
+
+    private void head(String title){
+        LOG.info(StringUtils.repeat("#",50));
+        LOG.info(StringUtils.repeat("#",20) + "   " + title);
+        LOG.info(StringUtils.repeat("#",50));
     }
 
 }

@@ -2,6 +2,7 @@ package org.epnoi.learner.service.rest;
 
 import io.swagger.annotations.*;
 import org.epnoi.learner.modules.Learner;
+import org.epnoi.learner.modules.Trainer;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
 import org.epnoi.model.commons.Parameters;
@@ -73,9 +74,14 @@ public class TrainerResource {
         URI createdResourceUri = null;
         if (runtimeParameters.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI) != null) {
 
+            Trainer trainer = learner.getTrainer();
+
+            Parameters<Object> runParam = trainer.getRuntimeParameters();
+
+            String relSentenceCorpusUri = (String) runParam.getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI);
+
             createdResourceUri =
-                    UriBuilder.fromUri((String) learner.getTrainer().getRuntimeParameters()
-                            .getParameterValue(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI)).build();
+                    UriBuilder.fromUri(relSentenceCorpusUri).build();
         } else {
             createdResourceUri =
                     UriBuilder.fromUri((String) learner.getTrainer().getRelationalSentencesCorpusCreationParameters()

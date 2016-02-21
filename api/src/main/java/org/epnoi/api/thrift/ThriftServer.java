@@ -33,10 +33,10 @@ public class ThriftServer {
     @Value("${epnoi.api.thrift.port}")
     int port;
 
-    @Value("${epnoi.api.thrift.port}")
+    @Value("${epnoi.api.thrift.workers}")
     int workers;
 
-    @Value("${epnoi.api.thrift.port}")
+    @Value("${epnoi.api.thrift.selectors}")
     int selectors;
 
     TServer server;

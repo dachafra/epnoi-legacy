@@ -53,6 +53,7 @@ public class TrainerImpl implements Trainer {
     public void createRelationalSentencesCorpus(Parameters<Object> runtimeParameters) {
         logger.info("Creating the relational sentences corpus");
         try {
+            this.runtimeParameters = runtimeParameters;
             this.relationalSentencesCorpusCreator.createCorpus(runtimeParameters);
         } catch (Exception e) {
             logger.severe("There was a problem creating the relational sentences corpus");
@@ -63,6 +64,7 @@ public class TrainerImpl implements Trainer {
     @Override
     public void createRelationalPatternsModel(Parameters<Object> runtimeParameters) {
         try {
+            this.runtimeParameters = runtimeParameters;
             this.lexicalRelationalPatternsModelCreator.create(runtimeParameters);
         } catch (Exception e) {
             logger.severe("There was a problem in the creation of the relational pattern model");

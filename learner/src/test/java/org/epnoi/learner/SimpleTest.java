@@ -8,6 +8,7 @@ import org.epnoi.learner.service.rest.DemoResource;
 import org.epnoi.learner.service.rest.LearnerResource;
 import org.epnoi.learner.service.rest.TrainerResource;
 import org.epnoi.model.Relation;
+import org.epnoi.model.Term;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -20,7 +21,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.swing.text.html.parser.DTD;
 import javax.ws.rs.core.Response;
+import java.net.URI;
+import java.util.List;
 
 /**
  * Created by rgonzalez on 3/12/15.
@@ -59,13 +63,13 @@ public class SimpleTest {
 
         // Clean previous data
         head("Cleaning previous data: " + domainUri);
-        Response res = demoResource.removeDemoData();
-        LOG.info("Response of cleaning: " + res);
+        demoResource.remove();
+        LOG.info("Response of cleaning: ");
 
         // Read papers
         head("Harvesting files from ftp folder for domain: " + domainUri);
-        Response res1 = demoResource.createDemoData();
-        LOG.info("Response of harvestring: " + res1);
+        demoResource.create();
+        LOG.info("Response of harvestring");
 
         head("Creating demo data from trainer: " + domainUri);
         Response res5 = trainerResource.createDemoData();
@@ -74,29 +78,29 @@ public class SimpleTest {
         head("Creating a relational sentences corpus ...");
         String relDomain = domainUri + "/relational-corpus";
         int maxLength = 200;
-        Response res4 = trainerResource.createRelationalSentenceCorpus(maxLength, domainUri);
+        URI res4 = trainerResource.createRelationalSentenceCorpus(maxLength, domainUri);
         LOG.info("Create Relational Sentence Corpus response: " + res4);
 
         // Create model.bin
         String modelPath = "/opt/epnoi/epnoideployment/secondReviewResources/lexicalModel/model.bin";
         head("Creating a relational patterns model ...");
-        Response res3 = trainerResource.createRelationalPatternsModel(modelPath);
+        URI res3 = trainerResource.createRelationalPatternsModel(modelPath);
         LOG.info("Create Relational Patterns Model response: " + res3);
 
 
         // Create corpus
         head("Learning domain ..");
-        Response res2 = learnerResource.learnDomain(relDomain);
+        URI res2 = learnerResource.learnDomain(relDomain);
         LOG.info("Learn response: " + res2);
 
 
         head("Getting relations..");
-        Response relations = learnerResource.getDomainRelations(domainUri);
-        LOG.info("Relations discovered: " +relations.getEntity());
+        List<Relation> relations = learnerResource.getRelations(domainUri);
+        LOG.info("Relations discovered: " +relations);
 
         head("Getting terms..");
-        Response terms = learnerResource.getDomainTerminology(domainUri);
-        LOG.info("Terms discovered: " +terms.getEntity());
+        List<Term> terms = learnerResource.getTerms(domainUri);
+        LOG.info("Terms discovered: " +terms);
 
         assert (true);
 

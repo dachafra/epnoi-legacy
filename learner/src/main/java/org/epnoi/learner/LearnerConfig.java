@@ -1,8 +1,5 @@
 package org.epnoi.learner;
 
-import io.swagger.jaxrs.config.BeanConfig;
-import io.swagger.jaxrs.listing.ApiListingResource;
-import io.swagger.jaxrs.listing.SwaggerSerializers;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.epnoi.learner.filesystem.FilesystemHarvesterParameters;
@@ -272,34 +269,34 @@ public class LearnerConfig {
     }
 
 
-    @Bean
-    @Scope(BeanDefinition.SCOPE_SINGLETON)
-    public ApiListingResource apiListingResource() {
-        return new ApiListingResource();
-    }
-
-
-    @Bean
-    @Scope(BeanDefinition.SCOPE_SINGLETON)
-    public SwaggerSerializers swaggerSerializer() {
-        return new SwaggerSerializers();
-    }
-
-
-    @Bean()
-    @Scope(BeanDefinition.SCOPE_SINGLETON)
-    public BeanConfig beanConfig() {
-
-
-        BeanConfig beanConfig = new BeanConfig();
-        beanConfig.setVersion("1.0.2");
-        beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setHost("drinventor.dia.fi.upm.es:8082/learner/rest");
-        beanConfig.setBasePath("/");
-        beanConfig.setResourcePackage("org.epnoi.learner.service.rest");
-        beanConfig.setScan(true);
-        return beanConfig;
-    }
+//    @Bean
+//    @Scope(BeanDefinition.SCOPE_SINGLETON)
+//    public ApiListingResource apiListingResource() {
+//        return new ApiListingResource();
+//    }
+//
+//
+//    @Bean
+//    @Scope(BeanDefinition.SCOPE_SINGLETON)
+//    public SwaggerSerializers swaggerSerializer() {
+//        return new SwaggerSerializers();
+//    }
+//
+//
+//    @Bean()
+//    @Scope(BeanDefinition.SCOPE_SINGLETON)
+//    public BeanConfig beanConfig() {
+//
+//
+//        BeanConfig beanConfig = new BeanConfig();
+//        beanConfig.setVersion("1.0.2");
+//        beanConfig.setSchemes(new String[]{"http"});
+//        beanConfig.setHost("drinventor.dia.fi.upm.es:8082/learner/rest");
+//        beanConfig.setBasePath("/");
+//        beanConfig.setResourcePackage("org.epnoi.learner.service.rest");
+//        beanConfig.setScan(true);
+//        return beanConfig;
+//    }
 
     @Bean()
     public SparkConf sparkConfig(@Value("${epnoi.learner.spark.master}") String master,

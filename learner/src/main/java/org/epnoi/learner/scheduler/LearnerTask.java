@@ -189,19 +189,20 @@ public class LearnerTask implements Runnable{
                         // Relate to term
                         helper.getUdm().save(Relation.newMentionsFromTerm(termUri,wordUri));
                     }
-                }
 
-                // Relate it to Domain
-                AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
-                appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
-                appeared.setConsensus(term.getAnnotatedTerm().getAnnotation().getDomainConsensus());
-                appeared.setCvalue(term.getAnnotatedTerm().getAnnotation().getCValue());
-                appeared.setPertinence(term.getAnnotatedTerm().getAnnotation().getDomainPertinence());
-                appeared.setProbability(term.getAnnotatedTerm().getAnnotation().getTermProbability());
-                appeared.setSubtermOf(term.getAnnotatedTerm().getAnnotation().getOcurrencesAsSubterm());
-                appeared.setSupertermOf(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
-                appeared.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
-                helper.getUdm().save(appeared);
+                    // Check if term not related previously to Domain
+                    // Relate it to Domain
+                    AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
+                    appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
+                    appeared.setConsensus(term.getAnnotatedTerm().getAnnotation().getDomainConsensus());
+                    appeared.setCvalue(term.getAnnotatedTerm().getAnnotation().getCValue());
+                    appeared.setPertinence(term.getAnnotatedTerm().getAnnotation().getDomainPertinence());
+                    appeared.setProbability(term.getAnnotatedTerm().getAnnotation().getTermProbability());
+                    appeared.setSubtermOf(term.getAnnotatedTerm().getAnnotation().getOcurrencesAsSubterm());
+                    appeared.setSupertermOf(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
+                    appeared.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
+                    helper.getUdm().save(appeared);
+                }
 
             }catch (Exception e){
                 LOG.warn("Unexpected error while processing term: " + term,e);

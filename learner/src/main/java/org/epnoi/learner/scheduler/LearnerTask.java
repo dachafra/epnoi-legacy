@@ -190,6 +190,7 @@ public class LearnerTask implements Runnable{
                         // Relate to term
                         MentionsFromTerm mention = Relation.newMentionsFromTerm(termUri, wordUri);
                         mention.setTimes(1L);
+                        mention.setWeight(Double.valueOf(1.0/term.getAnnotatedTerm().getAnnotation().getLength()));
                         helper.getUdm().save(mention);
                     }
 

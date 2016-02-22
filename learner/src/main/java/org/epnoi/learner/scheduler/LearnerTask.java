@@ -7,6 +7,7 @@ import org.epnoi.model.Term;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.domain.relations.AppearedIn;
 import org.epnoi.model.domain.relations.HypernymOf;
+import org.epnoi.model.domain.relations.MentionsFromTerm;
 import org.epnoi.model.domain.relations.Relation;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
@@ -187,7 +188,9 @@ public class LearnerTask implements Runnable{
                         }
 
                         // Relate to term
-                        helper.getUdm().save(Relation.newMentionsFromTerm(termUri,wordUri));
+                        MentionsFromTerm mention = Relation.newMentionsFromTerm(termUri, wordUri);
+                        mention.setTimes(1L);
+                        helper.getUdm().save(mention);
                     }
 
                     // Check if term not related previously to Domain

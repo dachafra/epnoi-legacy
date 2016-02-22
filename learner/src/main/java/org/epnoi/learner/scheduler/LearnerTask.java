@@ -149,7 +149,7 @@ public class LearnerTask implements Runnable{
         LOG.info("Number of terms discovered: " + terms.size());
 
         final double threshold = helper.getThreshold();
-        List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > threshold).collect(Collectors.toList());
+        List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > threshold).filter(term -> term.getAnnotatedTerm().getAnnotation().getLength() < 4).collect(Collectors.toList());
 
         for (Term term: filteredTerms){
             try{

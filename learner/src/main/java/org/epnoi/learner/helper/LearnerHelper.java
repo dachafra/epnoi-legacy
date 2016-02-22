@@ -34,5 +34,8 @@ public class LearnerHelper {
     @Value("${learner.task.relations.hypernyms.lexical.path}")
     String modelPath;
 
+    @Value("${learner.task.terms.termhood.min}")
+    Double threshold;
+
 
 }

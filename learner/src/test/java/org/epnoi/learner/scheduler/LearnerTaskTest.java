@@ -2,6 +2,7 @@ package org.epnoi.learner.scheduler;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.learner.LearnerConfig;
+import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.service.LearnerService;
 import org.epnoi.model.Event;
 import org.epnoi.model.domain.resources.Domain;
@@ -45,8 +46,11 @@ public class LearnerTaskTest {
     @Autowired
     EventBus eventBus;
 
+    @Autowired
+    LearnerHelper helper;
+
     @Test
-    public void storeInUdm() throws InterruptedException {
+    public void fromEvent() throws InterruptedException {
 
         Domain domain = Resource.newDomain();
         domain.setName("siggraph");
@@ -63,6 +67,21 @@ public class LearnerTaskTest {
         LOG.info("Sleeping .. ");
         Thread.sleep(300000);
         LOG.info("Wake up! ");
+
+    }
+
+
+    @Test
+    public void fromDirectReference() throws InterruptedException {
+
+        Domain domain = Resource.newDomain();
+        domain.setName("siggraph");
+        domain.setDescription("from-test-junit");
+        udm.save(domain);
+
+
+        LearnerTask task = new LearnerTask(domain,helper);
+        task.run();
 
     }
 

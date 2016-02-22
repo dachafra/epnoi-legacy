@@ -40,33 +40,17 @@ public class LearnerTask implements Runnable{
     public void run() {
 
         try{
-            //TODO use directly domain.uri
-//            LOG.info("Removing previously analized  data ..");
-//            helper.getDemoDataLoader().erase();
 
-            //TODO use directly domain.uri
-            LOG.info("Loading papers from domain: " + domain + " ..");
-            helper.getDemoDataLoader().load();
-
-            //TODO use directly domain.uri
             String domainUri = "http://" + domain.getName();
-            LOG.info("Creating relational sentences corpus ..");
-            URI relURI = createRelationalSentencesCorpus(domainUri, helper.getMaxLength());
-            LOG.info("Relational sentences corpus created successfully: " + relURI);
 
-            LOG.info("Creating relational pattern model ..");
-            URI patUri = createRelationalPatternModel(helper.getModelPath());
-            LOG.info("Relational pattern model created successfully: " + patUri);
+            // Load papers from domain
+            loadData(domainUri);
 
-            LOG.info("Learning terms and relations from domain: " + domain + " ..");
-            helper.getLearner().learn(domainUri);
+            // Train the learner from wikipedia pages
+            //train();
 
-            LOG.info("Getting and storing terms in domain: " + domain + " ..");
-            deleteTerms(domain);
-            storeTerms(domainUri,domain);
-
-            LOG.info("Getting and storing relations in domain: " + domain + "..");
-            storeRelations(domainUri,domain);
+            // Learn terms and relations from domain
+            learn(domainUri);
 
         }catch (Exception e){
             LOG.warn("Unexpected error trying to learn terms and relations from domain: " + domain);
@@ -74,9 +58,45 @@ public class LearnerTask implements Runnable{
     }
 
 
-    private URI createRelationalSentencesCorpus(String uri, Integer maxSize){
+    private void loadData(String uri){
+        //TODO use directly domain.uri
+//            LOG.info("Removing previously analized  data ..");
+//            helper.getDemoDataLoader().erase();
+
+        //TODO use directly domain.uri
+        LOG.info("Loading papers from domain: " + domain + " ..");
+        helper.getDemoDataLoader().load();
+    }
+
+
+    private void train(){
+        //TODO use directly domain.uri
+        LOG.info("Creating relational sentences corpus ..");
+        URI relURI = createRelationalSentencesCorpus(helper.getMaxLength());
+        LOG.info("Relational sentences corpus created successfully: " + relURI);
+
+        LOG.info("Creating relational pattern model ..");
+        URI patUri = createRelationalPatternModel(helper.getModelPath());
+        LOG.info("Relational pattern model created successfully: " + patUri);
+    }
+
+    private void learn(String uri){
+        LOG.info("Learning terms and relations from domain: " + domain + " ..");
+        helper.getLearner().learn(uri);
+
+        LOG.info("Getting and storing terms in domain: " + domain + " ..");
+        deleteTerms(domain);
+        storeTerms(uri,domain);
+
+        LOG.info("Getting and storing relations in domain: " + domain + "..");
+        storeRelations(uri,domain);
+    }
+
+
+    private URI createRelationalSentencesCorpus(Integer maxSize){
         Parameters<Object> runtimeParameters = new Parameters<Object>();
 
+        // This uri is not the domain uri, is the uri of annotated relational corpus
 //        runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.RELATIONAL_SENTENCES_CORPUS_URI, uri);
         runtimeParameters.setParameter(RelationalSentencesCorpusCreationParameters.MAX_TEXT_CORPUS_SIZE, maxSize);
 
@@ -128,66 +148,65 @@ public class LearnerTask implements Runnable{
 
         LOG.info("Number of terms discovered: " + terms.size());
 
+        final double threshold = helper.getThreshold();
+        List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > threshold).collect(Collectors.toList());
 
-//        List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > 0.5).collect(Collectors.toList());
-//
-//        for (Term term: filteredTerms){
-//            try{
-//
-//                LOG.info("Term: " + term);
-//                // Check if exists in other domain
-//                List<String> termUris = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, term.getAnnotatedTerm().getWord());
-//
-//                String termUri = null;
-//                if (termUris != null && !termUris.isEmpty()){
-//                    LOG.debug("Term: " + term.getAnnotatedTerm().getWord() + " already exists!");
-//                    //TODO relate to domain if needed
-//                    termUri = termUris.get(0);
-//                }else{
-//                    // Create the new term
-//                    org.epnoi.model.domain.resources.Term domainTerm = Resource.newTerm();
-//                    domainTerm.setContent(term.getAnnotatedTerm().getWord());
-//                    domainTerm.setConsensus(term.getAnnotatedTerm().getAnnotation().getDomainConsensus());
-//                    domainTerm.setCvalue(term.getAnnotatedTerm().getAnnotation().getCValue());
-//                    domainTerm.setLength(term.getAnnotatedTerm().getAnnotation().getLength());
-//                    domainTerm.setPertinence(term.getAnnotatedTerm().getAnnotation().getDomainPertinence());
-//                    domainTerm.setProbability(term.getAnnotatedTerm().getAnnotation().getTermProbability());
-//                    domainTerm.setSubterms(term.getAnnotatedTerm().getAnnotation().getOcurrencesAsSubterm());
-//                    domainTerm.setSuperterms(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
-//                    domainTerm.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
-//                    helper.getUdm().save(domainTerm);
-//                    termUri = domainTerm.getUri();
-//
-//                    // Relate it to words
-//                    for (String word: term.getAnnotatedTerm().getAnnotation().getWords()){
-//
-//                        // Check if exists
-//                        List<String> wordUris = helper.getUdm().find(Resource.Type.WORD).by(Word.CONTENT, word);
-//                        String wordUri = null;
-//                        if (termUris == null || termUris.isEmpty()){
-//                            // Create word
-//                            Word wordDomain = Resource.newWord();
-//                            wordDomain.setContent(word);
-//                            helper.getUdm().save(wordDomain);
-//                            wordUri = wordDomain.getUri();
-//                        }else{
-//                            wordUri = wordUris.get(0);
-//                        }
-//
-//                        // Relate to term
-//                        helper.getUdm().save(Relation.newMentionsFromTerm(termUri,wordUri));
-//                    }
-//                }
-//
-//                // Relate it to Domain
-//                AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
-//                appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
-//                helper.getUdm().save(appeared);
-//
-//            }catch (Exception e){
-//                LOG.warn("Unexpected error while processing term: " + term,e);
-//            }
-//        }
+        for (Term term: filteredTerms){
+            try{
+
+                LOG.info("Term: " + term);
+                // Check if exists in other domain
+                List<String> termUris = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, term.getAnnotatedTerm().getWord());
+
+                String termUri = null;
+                if (termUris != null && !termUris.isEmpty()){
+                    LOG.debug("Term: " + term.getAnnotatedTerm().getWord() + " already exists!");
+                    //TODO relate to domain if needed
+                    termUri = termUris.get(0);
+                }else{
+                    // Create the new term
+                    org.epnoi.model.domain.resources.Term domainTerm = Resource.newTerm();
+                    domainTerm.setContent(term.getAnnotatedTerm().getWord());
+                    helper.getUdm().save(domainTerm);
+                    termUri = domainTerm.getUri();
+
+                    // Relate it to words
+                    for (String word: term.getAnnotatedTerm().getAnnotation().getWords()){
+
+                        // Check if exists
+                        List<String> wordUris = helper.getUdm().find(Resource.Type.WORD).by(Word.CONTENT, word);
+                        String wordUri = null;
+                        if (termUris == null || termUris.isEmpty()){
+                            // Create word
+                            Word wordDomain = Resource.newWord();
+                            wordDomain.setContent(word);
+                            helper.getUdm().save(wordDomain);
+                            wordUri = wordDomain.getUri();
+                        }else{
+                            wordUri = wordUris.get(0);
+                        }
+
+                        // Relate to term
+                        helper.getUdm().save(Relation.newMentionsFromTerm(termUri,wordUri));
+                    }
+                }
+
+                // Relate it to Domain
+                AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
+                appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
+                appeared.setConsensus(term.getAnnotatedTerm().getAnnotation().getDomainConsensus());
+                appeared.setCvalue(term.getAnnotatedTerm().getAnnotation().getCValue());
+                appeared.setPertinence(term.getAnnotatedTerm().getAnnotation().getDomainPertinence());
+                appeared.setProbability(term.getAnnotatedTerm().getAnnotation().getTermProbability());
+                appeared.setSubtermOf(term.getAnnotatedTerm().getAnnotation().getOcurrencesAsSubterm());
+                appeared.setSupertermOf(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
+                appeared.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
+                helper.getUdm().save(appeared);
+
+            }catch (Exception e){
+                LOG.warn("Unexpected error while processing term: " + term,e);
+            }
+        }
     }
 
 
@@ -200,27 +219,27 @@ public class LearnerTask implements Runnable{
 
         LOG.info("Number of relations discovered: " + relations.size());
 
-//        for (org.epnoi.model.Relation relation: relations){
-//            //TODO take into account the relation type
-//            LOG.info("Trying to create a new HYPERNYM_OF relation from: " + relation);
-//
-//            LOG.debug("Source term: " + relation.getSource());
-//            List<String> termSource = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getSource());
-//
-//
-//            LOG.debug("Target term: " + relation.getTarget());
-//            List<String> termTarget = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getTarget());
-//
-//            if (termSource != null && !termSource.isEmpty() && termTarget != null && !termTarget.isEmpty()){
-//                HypernymOf hypernym = Relation.newHypernymOf(termSource.get(0), termTarget.get(0));
-//                hypernym.setDomain(domain.getUri());
-//                hypernym.setWeight(relation.calculateRelationhood());
-//                helper.getUdm().save(hypernym);
-//            }else{
-//                LOG.warn("No terms found for relation: " + relation);
-//            }
-//
-//        }
+        for (org.epnoi.model.Relation relation: relations){
+            //TODO take into account the relation type
+            LOG.info("Trying to create a new HYPERNYM_OF relation from: " + relation);
+
+            LOG.debug("Source term: " + relation.getSource());
+            List<String> termSource = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getSource());
+
+
+            LOG.debug("Target term: " + relation.getTarget());
+            List<String> termTarget = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getTarget());
+
+            if (termSource != null && !termSource.isEmpty() && termTarget != null && !termTarget.isEmpty()){
+                HypernymOf hypernym = Relation.newHypernymOf(termSource.get(0), termTarget.get(0));
+                hypernym.setDomain(domain.getUri());
+                hypernym.setWeight(relation.calculateRelationhood());
+                helper.getUdm().save(hypernym);
+            }else{
+                LOG.warn("No terms found for relation: " + relation);
+            }
+
+        }
     }
 
 }

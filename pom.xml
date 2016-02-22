@@ -138,6 +138,7 @@
         <module>core</module>
         <module>knowledgebase</module>
         <module>learner</module>
+        <module>harvester</module>
         <module>model</module>
         <module>nlp</module>
         <module>wrappers</module>

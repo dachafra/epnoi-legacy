@@ -226,15 +226,15 @@ public class RelationalSentencesCorpusCreator {
         /*
          * RelationalSentencesCorpus testRelationalSentenceCorpus =
 		 * relationSentencesCorpusCreator .createTestCorpus();
-		 * 
+		 *
 		 * System.out.println("testCorpus>" + testRelationalSentenceCorpus);
-		 * 
+		 *
 		 * core.getInformationHandler().put(testRelationalSentenceCorpus,
 		 * Context.getEmptyContext());
-		 * 
+		 *
 		 * System.out.println(core.getInformationHandler().get(
 		 * testRelationalSentenceCorpus.getURI()));
-		 * 
+		 *
 		 * System.exit(0);
 		 */
 

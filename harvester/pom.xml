@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.epnoi.legacy</groupId>
+        <artifactId>epnoi-legacy</artifactId>
+        <version>0.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>epnoi-legacy-harvester</artifactId>
+    <packaging>jar</packaging>
+    <name>epnoi legacy harvester</name>
+    <description>epnoi legacy harvester</description>
+
+
+    <dependencies>
+
+        <!-- Internal Dependencies -->
+        <dependency>
+            <groupId>org.epnoi.legacy</groupId>
+            <artifactId>epnoi-legacy-core</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- External Dependencies -->
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+            <artifactId>de.tudarmstadt.ukp.wikipedia.api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
+            <artifactId>de.tudarmstadt.ukp.wikipedia.parser</artifactId>
+        </dependency>
+
+
+        <!-- Apache Tika -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <!--<classifier>jdk14</classifier>-->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers</artifactId>
+            <!--	<classifier>jdk14</classifier>-->
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>one-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>org.epnoi.harvester.legacy.wikipedia.WikipediaHarvester</mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+

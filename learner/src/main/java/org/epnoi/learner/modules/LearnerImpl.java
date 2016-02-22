@@ -12,11 +12,12 @@ import org.epnoi.model.RelationsTable;
 import org.epnoi.model.exceptions.EpnoiInitializationException;
 import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.logging.Logger;
 
 /**
  * Created by rgonza on 13/11/15.
@@ -24,8 +25,7 @@ import java.util.logging.Logger;
 @Component
 public class LearnerImpl implements Learner {
 
-    private static final Logger logger = Logger.getLogger(LearnerConfig.class
-            .getName());
+    private static final Logger logger = LoggerFactory.getLogger(LearnerConfig.class);
     @Autowired
     private Core core;
 
@@ -73,16 +73,14 @@ public class LearnerImpl implements Learner {
                     ontologyLearningTask.perform(domain);
                     _storeLearningResults(ontologyLearningTask, domain);
                 } catch (Exception e) {
-                    logger.severe("There was a problem while learning the domain " + domain.getUri());
-                    e.printStackTrace();
+                    logger.error("There was a problem while learning the domain " + domain.getUri(),e);
                 }
 
             } else {
-                logger.severe("The retrieved domain was null!!!!");
+                logger.error("The retrieved domain was null!!!!");
             }
         } catch (Exception e) {
-            logger.info("Something went wrong when learning about the domain " + domainUri);
-            e.printStackTrace();
+            logger.error("Something went wrong when learning about the domain " + domainUri,e);
         }
 
     }

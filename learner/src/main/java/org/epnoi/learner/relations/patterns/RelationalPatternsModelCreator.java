@@ -189,7 +189,7 @@ public class RelationalPatternsModelCreator {
 
         if (relationalSentencesCorpus == null) {
             logger.info("The Relational Sentences Corpus "
-                    + relationalSentencesCorpusURI + "could not be found");
+                    + relationalSentencesCorpusURI + " could not be found");
 
         } else {
 

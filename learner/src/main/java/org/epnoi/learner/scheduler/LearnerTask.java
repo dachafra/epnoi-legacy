@@ -116,7 +116,7 @@ public class LearnerTask implements Runnable{
 
         final double termhoodThreshold = helper.getTermThreshoold();
         Set<Term> relevantTerms = terms.stream().filter(term -> (term.getAnnotatedTerm().getAnnotation().getTermhood() > termhoodThreshold) || (neededTerms.contains(term.getAnnotatedTerm().getWord()))).filter(term -> term.getAnnotatedTerm().getAnnotation().getLength() < 4).collect(Collectors.toSet());
-        LOG.info("Number of relevant terms found in domain: " + relevantRelations.size());
+        LOG.info("Number of relevant terms found in domain: " + relevantTerms.size());
 
 
 

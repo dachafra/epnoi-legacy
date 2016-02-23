@@ -1,10 +1,15 @@
 package org.epnoi.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 
 
 public class RelationsTable implements Resource {
+
+	private static final Logger LOG = LoggerFactory.getLogger(RelationsTable.class);
 
 	private String uri;
 	private Map<String, Relation> relations;
@@ -109,7 +114,7 @@ public class RelationsTable implements Resource {
 		String relationURI = Relation.buildURI(sourceTerm.getAnnotatedTerm()
 				.getWord(), targetTerm.getAnnotatedTerm().getWord(), type,
 				domain);
-		System.out.println("RelationURI > " + relationURI);
+		LOG.debug("Creating a new relation: " + relationURI);
 		if (this.hasRelation(relationURI)) {
 			// If the relation is already in the Relations Table, we have to
 			// update just
@@ -122,8 +127,7 @@ public class RelationsTable implements Resource {
 			// update its position in the ordered MapTree
 			this.orderedRelations.remove(storedRelation);
 			this.orderedRelations.put(storedRelation, relationURI);
-			System.out
-					.println("ME SALE QUE ESTABA! " + orderedRelations.size());
+//			System.out.println("ME SALE QUE ESTABA! " + orderedRelations.size());
 
 		} else {
 			// If the relation is not already stored, we simply add it
@@ -147,7 +151,7 @@ public class RelationsTable implements Resource {
 			}
 
 			relations.add(relation);
-			System.out.println("NO ESTABA " + orderedRelations.size());
+//			System.out.println("NO ESTABA " + orderedRelations.size());
 
 		}
 	}

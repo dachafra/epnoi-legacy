@@ -37,6 +37,11 @@ public class DemoDataLoader {
         loadDomain(domainUri,domainLabel,papers);
     }
 
+    public void load(String domainUri, String domainLabel, String path) {
+        List<Paper> papers = _loadComputerGraphicsCorpus(path);
+        loadDomain(domainUri,domainLabel,papers);
+    }
+
 // --------------------------------------------------------------------------------------------
 
     public void erase() {
@@ -91,6 +96,11 @@ public class DemoDataLoader {
     private List<Paper> _loadComputerGraphicsCorpus() {
         logger.info("Loading the computer graphics corpus");
         return this.filesystemHarvester.run();
+    }
+
+    private List<Paper> _loadComputerGraphicsCorpus(String path) {
+        logger.info("Loading the computer graphics corpus from: " + path);
+        return this.filesystemHarvester.run(path);
     }
 
     private void _removeComputerGraphicsCorpus() {

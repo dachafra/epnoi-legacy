@@ -66,7 +66,7 @@ public class LearnerTask implements Runnable{
 
     private void loadData(){
 
-        helper.getDemoDataLoader().load();
+        helper.getDemoDataLoader().load(domain.getUri(),domain.getName(),"/opt/drinventor/workspace/ftp/siggraph2");
 
 //        //TODO implement an incremental mode to avoid erase + create
 //        LOG.info("Removing previously analyzed  data ..");

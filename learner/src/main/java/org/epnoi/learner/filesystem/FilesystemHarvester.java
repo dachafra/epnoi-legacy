@@ -123,11 +123,17 @@ public class FilesystemHarvester {
         return harvest(this.path);
     }
 
+    public List<Paper> run(String path) {
+        return harvest(path);
+    }
+
     // ----------------------------------------------------------------------------------------
 
     public List<Paper> run(Parameters<Object> runtimeParameters) {
         return harvest(this.path);
     }
+
+
 
 
     // ----------------------------------------------------------------------------------------

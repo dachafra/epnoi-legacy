@@ -59,7 +59,7 @@ public class LearnerTask implements Runnable{
             LOG.info("Learning task completed successfully");
 
         }catch (Exception e){
-            LOG.warn("Unexpected error trying to learn terms and relations from domain: " + domain);
+            LOG.warn("Unexpected error trying to learn terms and relations from domain: " + domain,e);
         }
     }
 
@@ -213,6 +213,7 @@ public class LearnerTask implements Runnable{
             //TODO take into account the relation type
             HypernymOf hypernym = Relation.newHypernymOf(termSource.get(0), termTarget.get(0));
             hypernym.setDomain(domain.getUri());
+            hypernym.setProvenances(relation.getProvenanceRelationhoodTable());
             hypernym.setWeight(relation.calculateRelationhood());
             helper.getUdm().save(hypernym);
         }else{
@@ -266,6 +267,7 @@ public class LearnerTask implements Runnable{
             // Relate it to Domain
             AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
             appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
+            appeared.setWeight(term.getAnnotatedTerm().getAnnotation().getTermhood());
             appeared.setConsensus(term.getAnnotatedTerm().getAnnotation().getDomainConsensus());
             appeared.setCvalue(term.getAnnotatedTerm().getAnnotation().getCValue());
             appeared.setPertinence(term.getAnnotatedTerm().getAnnotation().getDomainPertinence());

@@ -210,6 +210,7 @@ public class LearnerTask implements Runnable{
                     appeared.setSupertermOf(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
                     appeared.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
                     helper.getUdm().save(appeared);
+                    termsInDomain.add(termUri);
                 }
 
             }catch (Exception e){

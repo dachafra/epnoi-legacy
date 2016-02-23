@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.core.UriBuilder;
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -146,8 +143,8 @@ public class LearnerTask implements Runnable{
         LOG.info("Number of relevant terms found in domain: " + relevantTerms.size());
 
 
-
-        relevantTerms.forEach(term -> create(term,domain));
+        Set<String> termsInDomain = new TreeSet<>();
+        relevantTerms.forEach(term -> create(term,domain,termsInDomain));
 
         relevantRelations.forEach(relation -> create(relation,domain));
 
@@ -221,7 +218,7 @@ public class LearnerTask implements Runnable{
         }
     }
 
-    private void create(Term term, Domain domain ){
+    private void create(Term term, Domain domain, Set<String> termsInDomain ){
         try{
 
             LOG.info("Term: " + term);
@@ -231,8 +228,10 @@ public class LearnerTask implements Runnable{
             String termUri;
             if (termUris != null && !termUris.isEmpty()){
                 LOG.debug("Term: " + term.getAnnotatedTerm().getWord() + " already exists!");
-                //TODO relate to domain if needed
                 termUri = termUris.get(0);
+                if (termsInDomain.contains(termUri)){
+                    return;
+                }
             }else{
                 // Create the new term
                 org.epnoi.model.domain.resources.Term domainTerm = Resource.newTerm();
@@ -263,7 +262,7 @@ public class LearnerTask implements Runnable{
                     helper.getUdm().save(mention);
                 }
             }
-            // Check if term not related previously to Domain
+            // TODO Check if term not related previously to Domain
             // Relate it to Domain
             AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());
             appeared.setTimes(term.getAnnotatedTerm().getAnnotation().getOcurrences());
@@ -276,6 +275,8 @@ public class LearnerTask implements Runnable{
             appeared.setSupertermOf(term.getAnnotatedTerm().getAnnotation().getNumberOfSuperterns());
             appeared.setTermhood(term.getAnnotatedTerm().getAnnotation().getTermhood());
             helper.getUdm().save(appeared);
+
+            termsInDomain.add(termUri);
 
         }catch (Exception e){
             LOG.warn("Unexpected error while processing term: " + term,e);

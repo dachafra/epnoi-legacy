@@ -66,25 +66,27 @@ public class LearnerTask implements Runnable{
 
     private void loadData(){
 
-        //TODO implement an incremental mode to avoid erase + create
-        LOG.info("Removing previously analyzed  data ..");
-        helper.getDemoDataLoader().erase();
+        helper.getDemoDataLoader().load();
 
-        LOG.info("Loading papers from domain: " + domain + " ..");
-        List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
-        LOG.info("Documents in domain: " + documents.size());
-
-        List<Paper> papers = documents.stream().map(docUri -> helper.getUdm().read(Resource.Type.DOCUMENT).byUri(docUri)).filter(res -> res.isPresent()).map(res -> res.get().asDocument()).map(document -> {
-            Paper paper = new Paper();
-            paper.setUri(document.getUri());
-            paper.setPubDate(document.getPublishedOn());
-            paper.setTitle(document.getTitle());
-            paper.setDescription(document.getContent());
-            return paper;
-        }).collect(Collectors.toList());
-        LOG.info("Papers in domain: " + papers.size());
-
-        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
+//        //TODO implement an incremental mode to avoid erase + create
+//        LOG.info("Removing previously analyzed  data ..");
+//        helper.getDemoDataLoader().erase();
+//
+//        LOG.info("Loading papers from domain: " + domain + " ..");
+//        List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
+//        LOG.info("Documents in domain: " + documents.size());
+//
+//        List<Paper> papers = documents.stream().map(docUri -> helper.getUdm().read(Resource.Type.DOCUMENT).byUri(docUri)).filter(res -> res.isPresent()).map(res -> res.get().asDocument()).map(document -> {
+//            Paper paper = new Paper();
+//            paper.setUri(document.getUri());
+//            paper.setPubDate(document.getPublishedOn());
+//            paper.setTitle(document.getTitle());
+//            paper.setDescription(document.getContent());
+//            return paper;
+//        }).collect(Collectors.toList());
+//        LOG.info("Papers in domain: " + papers.size());
+//
+//        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
 
     }
 

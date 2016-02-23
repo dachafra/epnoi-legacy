@@ -1,5 +1,6 @@
 package org.epnoi.learner.scheduler;
 
+import org.apache.commons.lang.StringUtils;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.UriBuilder;
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,16 +47,14 @@ public class LearnerTask implements Runnable{
 
         try{
 
-            String domainUri = "http://" + domain.getName();
-
             // Load papers from domain
-            loadData(domainUri);
+            loadData();
 
             // Train the learner from wikipedia pages
-            //train();
+            train();
 
             // Learn terms and relations from domain
-            learn(domainUri);
+            learn();
 
             LOG.info("Learning task completed successfully");
 
@@ -64,35 +64,43 @@ public class LearnerTask implements Runnable{
     }
 
 
-    private void loadData(String uri){
-        //TODO use directly domain.uri
-//            LOG.info("Removing previously analized  data ..");
-//            helper.getDemoDataLoader().erase();
+    private void loadData(){
 
-        //TODO use directly domain.uri
+        //TODO implement an incremental mode to avoid erase + create
+        LOG.info("Removing previously analyzed  data ..");
+        helper.getDemoDataLoader().erase();
+
         LOG.info("Loading papers from domain: " + domain + " ..");
+        List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
+        LOG.info("Documents in domain: " + documents.size());
 
-//        List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
-//        LOG.info("Documents in domain: " + documents.size());
-//
-//        List<Paper> papers = documents.stream().map(docUri -> helper.getUdm().read(Resource.Type.DOCUMENT).byUri(docUri)).filter(res -> res.isPresent()).map(res -> res.get().asDocument()).map(document -> {
-//            Paper paper = new Paper();
-//            paper.setUri(document.getUri());
-//            paper.setPubDate(document.getPublishedOn());
-//            paper.setTitle(document.getTitle());
-//            paper.setDescription(document.getContent());
-//            return paper;
-//        }).collect(Collectors.toList());
-//        LOG.info("Papers in domain: " + papers.size());
-//
-//        helper.getDemoDataLoader().loadDomain(papers);
+        List<Paper> papers = documents.stream().map(docUri -> helper.getUdm().read(Resource.Type.DOCUMENT).byUri(docUri)).filter(res -> res.isPresent()).map(res -> res.get().asDocument()).map(document -> {
+            Paper paper = new Paper();
+            paper.setUri(document.getUri());
+            paper.setPubDate(document.getPublishedOn());
+            paper.setTitle(document.getTitle());
+            paper.setDescription(document.getContent());
+            return paper;
+        }).collect(Collectors.toList());
+        LOG.info("Papers in domain: " + papers.size());
 
-        helper.getDemoDataLoader().load();
+        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
+
     }
 
 
+    /**
+     * This is needed only the first time to create the patterns model (model.bin file)
+     */
     private void train(){
-        //TODO use directly domain.uri
+        //TODO execute if model.bin does not exists
+        File file = new File(helper.getModelPath());
+        if (file.exists()){
+            LOG.info("Pattern model already created in: " + helper.getModelPath());
+            return;
+        }
+        LOG.info("Creating a new pattern model because file does not exist: " + helper.getModelPath());
+
         LOG.info("Creating relational sentences corpus ..");
         URI relURI = createRelationalSentencesCorpus(helper.getMaxLength());
         LOG.info("Relational sentences corpus created successfully: " + relURI);
@@ -102,25 +110,25 @@ public class LearnerTask implements Runnable{
         LOG.info("Relational pattern model created successfully: " + patUri);
     }
 
-    private void learn(String uri){
+    private void learn(){
         LOG.info("Learning terms and relations from domain: " + domain + " ..");
-        helper.getLearner().learn(uri);
+        helper.getLearner().learn(domain.getUri());
 
         LOG.info("Delete terms in domain: " + domain + " ..");
         deleteTerms(domain);
 
         LOG.info("Retrieving terms from domain..");
-        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(uri).getTerms());
+        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
         if ((terms == null) || (terms.isEmpty())){
-            LOG.warn("No terms found in domain: " + uri);
+            LOG.warn("No terms found in domain: " + domain.getUri());
             return;
         }
         LOG.info("Number of terms found in domain: " + terms.size());
 
         LOG.info("Retrieving relations from domain..");
-        List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(uri).getRelations());
+        List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
         if ((relations == null) || (relations.isEmpty())){
-            LOG.warn("No relations found in domain: " + uri);
+            LOG.warn("No relations found in domain: " + domain.getUri());
             relations = new ArrayList<>();
         }
 
@@ -128,11 +136,11 @@ public class LearnerTask implements Runnable{
         final double relationhoodThreshold = helper.getRelationThreshoold();
         List<org.epnoi.model.Relation> relevantRelations = relations.stream().filter(relation -> relation.calculateRelationhood() > relationhoodThreshold).collect(Collectors.toList());
         LOG.info("Number of relevant relations found in domain: " + relevantRelations.size());
-        List<String> neededTerms = relevantRelations.stream().flatMap(relation -> Arrays.asList(relation.getSource(), relation.getTarget()).stream()).distinct().collect(Collectors.toList());
-
+        List<String> neededTerms = relevantRelations.stream().flatMap(relation -> Arrays.asList(termFromUri(relation.getSource()), termFromUri(relation.getTarget())).stream()).distinct().collect(Collectors.toList());
+        LOG.info("Needed Terms: " + neededTerms);
 
         final double termhoodThreshold = helper.getTermThreshoold();
-        Set<Term> relevantTerms = terms.stream().filter(term -> (term.getAnnotatedTerm().getAnnotation().getTermhood() > termhoodThreshold) || (neededTerms.contains(term.getAnnotatedTerm().getWord()))).filter(term -> term.getAnnotatedTerm().getAnnotation().getLength() < 4).collect(Collectors.toSet());
+        Set<Term> relevantTerms = terms.stream().filter(term -> (term.getAnnotatedTerm().getAnnotation().getTermhood() > termhoodThreshold) || (neededTerms.contains(term.getAnnotatedTerm().getWord().toLowerCase()))).filter(term -> term.getAnnotatedTerm().getAnnotation().getLength() < 4).collect(Collectors.toSet());
         LOG.info("Number of relevant terms found in domain: " + relevantTerms.size());
 
 
@@ -194,10 +202,10 @@ public class LearnerTask implements Runnable{
         LOG.info("Trying to create a new relation: " + relation);
 
         LOG.debug("Source term: " + relation.getSource());
-        List<String> termSource = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getSource());
+        List<String> termSource = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, termFromUri(relation.getSource()));
 
         LOG.debug("Target term: " + relation.getTarget());
-        List<String> termTarget = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, relation.getTarget());
+        List<String> termTarget = helper.getUdm().find(Resource.Type.TERM).by(org.epnoi.model.domain.resources.Term.CONTENT, termFromUri(relation.getTarget()));
 
         if (termSource != null && !termSource.isEmpty() && termTarget != null && !termTarget.isEmpty()){
             //TODO take into account the relation type
@@ -270,5 +278,9 @@ public class LearnerTask implements Runnable{
         }
     }
 
+
+    private String termFromUri(String uri){
+        return StringUtils.replace(StringUtils.substringAfterLast(uri, "/"),"_"," ").toLowerCase();
+    }
 }
 

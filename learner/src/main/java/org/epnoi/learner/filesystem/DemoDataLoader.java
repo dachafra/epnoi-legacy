@@ -32,7 +32,9 @@ public class DemoDataLoader {
 
     public void load() {
         List<Paper> papers = _loadComputerGraphicsCorpus();
-        loadDomain(papers);
+        String domainUri = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI);
+        String domainLabel = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
+        loadDomain(domainUri,domainLabel,papers);
     }
 
 // --------------------------------------------------------------------------------------------
@@ -44,9 +46,7 @@ public class DemoDataLoader {
 
     // --------------------------------------------------------------------------------------------
 
-    public void loadDomain(List<Paper> papers) {
-        String domainUri = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI);
-        String domainLabel = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
+    public void loadDomain(String domainUri, String domainLabel, List<Paper> papers) {
         Domain domain = new Domain();
         domain.setUri(domainUri);
         domain.setExpression("sparqlexpression");

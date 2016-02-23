@@ -149,6 +149,8 @@ public class LearnerTask implements Runnable{
 
         LOG.info("Number of terms discovered: " + terms.size());
 
+        List<String> termsInDomain = helper.getUdm().find(Resource.Type.TERM).in(Resource.Type.DOMAIN, domain.getUri());
+
         final double threshold = helper.getThreshold();
         List<Term> filteredTerms = terms.stream().filter(term -> term.getAnnotatedTerm().getAnnotation().getTermhood() > threshold).filter(term -> term.getAnnotatedTerm().getAnnotation().getLength() < 4).collect(Collectors.toList());
 
@@ -193,7 +195,9 @@ public class LearnerTask implements Runnable{
                         mention.setWeight(Double.valueOf(1.0/term.getAnnotatedTerm().getAnnotation().getLength()));
                         helper.getUdm().save(mention);
                     }
+                }
 
+                if (!termsInDomain.contains(termUri)){
                     // Check if term not related previously to Domain
                     // Relate it to Domain
                     AppearedIn appeared = Relation.newAppearedIn(termUri, domain.getUri());

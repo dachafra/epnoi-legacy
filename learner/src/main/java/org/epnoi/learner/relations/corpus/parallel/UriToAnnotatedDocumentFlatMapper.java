@@ -51,10 +51,9 @@ public class UriToAnnotatedDocumentFlatMapper {
         try {
             uiaService.init("localhost", thriftPort);
 
-            //resource = uiaService.getAnnotatedDocument(uri+"/object/gate", RDFHelper.WIKIPEDIA_PAGE_CLASS);
+            resource = uiaService.getAnnotatedDocument(uri+"/object/gate", RDFHelper.WIKIPEDIA_PAGE_CLASS);
             //resource = uiaService.getAnnotatedDocument(uri+"/object/gate", RDFHelper.RESEARCH_OBJECT_CLASS);
            // System.out.println("resource > "+((DocumentImpl)resource.getContent()).getContent());
-            resource = uiaService.getAnnotatedDocument(uri, RDFHelper.RESEARCH_OBJECT_CLASS);
         } catch (Exception e) {
             e.printStackTrace();
 

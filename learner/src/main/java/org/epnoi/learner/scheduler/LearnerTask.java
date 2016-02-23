@@ -48,7 +48,7 @@ public class LearnerTask implements Runnable{
             loadData(domainUri);
 
             // Train the learner from wikipedia pages
-            train();
+            //train();
 
             // Learn terms and relations from domain
             learn(domainUri);

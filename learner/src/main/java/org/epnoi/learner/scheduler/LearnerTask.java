@@ -55,6 +55,8 @@ public class LearnerTask implements Runnable{
             // Learn terms and relations from domain
             learn(domainUri);
 
+            LOG.info("Learning task completed successfully");
+
         }catch (Exception e){
             LOG.warn("Unexpected error trying to learn terms and relations from domain: " + domain);
         }

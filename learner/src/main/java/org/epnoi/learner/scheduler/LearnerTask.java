@@ -179,7 +179,7 @@ public class LearnerTask implements Runnable{
                         // Check if exists
                         List<String> wordUris = helper.getUdm().find(Resource.Type.WORD).by(Word.CONTENT, word);
                         String wordUri = null;
-                        if (termUris == null || termUris.isEmpty()){
+                        if (wordUris == null || wordUris.isEmpty()){
                             // Create word
                             Word wordDomain = Resource.newWord();
                             wordDomain.setContent(word);

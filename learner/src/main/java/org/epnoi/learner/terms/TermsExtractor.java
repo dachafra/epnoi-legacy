@@ -104,8 +104,15 @@ public class TermsExtractor {
 	// -----------------------------------------------------------------------------------
 
 	private void _indexResource(String domain, String URI) {
-		Document annotatedDocument = (Document) retrieveAnnotatedDocument(URI)
-				.getContent();
+
+		Content<Object> annotatedResource = retrieveAnnotatedDocument(URI);
+
+		if (annotatedResource == null){
+			logger.severe("Annotated Resource is NULL for URI: " + URI);
+			return;
+		}
+
+		Document annotatedDocument = (Document) annotatedResource.getContent();
 		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
 				annotatedDocument);
 

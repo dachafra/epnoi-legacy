@@ -32,7 +32,7 @@ public class DemoDataLoader {
 
     public void load() {
         List<Paper> papers = _loadComputerGraphicsCorpus();
-        _createTheSimpleDomain(papers);
+        loadDomain(papers);
     }
 
 // --------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ public class DemoDataLoader {
 
     // --------------------------------------------------------------------------------------------
 
-    private void _createTheSimpleDomain(List<Paper> papers) {
+    public void loadDomain(List<Paper> papers) {
         String domainUri = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_URI);
         String domainLabel = (String)parameters.getParameterValue(FilesystemHarvesterParameters.CORPUS_LABEL);
         Domain domain = new Domain();

@@ -3,6 +3,7 @@ package org.epnoi.learner.scheduler;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.relations.corpus.RelationalSentencesCorpusCreationParameters;
 import org.epnoi.learner.relations.patterns.RelationalPatternsModelCreationParameters;
+import org.epnoi.model.Paper;
 import org.epnoi.model.Term;
 import org.epnoi.model.commons.Parameters;
 import org.epnoi.model.domain.relations.AppearedIn;
@@ -70,6 +71,22 @@ public class LearnerTask implements Runnable{
 
         //TODO use directly domain.uri
         LOG.info("Loading papers from domain: " + domain + " ..");
+
+//        List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
+//        LOG.info("Documents in domain: " + documents.size());
+//
+//        List<Paper> papers = documents.stream().map(docUri -> helper.getUdm().read(Resource.Type.DOCUMENT).byUri(docUri)).filter(res -> res.isPresent()).map(res -> res.get().asDocument()).map(document -> {
+//            Paper paper = new Paper();
+//            paper.setUri(document.getUri());
+//            paper.setPubDate(document.getPublishedOn());
+//            paper.setTitle(document.getTitle());
+//            paper.setDescription(document.getContent());
+//            return paper;
+//        }).collect(Collectors.toList());
+//        LOG.info("Papers in domain: " + papers.size());
+//
+//        helper.getDemoDataLoader().loadDomain(papers);
+
         helper.getDemoDataLoader().load();
     }
 
@@ -108,7 +125,7 @@ public class LearnerTask implements Runnable{
         }
 
 
-        final double relationhoodThreshold = helper.getTermThreshoold();
+        final double relationhoodThreshold = helper.getRelationThreshoold();
         List<org.epnoi.model.Relation> relevantRelations = relations.stream().filter(relation -> relation.calculateRelationhood() > relationhoodThreshold).collect(Collectors.toList());
         LOG.info("Number of relevant relations found in domain: " + relevantRelations.size());
         List<String> neededTerms = relevantRelations.stream().flatMap(relation -> Arrays.asList(relation.getSource(), relation.getTarget()).stream()).distinct().collect(Collectors.toList());

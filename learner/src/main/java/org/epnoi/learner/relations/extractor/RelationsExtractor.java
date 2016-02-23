@@ -102,6 +102,12 @@ public class RelationsExtractor {
 
     private void _findRelationsInResource(String domainResourceURI) {
         Content<Object> annotatedResource = retrieveAnnotatedDocument(domainResourceURI);
+
+        if (annotatedResource == null){
+            logger.severe("Annotated Resource for relation is NULL for URI: " + domainResourceURI);
+            return;
+        }
+
         Document annotatedResourceDocument = (Document) annotatedResource
                 .getContent();
 

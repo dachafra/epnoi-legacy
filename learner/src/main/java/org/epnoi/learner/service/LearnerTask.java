@@ -1,4 +1,4 @@
-package org.epnoi.learner.scheduler;
+package org.epnoi.learner.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.epnoi.learner.helper.LearnerHelper;
@@ -15,7 +15,6 @@ import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.domain.resources.Word;
-import org.epnoi.model.rdf.RDFHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,7 +81,7 @@ public class LearnerTask implements Runnable{
         LOG.info("Removing previously analyzed  data ..");
         helper.getDemoDataLoader().erase();
 
-        LOG.info("Loading papers from domain: " + domain + " ..");
+        LOG.info("Loading papers from domain: " + domain + "src/main");
         List<String> documents = helper.getUdm().find(Resource.Type.DOCUMENT).in(Resource.Type.DOMAIN, domain.getUri());
         LOG.info("Documents in domain: " + documents.size());
 
@@ -126,10 +125,10 @@ public class LearnerTask implements Runnable{
     }
 
     private void learn(){
-        LOG.info("Learning terms and relations from domain: " + domain + " ..");
+        LOG.info("Learning terms and relations from domain: " + domain + "src/main");
         helper.getLearner().learn(domain.getUri());
 
-        LOG.info("Delete terms in domain: " + domain + " ..");
+        LOG.info("Delete terms in domain: " + domain + "src/main");
         deleteTerms(domain);
 
         LOG.info("Retrieving terms from domain..");

@@ -175,7 +175,6 @@ public class AnnotationHandlerImpl implements AnnotationHandler {
 		// System.out.println("----> QUERY EXPRESSION " + queryExpression);
 		List<String> queryResults = informationStore.query(queryExpression);
 
-		System.out.println(" AHORA TENDRIAMOS QUE BORRAR > " + queryResults);
 		for (String annotationURI : queryResults) {
 			core.getInformationHandler().remove(annotationURI,
 					AnnotationRDFHelper.ANNOTATION_CLASS);

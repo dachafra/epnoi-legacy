@@ -30,7 +30,7 @@ public class LearnerTask implements Runnable{
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerTask.class);
 
-    protected final Domain domain;
+    protected Domain domain;
     protected final LearnerHelper helper;
 
     public LearnerTask(Domain domain, LearnerHelper helper){
@@ -43,6 +43,8 @@ public class LearnerTask implements Runnable{
     public void run() {
 
         try{
+
+            domain = helper.getUdm().read(Resource.Type.DOMAIN).byUri(domain.getUri()).get().asDomain();
 
             // Load papers from domain
             loadData();

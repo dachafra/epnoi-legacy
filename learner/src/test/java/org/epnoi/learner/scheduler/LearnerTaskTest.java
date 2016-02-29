@@ -32,7 +32,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         "learner.task.terms.extract = true",
         "learner.task.terms.store = false",
         "learner.task.relations.parallel = true",
-        "learner.task.delay = 1000"})
+        "learner.task.delay = 1000",
+        "epnoi.cassandra.contactpoints = drinventor.dia.fi.upm.es",
+        "epnoi.cassandra.port = 5011",
+        "epnoi.cassandra.keyspace = research",
+        "epnoi.elasticsearch.contactpoints = drinventor.dia.fi.upm.es",
+        "epnoi.elasticsearch.port = 5021",
+        "epnoi.neo4j.contactpoints = drinventor.dia.fi.upm.es",
+        "epnoi.neo4j.port = 5030",
+        "epnoi.eventbus.host = drinventor.dia.fi.upm.es"
+})
 public class LearnerTaskTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerTaskTest.class);
@@ -75,6 +84,7 @@ public class LearnerTaskTest {
     public void fromDirectReference() throws InterruptedException {
 
         Domain domain = Resource.newDomain();
+        domain.setUri("http://drinventor.eu/domains/7df34748-7fad-486e-a799-3bcd86a03499");
         domain.setName("siggraph");
         domain.setDescription("from-test-junit");
         udm.save(domain);

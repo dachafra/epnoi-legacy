@@ -82,7 +82,7 @@ public class LearnerTask implements Runnable{
             paper.setPubDate(document.getPublishedOn());
             paper.setTitle(document.getTitle());
             paper.setDescription(document.getContent());
-            LOG.info("Adding paper: " + paper);
+            LOG.info("Adding paper: " + paper.getUri() + "/" + paper.getTitle());
             helper.getFilesystemHarvester().addPaper(paper);
             return paper;
         }).collect(Collectors.toList());

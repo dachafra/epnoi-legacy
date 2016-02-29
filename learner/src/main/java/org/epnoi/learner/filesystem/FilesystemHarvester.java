@@ -19,7 +19,6 @@ import org.xml.sax.ContentHandler;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -165,20 +164,7 @@ public class FilesystemHarvester {
                 File file = new File(fileToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
-                if (core.getInformationHandler().contains(paper.getUri(),
-                        RDFHelper.PAPER_CLASS)) {
-                    if (overwrite) {
-                        _removePaper(paper);
-
-                        _addPaper(paper);
-                    } else {
-                        logger.info("Skipping " + fileToHarvest
-                                + " since it was already in the UIA");
-                    }
-
-                } else {
-                    _addPaper(paper);
-                }
+                addPaper(paper);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,7 +172,18 @@ public class FilesystemHarvester {
         return harvestedPapers;
     }
 
-    private void _addPaper(Paper paper) {
+    public void addPaper(Paper paper) {
+
+        if (core.getInformationHandler().contains(paper.getUri(), RDFHelper.PAPER_CLASS)) {
+            if (overwrite) {
+                removePaper(paper);
+            } else {
+                logger.info("Skipping " + paper + " since it was already in the UIA");
+                return;
+            }
+
+        }
+
         // First the paper is added to the UIA
         core.getInformationHandler().put(paper, Context.getEmptyContext());
 
@@ -233,7 +230,7 @@ public class FilesystemHarvester {
 
     // ----------------------------------------------------------------------------------------
 
-    private void _removePaper(Paper paper) {
+    public void removePaper(Paper paper) {
         logger.info("The paper was already in the UIA, lets delete it (and its associated annotation)");
         core.getAnnotationHandler().removeLabel(paper.getUri(), this.corpusURI);
         core.getAnnotationHandler().removeLabel(paper.getUri(), this.corpusLabel);

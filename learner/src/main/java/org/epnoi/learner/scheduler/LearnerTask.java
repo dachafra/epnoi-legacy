@@ -14,6 +14,7 @@ import org.epnoi.model.domain.relations.Relation;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.domain.resources.Word;
+import org.epnoi.model.rdf.RDFHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,8 +82,16 @@ public class LearnerTask implements Runnable{
             paper.setPubDate(document.getPublishedOn());
             paper.setTitle(document.getTitle());
             paper.setDescription(document.getContent());
+            helper.getFilesystemHarvester().addPaper(paper);
             return paper;
         }).collect(Collectors.toList());
+
+
+
+
+
+
+
         LOG.info("Papers in domain: " + papers.size());
 
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);

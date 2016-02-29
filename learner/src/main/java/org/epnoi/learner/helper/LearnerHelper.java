@@ -2,8 +2,10 @@ package org.epnoi.learner.helper;
 
 import lombok.Data;
 import org.epnoi.learner.filesystem.DemoDataLoader;
+import org.epnoi.learner.filesystem.FilesystemHarvester;
 import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.modules.Trainer;
+import org.epnoi.model.modules.Core;
 import org.epnoi.storage.UDM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,9 @@ public class LearnerHelper {
 
     @Autowired
     Trainer trainer;
+
+    @Autowired
+    FilesystemHarvester filesystemHarvester;
 
     @Value("${learner.corpus.sentences.maxlength}")
     Integer maxLength;

@@ -139,6 +139,9 @@ public class PaperRDFDAO extends RDFDAO {
 				Locale.ENGLISH));
 		knownPatterns.add(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z",
 				Locale.ENGLISH));
+		knownPatterns.add(new SimpleDateFormat("yyyy",
+				Locale.ENGLISH));
+
 
 		for (SimpleDateFormat pattern : knownPatterns) {
 			try {
@@ -152,7 +155,7 @@ public class PaperRDFDAO extends RDFDAO {
 			}
 		}
 		System.err.println("No known Date format found: " + dateExpression);
-		return null;
+		return "";
 
 	}
 

@@ -87,12 +87,6 @@ public class LearnerTask implements Runnable{
             return paper;
         }).collect(Collectors.toList());
 
-
-
-
-
-
-
         LOG.info("Papers in domain: " + papers.size());
 
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
@@ -248,6 +242,7 @@ public class LearnerTask implements Runnable{
                 // Create the new term
                 org.epnoi.model.domain.resources.Term domainTerm = Resource.newTerm();
                 domainTerm.setContent(term.getAnnotatedTerm().getWord());
+                domainTerm.setUri(helper.getUriGenerator().basedOnContent(Resource.Type.TERM,domainTerm.getContent()));
                 helper.getUdm().save(domainTerm);
                 termUri = domainTerm.getUri();
 
@@ -261,6 +256,7 @@ public class LearnerTask implements Runnable{
                         // Create word
                         Word wordDomain = Resource.newWord();
                         wordDomain.setContent(word);
+                        wordDomain.setUri(helper.getUriGenerator().basedOnContent(Resource.Type.WORD,word));
                         helper.getUdm().save(wordDomain);
                         wordUri = wordDomain.getUri();
                     }else{

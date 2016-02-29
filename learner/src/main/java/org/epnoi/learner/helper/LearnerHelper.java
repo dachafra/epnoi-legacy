@@ -7,6 +7,7 @@ import org.epnoi.learner.modules.Learner;
 import org.epnoi.learner.modules.Trainer;
 import org.epnoi.model.modules.Core;
 import org.epnoi.storage.UDM;
+import org.epnoi.storage.generator.URIGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,9 @@ public class LearnerHelper {
 
     @Autowired
     DemoDataLoader demoDataLoader;
+
+    @Autowired
+    URIGenerator uriGenerator;
 
     @Autowired
     Learner learner;

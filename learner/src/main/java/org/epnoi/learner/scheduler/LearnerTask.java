@@ -11,6 +11,7 @@ import org.epnoi.model.domain.relations.AppearedIn;
 import org.epnoi.model.domain.relations.HypernymOf;
 import org.epnoi.model.domain.relations.MentionsFromTerm;
 import org.epnoi.model.domain.relations.Relation;
+import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.domain.resources.Word;
@@ -30,12 +31,13 @@ import java.util.stream.Collectors;
 public class LearnerTask implements Runnable{
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerTask.class);
+    private final Document document;
 
     protected Domain domain;
     protected final LearnerHelper helper;
 
-    public LearnerTask(Domain domain, LearnerHelper helper){
-        this.domain = domain;
+    public LearnerTask(Document document, LearnerHelper helper){
+        this.document = document;
         this.helper = helper;
     }
 
@@ -45,7 +47,15 @@ public class LearnerTask implements Runnable{
 
         try{
 
-            domain = helper.getUdm().read(Resource.Type.DOMAIN).byUri(domain.getUri()).get().asDomain();
+            List<String> domainUri = helper.getUdm().find(Resource.Type.DOMAIN).in(Resource.Type.DOCUMENT, document.getUri());
+
+            if ((domainUri == null) || (domainUri.isEmpty())){
+                LOG.warn("Unknown domain from document: " + document);
+                return;
+            }
+
+            // Read Domain
+            domain = helper.getUdm().read(Resource.Type.DOMAIN).byUri(domainUri.get(0)).get().asDomain();
 
             // Load papers from domain
             loadData();

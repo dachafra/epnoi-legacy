@@ -2,6 +2,7 @@ package org.epnoi.learner.service;
 
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.scheduler.LearnerPoolExecutor;
+import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,13 +35,13 @@ public class LearnerService {
     }
 
 
-    public void buildModels(Domain domain){
-        LOG.info("Plan a new task to build a lexical model for domain: " + domain);
-        LearnerPoolExecutor executor = executors.get(domain.getUri());
+    public void buildModels(Document document){
+        LOG.info("Plan a new task to build a lexical model for document: " + document);
+        LearnerPoolExecutor executor = executors.get(document.getUri());
         if (executor == null){
-            executor = new LearnerPoolExecutor(domain,helper,delay);
+            executor = new LearnerPoolExecutor(document,helper,delay);
         }
-        executors.put(domain.getUri(),executor.buildModel());
+        executors.put(document.getUri(),executor.buildModel());
     }
 
 }

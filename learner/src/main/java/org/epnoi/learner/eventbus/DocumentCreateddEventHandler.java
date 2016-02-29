@@ -2,6 +2,7 @@ package org.epnoi.learner.eventbus;
 
 import org.epnoi.learner.service.LearnerService;
 import org.epnoi.model.Event;
+import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.modules.RoutingKey;
@@ -14,24 +15,24 @@ import org.springframework.stereotype.Component;
  * Created by cbadenes on 21/02/16.
  */
 @Component
-public class DomainUpdatedEventHandler extends AbstractEventHandler {
+public class DocumentCreateddEventHandler extends AbstractEventHandler {
 
-        private static final Logger LOG = LoggerFactory.getLogger(DomainUpdatedEventHandler.class);
+        private static final Logger LOG = LoggerFactory.getLogger(DocumentCreateddEventHandler.class);
 
         @Autowired
         LearnerService service;
 
-        public DomainUpdatedEventHandler() {
-            super(RoutingKey.of(Resource.Type.DOMAIN, Resource.State.UPDATED));
+        public DocumentCreateddEventHandler() {
+            super(RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.CREATED));
         }
 
         @Override
         public void handle(Event event) {
             LOG.info("Domain updated event received: " + event);
             try{
-                Domain domain = event.to(Domain.class);
+                Document document = event.to(Document.class);
 
-                service.buildModels(domain);
+                service.buildModels(document);
 
             } catch (Exception e){
                 // TODO Notify to event-bus when source has not been added

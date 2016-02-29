@@ -5,6 +5,7 @@ import org.epnoi.learner.LearnerConfig;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.service.LearnerService;
 import org.epnoi.model.Event;
+import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.modules.EventBus;
@@ -61,14 +62,12 @@ public class LearnerTaskTest {
     @Test
     public void fromEvent() throws InterruptedException {
 
-        Domain domain = Resource.newDomain();
-        domain.setName("siggraph");
-        domain.setDescription("from-test-junit");
-        udm.save(domain);
+        Document document = Resource.newDocument();
+        document.setUri("http://drinventor.eu/documents/c369c917fecf3b4828688bdb6677dd6e");
 
 
         LOG.info("sending post event...");
-        eventBus.post(Event.from(domain), RoutingKey.of(Resource.Type.DOMAIN,Resource.State.UPDATED));
+        eventBus.post(Event.from(document), RoutingKey.of(Resource.Type.DOCUMENT,Resource.State.CREATED));
 
 //        service.buildModels(domain);
 
@@ -83,14 +82,10 @@ public class LearnerTaskTest {
     @Test
     public void fromDirectReference() throws InterruptedException {
 
-        Domain domain = Resource.newDomain();
-        domain.setUri("http://drinventor.eu/domains/7df34748-7fad-486e-a799-3bcd86a03499");
-        domain.setName("siggraph");
-        domain.setDescription("from-test-junit");
-        udm.save(domain);
+        Document document = Resource.newDocument();
+        document.setUri("http://drinventor.eu/documents/c369c917fecf3b4828688bdb6677dd6e");
 
-
-        LearnerTask task = new LearnerTask(domain,helper);
+        LearnerTask task = new LearnerTask(document,helper);
         task.run();
 
     }

@@ -3,7 +3,7 @@
 	<path>algo</path>
 	
 	<nlp>
-		<gatePath>/opt/epnoi/epnoideployment/gate</gatePath>
+		<gatePath>/opt/drinventor/learner/gate</gatePath>
 		<numberOfProcessors>10</numberOfProcessors>
 	</nlp>
 
@@ -15,13 +15,13 @@
 		<lazy>false</lazy>
 		<wordnet>
 			<considered>true</considered>
-			<dictionaryPath>/opt/epnoi/epnoideployment/wordnet/dictWN3.1</dictionaryPath>
+			<dictionaryPath>/opt/drinventor/learner/wordnet/dictWN3.1</dictionaryPath>
 		</wordnet>
 		<wikidata>
 			<considered>true</considered>
 			<mode>load</mode><!-- load | create-->
 			<inMemory>false</inMemory>
-			<dumpPath>/opt/epnoi/epnoideployment/wikidata</dumpPath>
+			<dumpPath>/opt/drinventor/learner/wikidata</dumpPath>
 			<uri>http://www.epnoi.org/wikidataView</uri>
 		</wikidata>
 	</knowledgeBase>
@@ -50,7 +50,7 @@
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>
-		<path>/opt/epnoi/epnoideployment/mapDB/epnoi/epnoi</path>
+		<path>/opt/drinventor/learner/mapDB/epnoi/epnoi</path>
 		<host>localhost</host>
 		<port>0</port>
 	</mapInformationStore>

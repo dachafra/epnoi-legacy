@@ -2,6 +2,7 @@ package org.epnoi.learner.eventbus;
 
 import org.epnoi.learner.service.LearnerService;
 import org.epnoi.model.Event;
+import org.epnoi.model.domain.relations.Relation;
 import org.epnoi.model.domain.resources.Document;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
@@ -23,16 +24,16 @@ public class DocumentCreateddEventHandler extends AbstractEventHandler {
         LearnerService service;
 
         public DocumentCreateddEventHandler() {
-            super(RoutingKey.of(Resource.Type.DOCUMENT, Resource.State.CREATED));
+            super(RoutingKey.of(Relation.Type.CONTAINS, Relation.State.CREATED));
         }
 
         @Override
         public void handle(Event event) {
             LOG.info("Domain updated event received: " + event);
             try{
-                Document document = event.to(Document.class);
+                Relation relation = event.to(Relation.class);
 
-                service.buildModels(document);
+                service.buildModels(relation);
 
             } catch (Exception e){
                 // TODO Notify to event-bus when source has not been added

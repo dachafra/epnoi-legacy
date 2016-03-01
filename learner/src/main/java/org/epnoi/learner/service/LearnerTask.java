@@ -30,13 +30,13 @@ import java.util.stream.Collectors;
 public class LearnerTask implements Runnable{
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerTask.class);
-    private final Document document;
 
+    private final String domainUri;
     protected Domain domain;
     protected final LearnerHelper helper;
 
-    public LearnerTask(Document document, LearnerHelper helper){
-        this.document = document;
+    public LearnerTask(String domainUri, LearnerHelper helper){
+        this.domainUri = domainUri;
         this.helper = helper;
     }
 
@@ -46,15 +46,15 @@ public class LearnerTask implements Runnable{
 
         try{
 
-            List<String> domainUri = helper.getUdm().find(Resource.Type.DOMAIN).in(Resource.Type.DOCUMENT, document.getUri());
+            Optional<Resource> result = helper.getUdm().read(Resource.Type.DOMAIN).byUri(domainUri);
 
-            if ((domainUri == null) || (domainUri.isEmpty())){
-                LOG.warn("Unknown domain from document: " + document);
+            if (!result.isPresent()){
+                LOG.warn("Unknown domain from uri: " + domainUri);
                 return;
             }
 
             // Read Domain
-            domain = helper.getUdm().read(Resource.Type.DOMAIN).byUri(domainUri.get(0)).get().asDomain();
+            domain = result.get().asDomain();
 
             // Load papers from domain
             loadData();

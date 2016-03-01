@@ -6,7 +6,10 @@ import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.learner.service.LearnerService;
 import org.epnoi.learner.service.LearnerTask;
 import org.epnoi.model.Event;
+import org.epnoi.model.domain.relations.Contains;
+import org.epnoi.model.domain.relations.Relation;
 import org.epnoi.model.domain.resources.Document;
+import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.epnoi.model.modules.EventBus;
 import org.epnoi.model.modules.RoutingKey;
@@ -62,12 +65,11 @@ public class LearnerTaskTest {
     @Test
     public void fromEvent() throws InterruptedException {
 
-        Document document = Resource.newDocument();
-        document.setUri("http://drinventor.eu/documents/c369c917fecf3b4828688bdb6677dd6e");
+        Contains contains = Relation.newContains("http://drinventor.eu/domains/7df34748-7fad-486e-a799-3bcd86a03499","http://drinventor.eu/documents/c369c917fecf3b4828688bdb6677dd6e");
 
 
         LOG.info("sending post event...");
-        eventBus.post(Event.from(document), RoutingKey.of(Resource.Type.DOCUMENT,Resource.State.CREATED));
+        eventBus.post(Event.from(contains), RoutingKey.of(Relation.Type.CONTAINS,Relation.State.CREATED));
 
 //        service.buildModels(domain);
 
@@ -82,10 +84,9 @@ public class LearnerTaskTest {
     @Test
     public void fromDirectReference() throws InterruptedException {
 
-        Document document = Resource.newDocument();
-        document.setUri("http://drinventor.eu/documents/c369c917fecf3b4828688bdb6677dd6e");
+        String domainUri = "http://drinventor.eu/domains/7df34748-7fad-486e-a799-3bcd86a03499";
 
-        LearnerTask task = new LearnerTask(document,helper);
+        LearnerTask task = new LearnerTask(domainUri,helper);
         task.run();
 
     }

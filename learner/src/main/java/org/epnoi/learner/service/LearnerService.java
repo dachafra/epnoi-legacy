@@ -1,6 +1,7 @@
 package org.epnoi.learner.service;
 
 import org.epnoi.learner.helper.LearnerHelper;
+import org.epnoi.model.domain.relations.Relation;
 import org.epnoi.model.domain.resources.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -21,6 +23,8 @@ public class LearnerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerService.class);
 
+    private ConcurrentHashMap<String,ScheduledFuture<?>> tasks;
+
     @Value("${learner.task.delay}")
     protected Long delay;
 
@@ -28,22 +32,27 @@ public class LearnerService {
     LearnerHelper helper;
 
     private ThreadPoolTaskScheduler threadpool;
-    private ScheduledFuture<?> task;
+
 
     @PostConstruct
     public void setup(){
-//        this.executors = new ConcurrentHashMap<>();
+        this.tasks = new ConcurrentHashMap<>();
+
         this.threadpool = new ThreadPoolTaskScheduler();
-        this.threadpool.setPoolSize(1);
+        this.threadpool.setPoolSize(10);
         this.threadpool.initialize();
     }
 
 
-    public void buildModels(Document document){
-        LOG.info("Plan a new task to build a lexical model for document: " + document);
-        //TODO Implement Multi-Domain
+    public void buildModels(Relation relation){
+        String domainUri = relation.getStartUri();
+
+        LOG.info("Planning a new task to build a lexical model for domain: " + domainUri);
+
+        ScheduledFuture<?> task = tasks.get(domainUri);
         if (task != null) task.cancel(false);
-        this.task = this.threadpool.schedule(new LearnerTask(document,helper), new Date(System.currentTimeMillis() + delay));
+        task = this.threadpool.schedule(new LearnerTask(domainUri,helper), new Date(System.currentTimeMillis() + delay));
+        tasks.put(domainUri,task);
     }
 
 }

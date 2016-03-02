@@ -13,6 +13,7 @@ import org.epnoi.model.Resource;
 import org.epnoi.model.commons.StringUtils;
 import org.epnoi.model.rdf.DublinCoreRDFHelper;
 import org.epnoi.model.rdf.RDFHelper;
+import org.epnoi.uia.informationstore.dao.RepeatableActionExecutor;
 import virtuoso.jena.driver.VirtuosoQueryExecution;
 import virtuoso.jena.driver.VirtuosoQueryExecutionFactory;
 import virtuoso.jena.driver.VirtuosoUpdateFactory;
@@ -69,7 +70,16 @@ public class PaperRDFDAO extends RDFDAO {
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, graph);
 
-		Model model = vqe.execDescribe();
+		Optional<Object> result = RepeatableActionExecutor.performRetries(0, "remove Paper RDF", () -> {
+			Model model = vqe.execDescribe();
+			return model;
+		});
+
+		if (!result.isPresent()){
+			throw new RuntimeException("Error removing: " + URI);
+		}
+
+		Model model = (Model) result.get();
 		Graph g = model.getGraph();
 		// System.out.println("\nDESCRIBE results:");
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i
@@ -89,7 +99,16 @@ public class PaperRDFDAO extends RDFDAO {
 		VirtuosoQueryExecution vqe = VirtuosoQueryExecutionFactory.create(
 				sparql, graph);
 
-		Model model = vqe.execDescribe();
+		Optional<Object> result = RepeatableActionExecutor.performRetries(0, "remove Paper RDF", () -> {
+			Model model = vqe.execDescribe();
+			return model;
+		});
+
+		if (!result.isPresent()){
+			throw new RuntimeException("Error removing: " + URI);
+		}
+
+		Model model = (Model) result.get();
 		Graph g = model.getGraph();
 		// System.out.println("\nDESCRIBE results:");
 		for (Iterator<Triple> i = g.find(Node.ANY, Node.ANY, Node.ANY); i

@@ -77,6 +77,7 @@ public class RDFDAOQueryResolver {
 				resultURIs.add(uriNode.toString());
 			}
 		}
+		virtuosoQueryEngine.close();
 
 		return resultURIs;
 	}

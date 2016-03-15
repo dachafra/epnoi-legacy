@@ -18,7 +18,7 @@ import java.util.concurrent.ScheduledFuture;
 /**
  * Created by cbadenes on 21/02/16.
  */
-@Component
+//@Component
 public class LearnerService {
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerService.class);

@@ -33,7 +33,11 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
-@TestPropertySource(properties = {"learner.task.terms.extract = false", "learner.task.terms.store = false", "learner.task.relations.parallel = true"})
+@TestPropertySource(properties = {
+        "learner.task.terms.extract = false",
+        "learner.task.terms.store = false",
+        "learner.task.relations.parallel = true"
+})
 public class SimpleTest {
 
     private static Integer MAX_HEADER = 20;

@@ -19,13 +19,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class LearnerHelper {
 
-    @Autowired
+    //@Autowired
     UDM udm;
 
     @Autowired
     DemoDataLoader demoDataLoader;
 
-    @Autowired
+    //@Autowired
     URIGenerator uriGenerator;
 
     @Autowired

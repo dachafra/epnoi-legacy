@@ -28,7 +28,8 @@ import java.util.logging.Logger;
 //        @PropertySource("classpath:eventbus.properties"),
 //        @PropertySource("classpath:storage.properties")
 //})
-@ComponentScan({"org.epnoi.learner","org.epnoi.storage","org.epnoi.eventbus"})
+//@ComponentScan({"org.epnoi.learner","org.epnoi.storage","org.epnoi.eventbus"})
+@ComponentScan({"org.epnoi.learner"})
 @PropertySource({"classpath:epnoi.properties","classpath:learner.properties","classpath:eventbus.properties","classpath:storage.properties"})
 public class LearnerConfig {
     private static final Logger logger = Logger.getLogger(LearnerConfig.class

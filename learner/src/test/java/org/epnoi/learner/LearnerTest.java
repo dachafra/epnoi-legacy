@@ -104,7 +104,7 @@ public class LearnerTest {
     }
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dachafra/TFM-OL/server/webapps/documents");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
         for(int i=0; i<papers.size();i++)
             helper.getFilesystemHarvester().addPaper(papers.get(i));
         return papers;

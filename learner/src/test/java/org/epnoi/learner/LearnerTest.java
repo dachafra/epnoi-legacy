@@ -2,10 +2,7 @@ package org.epnoi.learner;
 
 import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.learner.helper.LearnerHelper;
-import org.epnoi.learner.modules.Learner;
-import org.epnoi.learner.relations.extractor.parallel.ParallelRelationsExtractor;
 import org.epnoi.model.Paper;
-import org.epnoi.model.Relation;
 import org.epnoi.model.Term;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
@@ -15,23 +12,24 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by rgonzalez on 3/12/15.
+ * Modified by dachafra on 4/4/16.
  */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
-@TestPropertySource(properties = {"learner.task.terms.extract = false", "learner.task.terms.store = false", "learner.task.relations.parallel = true"})
+@TestPropertySource(properties = {"learner.task.terms.extract = true", "learner.task.terms.store = true", "learner.task.relations.parallel = true"})
 
 
 public class LearnerTest {
@@ -46,19 +44,28 @@ public class LearnerTest {
 
 
     @Test
-    public void learn() {
+    public void LearnerTest() {
+        FileWriter file = null;
+        PrintWriter pw = null;
         System.out.println("Starting an ontology learning test");
         System.out.println("Using the following parameters "+learnerProperties);
 
+        try
+        {
+            file = new FileWriter("/home/dachafra/TFM-OL/scriptsandmore/out.txt");
+            pw = new PrintWriter(file);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
 
 
-
         LOG.info("Loading data");
-        List<Paper> papers = null; //TODO Initialize
-        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
+
+        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -73,6 +80,11 @@ public class LearnerTest {
         }
         LOG.info("Number of terms found in domain: " + terms.size());
 
+        for(int i=0; i<terms.size();i++){
+           pw.println(terms.get(i).getAnnotatedTerm().getWord()+": "+terms.get(i).getAnnotatedTerm().getAnnotation().getTermhood());
+        }
+
+
         LOG.info("Retrieving relations from domain..");
         List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
         if ((relations == null) || (relations.isEmpty())){
@@ -82,9 +94,20 @@ public class LearnerTest {
 
         LOG.info("Number of relations found in domain: " + relations.size());
 
-
+        try {
+            file.close();
+        } catch (Exception ex) {
+            System.out.println("Error: "+ex.getMessage());
+        }
         assert (true);
 
+    }
+
+    private List<Paper> loadPapers(){
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dachafra/TFM-OL/server/webapps/documents");
+        for(int i=0; i<papers.size();i++)
+            helper.getFilesystemHarvester().addPaper(papers.get(i));
+        return papers;
     }
 
 }

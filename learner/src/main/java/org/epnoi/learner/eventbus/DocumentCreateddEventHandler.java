@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by cbadenes on 21/02/16.
  */
-@Component
+//@Component
 public class DocumentCreateddEventHandler extends AbstractEventHandler {
 
         private static final Logger LOG = LoggerFactory.getLogger(DocumentCreateddEventHandler.class);

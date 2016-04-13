@@ -25,7 +25,7 @@ import java.util.*;
  * Created by rgonzalez on 3/12/15.
  * Modified by dachafra on 4/4/16.
  */
-@Category(IntegrationTest.class)
+//@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
@@ -42,7 +42,6 @@ public class LearnerTest {
     @Autowired
     LearningParameters learnerProperties;
 
-
     @Test
     public void LearnerTest() {
         FileWriter file = null;
@@ -52,7 +51,7 @@ public class LearnerTest {
 
         try
         {
-            file = new FileWriter("/home/dachafra/TFM-OL/scriptsandmore/out.txt");
+            file = new FileWriter("/home/dchaves/TFM/salidas/out.txt");
             pw = new PrintWriter(file);
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -90,6 +89,9 @@ public class LearnerTest {
         if ((relations == null) || (relations.isEmpty())){
             LOG.warn("No relations found in domain: " + domain.getUri());
             relations = new ArrayList<>();
+        }
+        for(int i=0; i<relations.size();i++){
+            pw.println(relations.get(i).getSource());
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());

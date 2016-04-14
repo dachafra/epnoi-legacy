@@ -56,7 +56,7 @@ public class LearnerTest {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        helper.getDemoDataLoader().erase();
+        //helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -64,7 +64,7 @@ public class LearnerTest {
 
         LOG.info("Loading data");
 
-        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+       // helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");

@@ -64,7 +64,7 @@ public class LearnerTest {
 
         LOG.info("Loading data");
 
-       // helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+       /*helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -95,7 +95,7 @@ public class LearnerTest {
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-
+*/
         try {
             file.close();
         } catch (Exception ex) {

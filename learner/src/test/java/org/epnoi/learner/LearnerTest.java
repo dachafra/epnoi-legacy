@@ -56,7 +56,7 @@ public class LearnerTest {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        helper.getDemoDataLoader().erase();
+        //helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -64,7 +64,7 @@ public class LearnerTest {
 
         LOG.info("Loading data");
 
-       /*helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+       helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers(pw));
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -95,7 +95,7 @@ public class LearnerTest {
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-*/
+
         try {
             file.close();
         } catch (Exception ex) {
@@ -105,10 +105,13 @@ public class LearnerTest {
 
     }
 
-    private List<Paper> loadPapers(){
+
+    private List<Paper> loadPapers(PrintWriter pw){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
-        for(int i=0; i<papers.size();i++)
+        for(int i=0; i<papers.size();i++) {
+            pw.print("CONTENIDOOOOOOO\n\n\n"+papers.get(i).getDescription()+"\n\n\n");
             helper.getFilesystemHarvester().addPaper(papers.get(i));
+        }
         return papers;
     }
 

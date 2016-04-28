@@ -1,13 +1,11 @@
 package org.epnoi.learner;
 
-import es.cbadenes.lab.test.IntegrationTest;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Term;
 import org.epnoi.model.domain.resources.Domain;
 import org.epnoi.model.domain.resources.Resource;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.simple.*;
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -35,12 +35,11 @@ import java.util.*;
 public class LearnerTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(LearnerTest.class);
-
     @Autowired
     LearnerHelper helper;
-
     @Autowired
     LearningParameters learnerProperties;
+    private ArrayList<String> nouns = new ArrayList<>();
 
     @Test
     public void LearnerTest() {
@@ -56,7 +55,7 @@ public class LearnerTest {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        helper.getDemoDataLoader().erase();
+        //helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -64,7 +63,7 @@ public class LearnerTest {
 
         LOG.info("Loading data");
 
-       /*helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+       helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -73,6 +72,7 @@ public class LearnerTest {
 
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
+
         if ((terms == null) || (terms.isEmpty())){
             LOG.warn("No terms found in domain: " + domain.getUri());
             return;
@@ -95,7 +95,7 @@ public class LearnerTest {
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-*/
+
         try {
             file.close();
         } catch (Exception ex) {
@@ -105,11 +105,38 @@ public class LearnerTest {
 
     }
 
+
     private List<Paper> loadPapers(){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
-        for(int i=0; i<papers.size();i++)
-            helper.getFilesystemHarvester().addPaper(papers.get(i));
+        loadTextPapers(papers);
+        for(int i=0; i<papers.size();i++) {
+
+           helper.getFilesystemHarvester().addPaper(papers.get(i));
+        }
         return papers;
+    }
+
+    private void loadTextPapers(List<Paper> papers){
+        String alltext="";
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize, ssplit, pos");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        for(int i=0; i<papers.size();i++){
+            alltext+=papers.get(i).getDescription();
+        }
+        Annotation document = new Annotation(alltext);
+        pipeline.annotate(document);
+        System.out.println("------------------------------\n\nDOCUMENTOS ANOTADOS:");
+        System.out.println(document.toString());
+
+        System.out.println("------------------------------\n\nPALABRAS ANOTADAS");
+        Document doc = new Document(alltext);
+        for(Sentence sentence: doc.sentences()){
+            List<String> words = sentence.posTags();
+            for(String word : words){
+                System.out.println(word);
+            }
+        }
     }
 
 }

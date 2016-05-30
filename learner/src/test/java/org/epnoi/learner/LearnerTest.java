@@ -119,7 +119,7 @@ public class LearnerTest {
     private void loadTextPapers(List<Paper> papers){
         String alltext="";
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos");
+        props.setProperty("an", "tokenize, ssplit, pos");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         for(int i=0; i<papers.size();i++){
             alltext+=papers.get(i).getDescription();

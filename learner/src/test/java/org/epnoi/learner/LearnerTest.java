@@ -25,9 +25,9 @@ import java.util.*;
 
 /**
  * Created by rgonzalez on 3/12/15.
- * Modified by dachafra on 4/4/16
+ * Modified by dachafra on 4/4/16.
  */
-@Category(IntegrationTest.class)
+//@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")

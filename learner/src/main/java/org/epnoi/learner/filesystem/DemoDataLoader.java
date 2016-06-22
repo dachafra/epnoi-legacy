@@ -72,7 +72,6 @@ public class DemoDataLoader {
                 org.epnoi.model.Context.getEmptyContext());
 
 
-
         System.out.println("The retrieved uris of the domain are ");
         List<String> uris = core.getDomainsHandler().gather(domain);
         System.out.println(uris);

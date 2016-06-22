@@ -16,8 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import edu.stanford.nlp.pipeline.*;
-import edu.stanford.nlp.simple.*;
+
 
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -110,35 +109,12 @@ public class LearnerTest {
 
     private List<Paper> loadPapers(){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
-        loadTextPapers(papers);
         for(int i=0; i<papers.size();i++) {
-
            helper.getFilesystemHarvester().addPaper(papers.get(i));
         }
         return papers;
     }
 
-    private void loadTextPapers(List<Paper> papers){
-        String alltext="";
-        Properties props = new Properties();
-        props.setProperty("an", "tokenize, ssplit, pos");
-        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        for(int i=0; i<papers.size();i++){
-            alltext+=papers.get(i).getDescription();
-        }
-        Annotation document = new Annotation(alltext);
-        pipeline.annotate(document);
-        System.out.println("------------------------------\n\nDOCUMENTOS ANOTADOS:");
-        System.out.println(document.toString());
 
-        System.out.println("------------------------------\n\nPALABRAS ANOTADAS");
-        Document doc = new Document(alltext);
-        for(Sentence sentence: doc.sentences()){
-            List<String> words = sentence.posTags();
-            for(String word : words){
-                System.out.println(word);
-            }
-        }
-    }
 
 }

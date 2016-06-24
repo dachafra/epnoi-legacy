@@ -144,7 +144,7 @@ public class LearnerTest {
             List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
             for (CoreMap sentence : sentences) {
                 for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                    if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN") || token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NNS")) {
+                    if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN.")) {
                         String n = token.get(CoreAnnotations.TextAnnotation.class);
                         if (!paper.getNouns().contains(n))
                             paper.getNouns().add(n);

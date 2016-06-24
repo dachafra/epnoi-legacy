@@ -77,7 +77,7 @@ public class LearnerTest {
 
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
-
+        List<Term> orderTerms = new ArrayList<>();
         if ((terms == null) || (terms.isEmpty())){
             LOG.warn("No terms found in domain: " + domain.getUri());
             return;
@@ -89,8 +89,7 @@ public class LearnerTest {
             for(String noun : paper.getNouns()){
                 for(Term term: terms){
                     if(noun.equals(term.getAnnotatedTerm().getWord()) && !aux.contains(noun)){
-                        pw.println(noun+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
-                        aux.add(noun);
+                        orderTerms.add(term);
                         flag=false;
                     }
                 }
@@ -100,6 +99,12 @@ public class LearnerTest {
                 flag=true;
             }
         }
+
+        Collections.sort(orderTerms, new Term());
+        for(Term term : orderTerms){
+            pw.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
+        }
+
         LOG.info("Retrieving relations from domain..");
         List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
         if ((relations == null) || (relations.isEmpty())){

@@ -2,7 +2,9 @@ package org.epnoi.model;
 
 import org.epnoi.model.commons.StringUtils;
 
-public class Term implements Resource {
+import java.util.Comparator;
+
+public class Term implements Resource, Comparator<Term> {
 	private String uri;
 	private AnnotatedWord<TermMetadata> annotatedTerm;
 
@@ -14,6 +16,14 @@ public class Term implements Resource {
 
 	// -----------------------------------------------------------------------------
 
+	public static String buildURI(String term, String domain) {
+		String uri = "http://" + domain + "/"
+				+ StringUtils.replace(term, "[^a-zA-Z0-9]", "_");
+		return uri;
+
+	}
+
+	// -----------------------------------------------------------------------------
 
 	public String getUri() {
 		return uri;
@@ -37,13 +47,14 @@ public class Term implements Resource {
 		this.annotatedTerm = annotatedTerm;
 	}
 
-	// -----------------------------------------------------------------------------
-
-	public static String buildURI(String term, String domain) {
-		String uri = "http://" + domain + "/"
-				+ StringUtils.replace(term, "[^a-zA-Z0-9]", "_");
-		return uri;
-
+	@Override
+	public int compare(Term t1, Term t2){
+		if(t1.getAnnotatedTerm().getAnnotation().getTermhood()<t2.getAnnotatedTerm().getAnnotation().getTermhood())
+			return -1;
+		else if(t1.getAnnotatedTerm().getAnnotation().getTermhood()>t2.getAnnotatedTerm().getAnnotation().getTermhood())
+			return 1;
+		else
+			return 0;
 	}
 
 	// -----------------------------------------------------------------------------

@@ -27,20 +27,15 @@ public class LearnerImpl implements Learner {
 
     private static final Logger logger = LoggerFactory.getLogger(LearnerConfig.class);
     @Autowired
-    private Core core;
-
-    @Autowired
     Trainer trainer;
-
     @Autowired
     LearningParameters learningParameters;
-
     @Autowired
     JavaSparkContext sparkContext;
-
-    private TermsRetriever termsRetriever;
-
+    @Autowired
+    private Core core;
     RelationsRetriever relationsRetriever = new RelationsRetriever(core);
+    private TermsRetriever termsRetriever;
 
     @PostConstruct
     public void init() throws EpnoiInitializationException {
@@ -105,8 +100,8 @@ public class LearnerImpl implements Learner {
 
     @Override
     public TermsTable retrieveTerminology(String domainUri) {
-
-
         return termsRetriever.retrieve(domainUri);
     }
+
+
 }

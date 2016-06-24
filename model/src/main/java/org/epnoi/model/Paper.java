@@ -9,11 +9,13 @@ public class Paper implements Resource {
 	String description;
 	String title;
 	private String pubDate;
+	private List<String> nouns;
 
 	// -------------------------------------------------------------------------------------------------------------
 
 	public Paper() {
-		this.authors = new ArrayList<String>();
+		this.authors = new ArrayList<>();
+		this.nouns = new ArrayList<>();
 	}
 	
 	// -------------------------------------------------------------------------------------------------------------
@@ -78,6 +80,10 @@ public class Paper implements Resource {
 	public void setPubDate(String pubDate) {
 		this.pubDate = pubDate;
 	}
+
+	public List<String> getNouns() { return nouns; 	}
+
+	public void setNouns(List<String> nouns) { this.nouns = nouns; }
 
 	@Override
 	public String toString() {

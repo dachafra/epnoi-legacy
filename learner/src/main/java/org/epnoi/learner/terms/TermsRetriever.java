@@ -32,75 +32,6 @@ public class TermsRetriever {
 
     // -----------------------------------------------------------------------------------
 
-    public void store(Domain domain, TermsTable termsTable) {
-        logger.info("Storing the Terms Table for domain " + domain);
-
-        for (Term term : termsTable.getTerms()) {
-            core.getInformationHandler().put(term, Context.getEmptyContext());
-            core.getAnnotationHandler().label(term.getUri(), domain.getLabel());
-        }
-        System.out
-                .println("=========================================================================================================================");
-    }
-
-    // -----------------------------------------------------------------------------------
-
-    // -----------------------------------------------------------------------------------
-
-    public TermsTable retrieve(Domain domain) {
-        String domainLabel = domain.getLabel();
-
-        TermsTable termsTable = getTermsTable(domainLabel);
-        return termsTable;
-    }
-
-    // -----------------------------------------------------------------------------------
-
-    public TermsTable retrieve(String domainUri) {
-        Domain domain = (Domain) core.getInformationHandler().get(domainUri,
-                RDFHelper.DOMAIN_CLASS);
-
-        if (domain != null) {
-
-            TermsTable termsTable = getTermsTable(domain.getLabel());
-            return termsTable;
-        }
-        return new TermsTable();
-    }
-
-    // -----------------------------------------------------------------------------------
-
-    private TermsTable getTermsTable(String domainLabel) {
-        TermsTable termsTable = new TermsTable();
-
-        // First we retrieve the URIs of the resources associated with the
-        // considered domain
-        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
-                domainLabel, RDFHelper.TERM_CLASS);
-        // The terms are then retrieved and added to the Terms Table
-        for (String termURI : foundURIs) {
-            Term term = (Term) this.core.getInformationHandler().get(termURI,
-                    RDFHelper.TERM_CLASS);
-            termsTable.addTerm(term);
-        }
-        return termsTable;
-    }
-
-    // -----------------------------------------------------------------------------------
-
-    private void remove(Domain domain) {
-        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
-                domain.getLabel(), RDFHelper.TERM_CLASS);
-
-        for (String termURI : foundURIs) {
-            System.out.println("Removing the term " + termURI);
-            this.core.getInformationHandler().remove(termURI,
-                    RDFHelper.TERM_CLASS);
-        }
-    }
-
-    // -----------------------------------------------------------------------------------
-
     public static void main(String[] args) {
         /*
 		TermsExtractor termExtractor = new TermsExtractor();
@@ -141,6 +72,76 @@ public class TermsRetriever {
 		TermsTable termsTable = termExtractor.extract();
 		termExtractor.storeTable(termsTable);
 */
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    // -----------------------------------------------------------------------------------
+
+    public void store(Domain domain, TermsTable termsTable) {
+        logger.info("Storing the Terms Table for domain " + domain);
+
+        for (Term term : termsTable.getTerms()) {
+            core.getInformationHandler().put(term, Context.getEmptyContext());
+            core.getAnnotationHandler().label(term.getUri(), domain.getLabel());
+        }
+        System.out
+                .println("=========================================================================================================================");
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    public TermsTable retrieve(Domain domain) {
+        String domainLabel = domain.getLabel();
+
+        TermsTable termsTable = getTermsTable(domainLabel);
+        return termsTable;
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    public TermsTable retrieve(String domainUri) {
+        Domain domain = (Domain) core.getInformationHandler().get(domainUri,
+                RDFHelper.DOMAIN_CLASS);
+
+        if (domain != null) {
+
+            TermsTable termsTable = getTermsTable(domain.getLabel());
+            return termsTable;
+        }
+        return new TermsTable();
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    private TermsTable getTermsTable(String domainLabel) {
+        TermsTable termsTable = new TermsTable();
+
+        // First we retrieve the URIs of the resources associated with the
+        // considered domain
+        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
+                domainLabel, RDFHelper.TERM_CLASS);
+
+        // The terms are then retrieved and added to the Terms Table
+        for (String termURI : foundURIs) {
+            Term term = (Term) this.core.getInformationHandler().get(termURI,
+                    RDFHelper.TERM_CLASS);
+            termsTable.addTerm(term);
+        }
+        return termsTable;
+    }
+
+    // -----------------------------------------------------------------------------------
+
+    private void remove(Domain domain) {
+        List<String> foundURIs = this.core.getAnnotationHandler().getLabeledAs(
+                domain.getLabel(), RDFHelper.TERM_CLASS);
+
+        for (String termURI : foundURIs) {
+            System.out.println("Removing the term " + termURI);
+            this.core.getInformationHandler().remove(termURI,
+                    RDFHelper.TERM_CLASS);
+        }
     }
 
 }

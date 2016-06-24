@@ -1,5 +1,8 @@
 package org.epnoi.learner;
 
+import edu.stanford.nlp.ling.*;
+import edu.stanford.nlp.pipeline.*;
+import edu.stanford.nlp.util.*;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.model.Paper;
 import org.epnoi.model.Term;
@@ -40,19 +43,20 @@ public class LearnerTest {
     LearnerHelper helper;
     @Autowired
     LearningParameters learnerProperties;
-    private ArrayList<String> nouns = new ArrayList<>();
 
     @Test
     public void LearnerTest() {
-        FileWriter file = null;
-        PrintWriter pw = null;
+        FileWriter file = null, file2=null;
+        PrintWriter pw = null, pw2 =null;
         System.out.println("Starting an ontology learning test");
         System.out.println("Using the following parameters "+learnerProperties);
 
         try
         {
-            file = new FileWriter("/home/dchaves/TFM/salidas/out.txt");
+            file = new FileWriter("/home/dchaves/TFM/salidas/terms.txt");
+            file2 = new FileWriter("/home/dchaves/TFM/salidas/nouns.txt");
             pw = new PrintWriter(file);
+            pw2 = new PrintWriter(file2);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -63,8 +67,8 @@ public class LearnerTest {
 
 
         LOG.info("Loading data");
-
-       helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+       List<Paper> papers= loadPapers();
+       helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -79,12 +83,23 @@ public class LearnerTest {
             return;
         }
         LOG.info("Number of terms found in domain: " + terms.size());
-
-        for(int i=0; i<terms.size();i++){
-           pw.println(terms.get(i).getAnnotatedTerm().getWord()+": "+terms.get(i).getAnnotatedTerm().getAnnotation().getTermhood());
+        boolean flag = true;
+        for(Paper paper:papers){
+            ArrayList<String> aux = new ArrayList();
+            for(String noun : paper.getNouns()){
+                for(Term term: terms){
+                    if(noun.equals(term.getAnnotatedTerm().getWord()) && !aux.contains(noun)){
+                        pw.println(noun+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
+                        aux.add(noun);
+                        flag=false;
+                    }
+                }
+                if(flag==true){
+                    pw2.println(noun);
+                }
+                flag=true;
+            }
         }
-
-
         LOG.info("Retrieving relations from domain..");
         List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
         if ((relations == null) || (relations.isEmpty())){
@@ -99,6 +114,7 @@ public class LearnerTest {
 
         try {
             file.close();
+            file2.close();
         } catch (Exception ex) {
             System.out.println("Error: "+ex.getMessage());
         }
@@ -109,6 +125,7 @@ public class LearnerTest {
 
     private List<Paper> loadPapers(){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
+        loadText(papers);
         for(int i=0; i<papers.size();i++) {
            helper.getFilesystemHarvester().addPaper(papers.get(i));
         }
@@ -116,5 +133,24 @@ public class LearnerTest {
     }
 
 
-
+    private void loadText(List<Paper> papers) {
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize, ssplit, pos");
+        StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+        for(Paper paper : papers) {
+            String text = paper.getDescription();
+            Annotation document = new Annotation(text);
+            pipeline.annotate(document);
+            List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+            for (CoreMap sentence : sentences) {
+                for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                    if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN") || token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NNS")) {
+                        String n = token.get(CoreAnnotations.TextAnnotation.class);
+                        if (!paper.getNouns().contains(n))
+                            paper.getNouns().add(n);
+                    }
+                }
+            }
+        }
+    }
 }

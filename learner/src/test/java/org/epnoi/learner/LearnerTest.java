@@ -43,6 +43,7 @@ public class LearnerTest {
     LearnerHelper helper;
     @Autowired
     LearningParameters learnerProperties;
+    private ArrayList<String> nouns = new ArrayList<>();
 
     @Test
     public void LearnerTest() {
@@ -84,19 +85,17 @@ public class LearnerTest {
         }
         LOG.info("Number of terms found in domain: " + terms.size());
         boolean flag = true;
-        for(Paper paper:papers){
-            for(String noun : paper.getNouns()){
-                for(Term term: terms){
-                    if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(noun)){
-                        orderTerms.add(term);
-                        flag=false;
-                    }
+        for(String noun : nouns){
+            for(Term term: terms){
+                if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(term)){
+                    orderTerms.add(term);
+                    flag=false;
                 }
-                if(flag==true){
-                    pw2.println(noun);
-                }
-                flag=true;
             }
+            if(flag==true){
+                pw2.println(noun);
+            }
+               flag=true;
         }
 
         Collections.sort(orderTerms, new Term());
@@ -150,8 +149,8 @@ public class LearnerTest {
                 for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                     if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN.")) {
                         String n = token.get(CoreAnnotations.TextAnnotation.class);
-                        if (!paper.getNouns().contains(n))
-                            paper.getNouns().add(n);
+                        if (!nouns.contains(n))
+                            nouns.add(n);
                     }
                 }
             }

@@ -85,10 +85,9 @@ public class LearnerTest {
         LOG.info("Number of terms found in domain: " + terms.size());
         boolean flag = true;
         for(Paper paper:papers){
-            ArrayList<String> aux = new ArrayList();
             for(String noun : paper.getNouns()){
                 for(Term term: terms){
-                    if(noun.equals(term.getAnnotatedTerm().getWord()) && !aux.contains(noun)){
+                    if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(noun)){
                         orderTerms.add(term);
                         flag=false;
                     }

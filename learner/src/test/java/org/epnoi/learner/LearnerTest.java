@@ -89,7 +89,7 @@ public class LearnerTest {
             for(Term term: terms){
                 if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(term)){
                     orderTerms.add(term);
-                    flag=false;
+                        flag=false;
                 }
             }
             if(flag==true){
@@ -129,9 +129,10 @@ public class LearnerTest {
     private List<Paper> loadPapers(){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents");
         loadText(papers);
+        /*
         for(int i=0; i<papers.size();i++) {
            helper.getFilesystemHarvester().addPaper(papers.get(i));
-        }
+        }*/
         return papers;
     }
 

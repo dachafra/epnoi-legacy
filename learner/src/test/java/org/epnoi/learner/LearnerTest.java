@@ -88,8 +88,10 @@ public class LearnerTest {
         for(String noun : nouns){
             for(Term term: terms){
                 if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(term)){
-                    orderTerms.add(term);
+                    if(term.getAnnotatedTerm().getWord().length()>1){
+                        orderTerms.add(term);
                         flag=false;
+                    }
                 }
             }
             if(flag==true){

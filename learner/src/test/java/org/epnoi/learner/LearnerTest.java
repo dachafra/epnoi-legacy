@@ -129,7 +129,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW");
         loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {

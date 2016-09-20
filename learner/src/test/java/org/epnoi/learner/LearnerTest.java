@@ -85,7 +85,7 @@ public class LearnerTest {
             return;
         }
         for(Term t: terms){
-            System.out.println(term.getAnnotatedTerm().getWord());
+            System.out.println(t.getAnnotatedTerm().getWord());
         }
         /*
 

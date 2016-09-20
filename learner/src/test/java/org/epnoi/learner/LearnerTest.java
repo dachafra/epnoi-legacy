@@ -129,7 +129,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW/2005");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/sig/sig2002a");
         loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {
@@ -152,8 +152,10 @@ public class LearnerTest {
                 for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                     if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN.")) {
                         String n = token.get(CoreAnnotations.TextAnnotation.class);
-                        if (!nouns.contains(n))
+                        if (!nouns.contains(n)) {
                             nouns.add(n);
+                            System.out.printf(n);
+                        }
                     }
                 }
             }

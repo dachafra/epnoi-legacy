@@ -79,11 +79,11 @@ public class LearnerTest {
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
         List<Term> orderTerms = new ArrayList<>();
+        System.out.println("Number of terms found in domain: " + terms.size());
         if ((terms == null) || (terms.isEmpty())){
-            LOG.warn("No terms found in domain: " + domain.getUri());
+            System.out.println("No terms found in domain: " + domain.getUri());
             return;
         }
-        LOG.info("Number of terms found in domain: " + terms.size());
         boolean flag = true;
         for(String noun : nouns){
             for(Term term: terms){
@@ -129,7 +129,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW/2003");
         loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {

@@ -118,10 +118,10 @@ public class LearnerTest {
         }x
         for(int i=0; i<relations.size();i++){
             pw.println(relations.get(i).getSource());
-        }*/
+        }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-
+*/
         try {
             file.close();
             file2.close();

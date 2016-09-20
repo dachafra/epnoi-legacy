@@ -77,7 +77,7 @@ public class LearnerTest {
 
 
         LOG.info("Retrieving terms from domain..");
-        List<Term> terms = helper.getLearner().retrieveTerminology(domain.getUri()).getTerms();
+        List<Term> terms = (ArrayList<Term>)helper.getLearner().retrieveTerminology(domain.getUri()).getTerms();
         List<Term> orderTerms = new ArrayList<>();
         System.out.println("Number of terms found in domain: " + terms.size());
         if (terms.size()<=0){

@@ -84,6 +84,11 @@ public class LearnerTest {
             System.out.println("No terms found in domain: " + domain.getUri());
             return;
         }
+        for(Term t: terms){
+            System.out.println(term.getAnnotatedTerm().getWord());
+        }
+        /*
+
         boolean flag = true;
         for(String noun : nouns){
             for(Term term: terms){
@@ -110,10 +115,10 @@ public class LearnerTest {
         if ((relations == null) || (relations.isEmpty())){
             LOG.warn("No relations found in domain: " + domain.getUri());
             relations = new ArrayList<>();
-        }
+        }x
         for(int i=0; i<relations.size();i++){
             pw.println(relations.get(i).getSource());
-        }
+        }*/
 
         LOG.info("Number of relations found in domain: " + relations.size());
 
@@ -130,7 +135,7 @@ public class LearnerTest {
 
     private List<Paper> loadPapers(){
         List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/sig/sig2002a");
-        loadText(papers);
+       // loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {
            helper.getFilesystemHarvester().addPaper(papers.get(i));

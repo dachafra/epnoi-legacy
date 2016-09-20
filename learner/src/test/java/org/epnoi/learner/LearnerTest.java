@@ -77,10 +77,10 @@ public class LearnerTest {
 
 
         LOG.info("Retrieving terms from domain..");
-        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
+        List<Term> terms = helper.getLearner().retrieveTerminology(domain.getUri()).getTerms();
         List<Term> orderTerms = new ArrayList<>();
         System.out.println("Number of terms found in domain: " + terms.size());
-        if ((terms == null) || (terms.isEmpty())){
+        if (terms.size()<=0){
             System.out.println("No terms found in domain: " + domain.getUri());
             return;
         }
@@ -129,7 +129,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW/2003");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW/2005");
         loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {

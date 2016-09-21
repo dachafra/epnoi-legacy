@@ -74,7 +74,7 @@ public class LearnerTest {
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
         helper.getLearner().learn(domain.getUri());
-
+    /*
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
         LOG.info("Retrieving terms from domain.." + terms.size());
 
@@ -116,7 +116,7 @@ public class LearnerTest {
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-
+        */
         try {
             file.close();
             file2.close();

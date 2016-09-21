@@ -75,10 +75,10 @@ public class LearnerTest {
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
         helper.getLearner().learn(domain.getUri());
 
-
-        LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
-        List<Term> orderTerms = new ArrayList<>();
+        LOG.info("Retrieving terms from domain.." + terms.size());
+
+        List<Term> orderTerms = new ArrayList();
         System.out.println("Number of terms found in domain: " + terms.size());
         if (terms.size()<=0){
             System.out.println("No terms found in domain: " + domain.getUri());

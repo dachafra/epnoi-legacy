@@ -77,28 +77,6 @@ public class LearnerTest {
 
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
-        if ((terms == null) || (terms.isEmpty())){
-            LOG.warn("No terms found in domain: " + domain.getUri());
-            return;
-        }
-        LOG.info("Number of terms found in domain: " + terms.size());
-
-        LOG.info("Retrieving relations from domain..");
-        List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
-        if ((relations == null) || (relations.isEmpty())){
-            LOG.warn("No relations found in domain: " + domain.getUri());
-            relations = new ArrayList<>();
-        }
-
-        LOG.info("Number of relations found in domain: " + relations.size());
-
-
-        assert (true);
-
-
-    /*
-        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
-        LOG.info("Retrieving terms from domain.." + terms.size());
 
         List<Term> orderTerms = new ArrayList();
         System.out.println("Number of terms found in domain: " + terms.size());
@@ -138,7 +116,6 @@ public class LearnerTest {
         }
 
         LOG.info("Number of relations found in domain: " + relations.size());
-        */
         try {
             file.close();
             file2.close();

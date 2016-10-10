@@ -124,8 +124,7 @@ public class TermsRetriever {
 
         // The terms are then retrieved and added to the Terms Table
         for (String termURI : foundURIs) {
-            Term term = (Term) this.core.getInformationHandler().get(termURI,
-                    RDFHelper.TERM_CLASS);
+            Term term = (Term) this.core.getInformationHandler().get(termURI,RDFHelper.TERM_CLASS);
             if(term!=null)
                 termsTable.addTerm(term);
         }

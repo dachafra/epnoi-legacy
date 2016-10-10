@@ -115,7 +115,7 @@ public class TermsRetriever {
     // -----------------------------------------------------------------------------------
 
     private TermsTable getTermsTable(String domainLabel) {
-        TermsTable termsTable = new TermsTable();
+            TermsTable termsTable = new TermsTable();
 
         // First we retrieve the URIs of the resources associated with the
         // considered domain
@@ -128,8 +128,6 @@ public class TermsRetriever {
                     RDFHelper.TERM_CLASS);
             if(term!=null)
                 termsTable.addTerm(term);
-            else
-                System.out.println("Termino a null: "+ termURI);
         }
         return termsTable;
     }

@@ -84,6 +84,7 @@ public class LearnerImpl implements Learner {
         if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_TERMS))
                 && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_TERMS))) {
             this.termsRetriever.store(domain, ontologyLearningTask.getTermsTable());
+            System.out.println("Terms table size: "+ontologyLearningTask.getTermsTable().size());
         }
 
         if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_RELATIONS)

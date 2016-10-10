@@ -129,6 +129,7 @@ public class TermsRetriever {
             if(term!=null)
                 termsTable.addTerm(term);
         }
+        System.out.println("Tamano tabla: "+termsTable.size());
         return termsTable;
     }
 

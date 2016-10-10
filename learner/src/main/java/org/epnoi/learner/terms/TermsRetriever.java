@@ -126,7 +126,10 @@ public class TermsRetriever {
         for (String termURI : foundURIs) {
             Term term = (Term) this.core.getInformationHandler().get(termURI,
                     RDFHelper.TERM_CLASS);
-            termsTable.addTerm(term);
+            if(term!=null)
+                termsTable.addTerm(term);
+            else
+                System.out.println("Termino a null: "+ termURI);
         }
         return termsTable;
     }

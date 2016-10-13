@@ -68,8 +68,8 @@ public class LearnerTest {
 
 
         LOG.info("Loading data");
-       List<Paper> papers= loadPapers();
-       helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
+        List<Paper> papers= loadPapers();
+        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -128,12 +128,11 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/prueba");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW");
         loadText(papers);
-        /*
         for(int i=0; i<papers.size();i++) {
            helper.getFilesystemHarvester().addPaper(papers.get(i));
-        }*/
+        }
         return papers;
     }
 

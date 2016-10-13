@@ -10,7 +10,6 @@ import org.epnoi.model.modules.Core;
 import org.epnoi.model.rdf.RDFHelper;
 import org.epnoi.uia.core.CoreUtility;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,19 +94,19 @@ public class TermsRetriever {
     public TermsTable retrieve(Domain domain) {
         String domainLabel = domain.getLabel();
 
-        TermsTable termsTable = getTermsTable(domainLabel,null);
+        TermsTable termsTable = getTermsTable(domainLabel);
         return termsTable;
     }
 
     // -----------------------------------------------------------------------------------
 
-    public TermsTable retrieve(String domainUri, PrintWriter pw) {
+    public TermsTable retrieve(String domainUri) {
         Domain domain = (Domain) core.getInformationHandler().get(domainUri,
                 RDFHelper.DOMAIN_CLASS);
 
         if (domain != null) {
 
-            TermsTable termsTable = getTermsTable(domain.getLabel(),pw);
+            TermsTable termsTable = getTermsTable(domain.getLabel());
             return termsTable;
         }
         return new TermsTable();
@@ -115,7 +114,7 @@ public class TermsRetriever {
 
     // -----------------------------------------------------------------------------------
 
-    private TermsTable getTermsTable(String domainLabel, PrintWriter pw) {
+    private TermsTable getTermsTable(String domainLabel) {
             TermsTable termsTable = new TermsTable();
 
         // First we retrieve the URIs of the resources associated with the
@@ -129,8 +128,7 @@ public class TermsRetriever {
             if(term!=null)
                 termsTable.addTerm(term);
             else{
-                if(pw!=null)
-                    pw.println(termURI);
+                System.out.println(termURI);
             }
         }
         System.out.println("Tamano tabla: "+termsTable.size()+"\t Tamano uris: "+foundURIs.size());

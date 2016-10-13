@@ -76,7 +76,7 @@ public class LearnerTest {
         helper.getLearner().learn(domain.getUri());
 
         LOG.info("Retrieving terms from domain..");
-        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
+        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri(),pw2).getTerms());
 
         List<Term> orderTerms = new ArrayList();
         System.out.println("Number of terms found in domain: " + terms.size());
@@ -84,20 +84,15 @@ public class LearnerTest {
             System.out.println("No terms found in domain: " + domain.getUri());
             return;
         }
-        boolean flag = true;
         for(String noun : nouns){
             for(Term term: terms){
                 if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(term)){
                     if(term.getAnnotatedTerm().getWord().length()>1){
                         orderTerms.add(term);
-                        flag=false;
+
                     }
                 }
             }
-            if(flag==true){
-                pw2.println(noun);
-            }
-               flag=true;
         }
 
         Collections.sort(orderTerms, new Term());

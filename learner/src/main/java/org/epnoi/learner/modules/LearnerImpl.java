@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.PrintWriter;
 
 /**
  * Created by rgonza on 13/11/15.
@@ -99,8 +100,8 @@ public class LearnerImpl implements Learner {
     }
 
     @Override
-    public TermsTable retrieveTerminology(String domainUri) {
-        return termsRetriever.retrieve(domainUri);
+    public TermsTable retrieveTerminology(String domainUri, PrintWriter pw) {
+        return termsRetriever.retrieve(domainUri,pw);
     }
 
 

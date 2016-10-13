@@ -128,7 +128,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/semanticweb");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/prueba");
         loadText(papers);
         /*
         for(int i=0; i<papers.size();i++) {

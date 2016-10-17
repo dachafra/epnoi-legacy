@@ -174,58 +174,50 @@ public class FilesystemHarvester {
 
     public void addPaper(Paper paper) {
 
-        if (core.getInformationHandler().contains(paper.getUri(), RDFHelper.PAPER_CLASS)) {
-            if (overwrite) {
-                removePaper(paper);
-            } else {
-                logger.info("Skipping " + paper + " since it was already in the UIA");
-                return;
+        if (!core.getInformationHandler().contains(paper.getUri(), RDFHelper.PAPER_CLASS)) {
+            // First the paper is added to the UIA
+            core.getInformationHandler().put(paper, Context.getEmptyContext());
+
+            // Later it is annotated as belonging to the harvested
+            // corpus
+            long startTme = System.currentTimeMillis();
+
+            core.getAnnotationHandler().label(paper.getUri(), this.corpusURI);
+            core.getAnnotationHandler().label(paper.getUri(), this.corpusLabel);
+
+            long totalTime = Math.abs(startTme - System.currentTimeMillis());
+            logger.info("It took " + totalTime
+                    + " ms to add it to the UIA and label it");
+            // The annotated version of the paper is also stored in the
+            // UIA
+
+            startTme = System.currentTimeMillis();
+            Document annotatedContent = null;
+            try {
+                annotatedContent = this.core.getNLPHandler()
+                        .process(paper.getDescription());
+            } catch (EpnoiResourceAccessException e) {
+
+                e.printStackTrace();
             }
 
+            Selector annotationSelector = new Selector();
+            annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
+            annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
+                    paper.getUri() + "/"
+                            + AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
+            annotationSelector.setProperty(SelectorHelper.TYPE,
+                    RDFHelper.PAPER_CLASS);
+
+            core.getInformationHandler().setAnnotatedContent(
+                    annotationSelector,
+                    new Content<Object>(annotatedContent,
+                            AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
+
+            totalTime = Math.abs(startTme - System.currentTimeMillis());
+            logger.info("It took " + totalTime
+                    + "ms to add it to annotate its content and add it to the UIA");
         }
-
-        // First the paper is added to the UIA
-        core.getInformationHandler().put(paper, Context.getEmptyContext());
-
-        // Later it is annotated as belonging to the harvested
-        // corpus
-        long startTme = System.currentTimeMillis();
-
-        core.getAnnotationHandler().label(paper.getUri(), this.corpusURI);
-        core.getAnnotationHandler().label(paper.getUri(), this.corpusLabel);
-
-        long totalTime = Math.abs(startTme - System.currentTimeMillis());
-        logger.info("It took " + totalTime
-                + " ms to add it to the UIA and label it");
-        // The annotated version of the paper is also stored in the
-        // UIA
-
-        startTme = System.currentTimeMillis();
-        Document annotatedContent = null;
-        try {
-            annotatedContent = this.core.getNLPHandler()
-                    .process(paper.getDescription());
-        } catch (EpnoiResourceAccessException e) {
-
-            e.printStackTrace();
-        }
-
-        Selector annotationSelector = new Selector();
-        annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
-        annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
-                paper.getUri() + "/"
-                        + AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
-        annotationSelector.setProperty(SelectorHelper.TYPE,
-                RDFHelper.PAPER_CLASS);
-
-        core.getInformationHandler().setAnnotatedContent(
-                annotationSelector,
-                new Content<Object>(annotatedContent,
-                        AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
-
-        totalTime = Math.abs(startTme - System.currentTimeMillis());
-        logger.info("It took " + totalTime
-                + "ms to add it to annotate its content and add it to the UIA");
     }
 
     // ----------------------------------------------------------------------------------------

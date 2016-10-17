@@ -33,7 +33,7 @@ import java.util.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = LearnerConfig.class)
 @ActiveProfiles("develop")
-@TestPropertySource(properties = {"learner.task.terms.extract = true", "learner.task.terms.store = true", "learner.task.relations.parallel = true"})
+@TestPropertySource(properties = {"learner.task.terms.extract = true", "learner.task.terms.store = true", "learner.task.relations.parallel = false"})
 
 
 public class LearnerTest {
@@ -54,14 +54,14 @@ public class LearnerTest {
 
         try
         {
-            file = new FileWriter("/home/dchaves/TFM/salidas/terms.txt");
-            file2 = new FileWriter("/home/dchaves/TFM/salidas/nouns.txt");
+            file = new FileWriter("/home/dchaves/TFM/salidas/terms2.txt");
+            file2 = new FileWriter("/home/dchaves/TFM/salidas/all.txt");
             pw = new PrintWriter(file);
             pw2 = new PrintWriter(file2);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        helper.getDemoDataLoader().erase();
+        //helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -84,27 +84,26 @@ public class LearnerTest {
             System.out.println("No terms found in domain: " + domain.getUri());
             return;
         }
-        boolean flag = true;
         for(String noun : nouns){
             for(Term term: terms){
                 if(noun.equals(term.getAnnotatedTerm().getWord()) && !orderTerms.contains(term)){
                     if(term.getAnnotatedTerm().getWord().length()>1){
                         orderTerms.add(term);
-                        flag=false;
+
                     }
                 }
             }
-            if(flag==true){
-                pw2.println(noun);
-            }
-               flag=true;
+
         }
 
         Collections.sort(orderTerms, new Term());
         for(Term term : orderTerms){
             pw.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
         }
-
+        for(Term term: terms){
+            pw2.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
+        }
+        /*
         LOG.info("Retrieving relations from domain..");
         List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
         if ((relations == null) || (relations.isEmpty())){
@@ -115,7 +114,7 @@ public class LearnerTest {
             pw.println(relations.get(i).getSource());
         }
 
-        LOG.info("Number of relations found in domain: " + relations.size());
+        LOG.info("Number of relations found in domain: " + relations.size());*/
         try {
             file.close();
             file2.close();
@@ -128,7 +127,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/JoSW");
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/semanticweb");
         loadText(papers);
         for(int i=0; i<papers.size();i++) {
            helper.getFilesystemHarvester().addPaper(papers.get(i));
@@ -139,7 +138,7 @@ public class LearnerTest {
 
     private void loadText(List<Paper> papers) {
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize, ssplit, pos");
+        props.setProperty("annotators", "tokenize, pos");
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
         for(Paper paper : papers) {
             String text = paper.getDescription();

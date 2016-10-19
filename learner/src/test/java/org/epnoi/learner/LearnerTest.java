@@ -61,7 +61,7 @@ public class LearnerTest {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        //helper.getDemoDataLoader().erase();
+        helper.getDemoDataLoader().erase();/*
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -72,7 +72,7 @@ public class LearnerTest {
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
 
 
-        LOG.info("Learning terms and relations from domain: " + domain + "src/main");
+        LOG.info("Learning terms and relations from domain: " +  domain + "src/main");
         helper.getLearner().learn(domain.getUri());
 
         LOG.info("Retrieving terms from domain..");
@@ -147,7 +147,7 @@ public class LearnerTest {
             List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
             for (CoreMap sentence : sentences) {
                 for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
-                    if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN.")) {
+                    if (token.get(CoreAnnotations.PartOfSpeechAnnotation.class).matches("NN.*")) {
                         String n = token.get(CoreAnnotations.TextAnnotation.class);
                         if (!nouns.contains(n))
                             nouns.add(n);

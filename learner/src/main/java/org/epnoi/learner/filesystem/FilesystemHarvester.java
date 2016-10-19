@@ -160,7 +160,6 @@ public class FilesystemHarvester {
             // + Arrays.toString(filesToHarvest));
             for (String fileToHarvest : filesToHarvest) {
                 logger.info("Harvesting the file " + fileToHarvest);
-                Context context = new Context();
                 File file = new File(fileToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);

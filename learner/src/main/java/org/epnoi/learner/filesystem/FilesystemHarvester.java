@@ -164,6 +164,7 @@ public class FilesystemHarvester {
                 File file = new File(fileToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
+                uris.add(paper.getUri());
             }
         } catch (Exception e) {
             e.printStackTrace();

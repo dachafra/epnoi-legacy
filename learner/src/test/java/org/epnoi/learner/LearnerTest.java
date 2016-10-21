@@ -55,8 +55,8 @@ public class LearnerTest {
         //System.out.println("Using the following parameters "+learnerProperties);
 
         try{
-            file = new FileWriter("/home/dchaves/OEG/Software/local/salidas/all.txt");
-            file2 = new FileWriter("/home/dchaves/OEG/Software/local/salidas/terms.txt");
+            file = new FileWriter("/home/dchaves/TFM/salidas/all.txt");
+            file2 = new FileWriter("/home/dchaves/TFM/salidas/terms.txt");
             pw = new PrintWriter(file);
             pw2 = new PrintWriter(file2);
         }catch(Exception e){

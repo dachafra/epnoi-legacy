@@ -46,6 +46,7 @@ public class FilesystemHarvester {
     private boolean overwrite;
     private String corpusLabel;
     private String corpusURI;
+    private ArrayList<String> uris = new ArrayList<>();
 
     private static final Logger logger = Logger
             .getLogger(FilesystemHarvester.class.getName());
@@ -153,7 +154,7 @@ public class FilesystemHarvester {
         List<Paper> harvestedPapers = new ArrayList<>();
         try {
             File harvestDirectory = new File(directoryToHarvest);
-
+            uris = (ArrayList<String>) core.getInformationHandler().getAll(RDFHelper.PAPER_CLASS);
             String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
 
             // System.out.println("..........> "
@@ -163,7 +164,6 @@ public class FilesystemHarvester {
                 File file = new File(fileToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
-                addPaper(paper);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -268,12 +268,14 @@ public class FilesystemHarvester {
     public Paper _harvestFile(String filePath, String fileName) {
 
         Paper paper = new Paper();
-
-        String fileContent = _scanContent("file://" + filePath);
         paper.setUri("file://" + filePath);
         paper.setTitle(fileName);
-        paper.setDescription(fileContent);
         paper.setPubDate("2015-07-07");
+        if(!uris.contains(paper.getUri())) {
+            String fileContent = _scanContent("file://" + filePath);
+            paper.setDescription(fileContent);
+            addPaper(paper);
+        }
         return paper;
     }
 

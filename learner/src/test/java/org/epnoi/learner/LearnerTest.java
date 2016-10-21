@@ -50,7 +50,7 @@ public class LearnerTest {
         FileWriter file = null, file2=null;
         PrintWriter pw = null, pw2 =null;
         System.out.println("Starting an ontology learning test");
-        System.out.println("Using the following parameters "+learnerProperties);
+       //System.out.println("Using the following parameters "+learnerProperties);
 
         try
         {
@@ -61,7 +61,7 @@ public class LearnerTest {
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        helper.getDemoDataLoader().erase();/*
+       // helper.getDemoDataLoader().erase();
         Domain domain = Resource.newDomain();
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
@@ -69,7 +69,10 @@ public class LearnerTest {
 
         LOG.info("Loading data");
         List<Paper> papers= loadPapers();
-        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
+        for(Paper p: papers){
+            System.out.println(p.getUri());
+        }
+        /*helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), papers);
 
 
         LOG.info("Learning terms and relations from domain: " +  domain + "src/main");
@@ -78,7 +81,7 @@ public class LearnerTest {
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
 
-        List<Term> orderTerms = new ArrayList();
+        /*List<Term> orderTerms = new ArrayList();
         System.out.println("Number of terms found in domain: " + terms.size());
         if (terms.size()<=0){
             System.out.println("No terms found in domain: " + domain.getUri());
@@ -96,8 +99,8 @@ public class LearnerTest {
 
         }
 
-        Collections.sort(orderTerms, new Term());
-        for(Term term : orderTerms){
+        Collections.sort(terms, new Term());
+        for(Term term : terms){
             pw.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
         }
         for(Term term: terms){
@@ -127,11 +130,9 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/TFM/documents/semanticweb");
-        loadText(papers);
-        for(int i=0; i<papers.size();i++) {
-           helper.getFilesystemHarvester().addPaper(papers.get(i));
-        }
+        List<Paper> papers=helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/Completo");
+        //loadText(papers);
+
         return papers;
     }
 

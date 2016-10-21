@@ -119,7 +119,7 @@ public class OntologyLearningTask {
             }
         }
         //      termsTable.show(30);
-
+        /*
 
         if (obtainRelations) {
             if (extractRelations) {
@@ -136,7 +136,7 @@ public class OntologyLearningTask {
 
         }
         System.out.println("Relations Table> " + this.relationsTable);
-
+        */
         System.out.println("end");
 
     }

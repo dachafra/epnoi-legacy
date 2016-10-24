@@ -85,11 +85,11 @@ public class LearnerImpl implements Learner {
                 && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_TERMS))) {
             this.termsRetriever.store(domain, ontologyLearningTask.getTermsTable());
         }
-
+        /*
         if (((boolean) learningParameters.getParameterValue(LearningParameters.OBTAIN_RELATIONS)
                 && ((boolean) learningParameters.getParameterValue(LearningParameters.STORE_RELATIONS)))) {
             this.relationsRetriever.store(ontologyLearningTask.getRelationsTable());
-        }
+        }*/
     }
 
     @Override

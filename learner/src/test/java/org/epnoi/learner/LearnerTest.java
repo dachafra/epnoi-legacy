@@ -67,7 +67,7 @@ public class LearnerTest {
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
 
-/*
+        /*
         LOG.info("Loading data");
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 

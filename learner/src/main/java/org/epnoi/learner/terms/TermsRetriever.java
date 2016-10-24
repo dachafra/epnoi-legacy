@@ -127,9 +127,6 @@ public class TermsRetriever {
             Term term = (Term) this.core.getInformationHandler().get(termURI, RDFHelper.TERM_CLASS);
             if(term!=null)
                 termsTable.addTerm(term);
-            else{
-                System.out.println(termURI);
-            }
         }
         System.out.println("Tamano tabla: "+termsTable.size()+"\t Tamano uris: "+foundURIs.size());
         return termsTable;

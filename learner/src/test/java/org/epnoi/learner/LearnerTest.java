@@ -67,18 +67,18 @@ public class LearnerTest {
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
 
-
+/*
         LOG.info("Loading data");
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-        helper.getLearner().learn(domain.getUri());
+        helper.getLearner().learn(domain.getUri());*/
 
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
 
-        List<Term> orderTerms = new ArrayList();
+
         System.out.println("Number of terms found in domain: " + terms.size());
         if (terms.size()<=0){
             System.out.println("No terms found in domain: " + domain.getUri());
@@ -86,15 +86,15 @@ public class LearnerTest {
         }
 
 
-        Collections.sort(orderTerms, new Term());
-        for(Term term : orderTerms){
+        Collections.sort(terms, new Term());
+        for(Term term : terms){
             pw.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
             loadText(term.getAnnotatedTerm().getWord());
         }
 
 
         for(String noun : nouns){
-            for(Term term: orderTerms){
+            for(Term term: terms){
                 if(noun.equals(term.getAnnotatedTerm().getWord())){
                     if(term.getAnnotatedTerm().getWord().length()>1){
                         pw2.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());

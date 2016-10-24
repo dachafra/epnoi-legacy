@@ -67,13 +67,13 @@ public class LearnerTest {
         domain.setUri("http://epnoi.org/domains/sample");
         domain.setName("sample-domain");
 
-        /*
+
         LOG.info("Loading data");
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
-
+        /*
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-        helper.getLearner().learn(domain.getUri());*/
+        helper.getLearner().learn(domain.getUri());
 
         LOG.info("Retrieving terms from domain..");
         List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
@@ -120,14 +120,14 @@ public class LearnerTest {
             file2.close();
         }catch (Exception ex) {
             System.out.println("Error: "+ex.getMessage());
-        }
+        }*/
         assert (true);
 
     }
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/Completo");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/FinalDr");
     }
 
 

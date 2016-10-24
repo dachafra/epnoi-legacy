@@ -127,7 +127,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/FinalDr");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/FinalDr");
     }
 
 

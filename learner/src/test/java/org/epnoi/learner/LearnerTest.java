@@ -71,7 +71,7 @@ public class LearnerTest {
         LOG.info("Loading data");
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
-        /*
+
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
         helper.getLearner().learn(domain.getUri());
 
@@ -120,14 +120,14 @@ public class LearnerTest {
             file2.close();
         }catch (Exception ex) {
             System.out.println("Error: "+ex.getMessage());
-        }*/
+        }
         assert (true);
 
     }
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/FinalDr");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus");
     }
 
 

@@ -55,28 +55,32 @@ public class LearnerImpl implements Learner {
     }
 
     @Override
-    public void learn(String domainUri) {
-
+    public TermsTable learn(String domainUri) {
+        OntologyLearningTask ontologyLearningTask =null;
         try {
             Domain domain = (Domain) core.getInformationHandler().get(domainUri,
                     RDFHelper.DOMAIN_CLASS);
 
             if (domain != null) {
-                OntologyLearningTask ontologyLearningTask = new OntologyLearningTask();
+                ontologyLearningTask = new OntologyLearningTask();
                 ontologyLearningTask.init(this.core, this.learningParameters, this.sparkContext);
                 try {
                     ontologyLearningTask.perform(domain);
-                    _storeLearningResults(ontologyLearningTask, domain);
+                    //_storeLearningResults(ontologyLearningTask, domain);
                 } catch (Exception e) {
                     logger.error("There was a problem while learning the domain " + domain.getUri(),e);
+                    return null;
                 }
 
             } else {
                 logger.error("The retrieved domain was null!!!!");
+                return null;
             }
         } catch (Exception e) {
             logger.error("Something went wrong when learning about the domain " + domainUri,e);
+            return null;
         }
+        return ontologyLearningTask.getTermsTable();
 
     }
 

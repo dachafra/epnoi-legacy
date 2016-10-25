@@ -12,7 +12,7 @@ public interface Learner {
 
     LearningParameters getParameters();
 
-    void learn(String domainUri);
+    TermsTable learn(String domainUri);
 
     RelationsTable retrieveRelations(String domainUri);
 

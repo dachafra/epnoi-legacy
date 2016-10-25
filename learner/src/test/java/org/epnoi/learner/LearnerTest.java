@@ -73,53 +73,54 @@ public class LearnerTest {
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-        helper.getLearner().learn(domain.getUri());
+        List<Term> terms= (ArrayList<Term>)helper.getLearner().learn(domain.getUri()).getTerms();
 
-        LOG.info("Retrieving terms from domain..");
-        List<Term> terms = new ArrayList<>(helper.getLearner().retrieveTerminology(domain.getUri()).getTerms());
-
-
-        System.out.println("Number of terms found in domain: " + terms.size());
-        if (terms.size()<=0){
-            System.out.println("No terms found in domain: " + domain.getUri());
-            return;
-        }
+        if(terms!=null) {
+            System.out.println("Number of terms found in domain: " + terms.size());
+            if (terms.size() <= 0) {
+                System.out.println("No terms found in domain: " + domain.getUri());
+                return;
+            }
 
 
-        Collections.sort(terms, new Term());
-        for(Term term : terms){
-            pw.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
-            loadText(term.getAnnotatedTerm().getWord());
-        }
+            Collections.sort(terms, new Term());
+            for (Term term : terms) {
+                pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
+                loadText(term.getAnnotatedTerm().getWord());
+            }
 
 
-        for(String noun : nouns){
-            for(Term term: terms){
-                if(noun.equals(term.getAnnotatedTerm().getWord())){
-                    if(term.getAnnotatedTerm().getWord().length()>1){
-                        pw2.println(term.getAnnotatedTerm().getWord()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
-                        break;
+            for (String noun : nouns) {
+                for (Term term : terms) {
+                    if (noun.equals(term.getAnnotatedTerm().getWord())) {
+                        if (term.getAnnotatedTerm().getWord().length() > 1) {
+                            pw2.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
+                            break;
+                        }
                     }
                 }
             }
-        }
+            /*
+            LOG.info("Retrieving relations from domain..");
+            List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
+            if ((relations == null) || (relations.isEmpty())) {
+                LOG.warn("No relations found in domain: " + domain.getUri());
+                relations = new ArrayList<>();
+            }
+            for (int i = 0; i < relations.size(); i++) {
+                pw.println(relations.get(i).getSource());
+            }
 
-        LOG.info("Retrieving relations from domain..");
-        List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
-        if ((relations == null) || (relations.isEmpty())){
-            LOG.warn("No relations found in domain: " + domain.getUri());
-            relations = new ArrayList<>();
+            LOG.info("Number of relations found in domain: " + relations.size());*/
+            try {
+                file.close();
+                file2.close();
+            } catch (Exception ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
         }
-        for(int i=0; i<relations.size();i++){
-            pw.println(relations.get(i).getSource());
-        }
-
-        LOG.info("Number of relations found in domain: " + relations.size());
-        try{
-            file.close();
-            file2.close();
-        }catch (Exception ex) {
-            System.out.println("Error: "+ex.getMessage());
+        else{
+            System.out.println("Terms=null");
         }
         assert (true);
 

@@ -73,7 +73,8 @@ public class LearnerTest {
 
 
         LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-        List<Term> terms= (ArrayList<Term>)helper.getLearner().learn(domain.getUri()).getTerms();
+
+        List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
 
         if(terms!=null) {
             System.out.println("Number of terms found in domain: " + terms.size());

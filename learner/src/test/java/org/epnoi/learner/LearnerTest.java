@@ -85,14 +85,21 @@ public class LearnerTest {
 
 
             Collections.sort(terms, new Term());
+            List<Term> terms2=new ArrayList<>();
             for (Term term : terms) {
-                pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
-                loadText(term.getAnnotatedTerm().getWord());
+                if(!terms2.contains(term)) {
+                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
+                    loadText(term.getAnnotatedTerm().getWord());
+                    terms2.add(term);
+                }
+                if(term.getAnnotatedTerm().getAnnotation().getTermhood()<0.23){
+                    break;
+                }
             }
-
+            Collections.sort(terms2, new Term());
 
             for (String noun : nouns) {
-                for (Term term : terms) {
+                for (Term term : terms2) {
                     if (noun.equals(term.getAnnotatedTerm().getWord())) {
                         if (term.getAnnotatedTerm().getWord().length() > 1) {
                             pw2.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
@@ -129,7 +136,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/FinalDr");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/Completo/");
     }
 
 

@@ -61,7 +61,7 @@ public abstract class CassandraDAO {
 
 	public synchronized void init() {
 		if (!initialized) {
-			CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER, "localhost:9160");
+			CassandraDAO.cluster = HFactory.getOrCreateCluster(CLUSTER, "localhost:9001");
 			// System.out.println("Cluster instantiated");
 
 			List<String> columnFamilyNames = Arrays.asList(ExternalResourceCassandraHelper.COLUMN_FAMILY,

@@ -24,7 +24,7 @@ import java.util.Set;
 public class CassandraQueryResolver extends CassandraDAO {
 	public static final String CLUSTER = "epnoiCluster";
 	public static final String KEYSPACE = "epnoiKeyspace";
-	private final static String HOST_PORT = "localhost:9160";
+	private final static String HOST_PORT = "localhost:9001";
 
 	private final static StringSerializer stringSerializer = StringSerializer.get();
 

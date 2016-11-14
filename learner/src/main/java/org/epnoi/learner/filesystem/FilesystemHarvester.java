@@ -18,9 +18,8 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.ContentHandler;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -275,7 +274,16 @@ public class FilesystemHarvester {
         if(!uris.contains(paper.getUri())) {
             String fileContent = _scanContent("file://" + filePath);
             paper.setDescription(fileContent);
-            addPaper(paper);
+            //addPaper(paper);
+            FileWriter file = null; PrintWriter pw = null;
+            try{
+                file = new FileWriter("/home/dchaves/TFM/salidas/documents/"+fileName+".txt");
+                pw = new PrintWriter(file);
+                pw.println(fileContent);
+                pw.close();file.close();
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            }
         }
         return paper;
     }

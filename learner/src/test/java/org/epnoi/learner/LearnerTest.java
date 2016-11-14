@@ -69,6 +69,9 @@ public class LearnerTest {
 
 
         LOG.info("Loading data");
+        loadPapers();
+
+        /*
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
@@ -119,7 +122,7 @@ public class LearnerTest {
                 pw.println(relations.get(i).getSource());
             }
 
-            LOG.info("Number of relations found in domain: " + relations.size());*/
+            LOG.info("Number of relations found in domain: " + relations.size());
             try {
                 file.close();
                 file2.close();
@@ -129,6 +132,13 @@ public class LearnerTest {
         }
         else{
             System.out.println("Terms=null");
+        }*/
+
+        try {
+            file.close();
+            file2.close();
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
         assert (true);
 

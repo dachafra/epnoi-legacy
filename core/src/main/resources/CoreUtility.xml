@@ -46,7 +46,7 @@
 		<URI>http://cassandraInformationStore</URI>
 		<path>cassandra</path>
 		<host>localhost</host>
-		<port>9160</port>
+		<port>9001</port>
 	</cassandraInformationStore>
 	<mapInformationStore>
 		<URI>http://mapInformationStore</URI>

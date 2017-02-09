@@ -45,20 +45,16 @@ public class LearnerTest {
     LearnerHelper helper;
     @Autowired
     LearningParameters learnerProperties;
-    private ArrayList<String> nouns = new ArrayList<>();
 
     @Test
     public void LearnerTest() {
-        FileWriter file = null, file2=null;
-        PrintWriter pw = null, pw2 =null;
+        FileWriter file = null; PrintWriter pw = null;
         System.out.println("Starting an ontology learning test");
         //System.out.println("Using the following parameters "+learnerProperties);
 
         try{
             file = new FileWriter("/home/dchaves/TFM/salidas/all.txt");
-            file2 = new FileWriter("/home/dchaves/TFM/salidas/terms.txt");
             pw = new PrintWriter(file);
-            pw2 = new PrintWriter(file2);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -69,9 +65,8 @@ public class LearnerTest {
 
 
         LOG.info("Loading data");
-        loadPapers();
 
-        /*
+
         helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
@@ -88,29 +83,11 @@ public class LearnerTest {
 
 
             Collections.sort(terms, new Term());
-            List<Term> terms2=new ArrayList<>();
+            pw.println("Terms; C-Value; Termhood");
             for (Term term : terms) {
-                if(!terms2.contains(term)) {
-                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
-                    loadText(term.getAnnotatedTerm().getWord());
-                    terms2.add(term);
-                }
-                if(term.getAnnotatedTerm().getAnnotation().getTermhood()<0.23){
-                    break;
-                }
+                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
             }
-            Collections.sort(terms2, new Term());
 
-            for (String noun : nouns) {
-                for (Term term : terms2) {
-                    if (noun.equals(term.getAnnotatedTerm().getWord())) {
-                        if (term.getAnnotatedTerm().getWord().length() > 1) {
-                            pw2.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
-                            break;
-                        }
-                    }
-                }
-            }
             /*
             LOG.info("Retrieving relations from domain..");
             List<org.epnoi.model.Relation> relations = new ArrayList<>(helper.getLearner().retrieveRelations(domain.getUri()).getRelations());
@@ -123,20 +100,14 @@ public class LearnerTest {
             }
 
             LOG.info("Number of relations found in domain: " + relations.size());
-            try {
-                file.close();
-                file2.close();
-            } catch (Exception ex) {
-                System.out.println("Error: " + ex.getMessage());
-            }
+            */
         }
         else{
             System.out.println("Terms=null");
-        }*/
+        }
 
         try {
             file.close();
-            file2.close();
         } catch (Exception ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -146,10 +117,10 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/DrInventor/Corpus/Completo/");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/vadim/");
     }
 
-
+/*
     private void loadText(String text) {
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize, ssplit, pos");
@@ -168,4 +139,5 @@ public class LearnerTest {
         }
 
     }
+    */
 }

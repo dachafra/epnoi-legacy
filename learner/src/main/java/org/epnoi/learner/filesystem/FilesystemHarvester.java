@@ -274,16 +274,7 @@ public class FilesystemHarvester {
         if(!uris.contains(paper.getUri())) {
             String fileContent = _scanContent("file://" + filePath);
             paper.setDescription(fileContent);
-            //addPaper(paper);
-            FileWriter file = null; PrintWriter pw = null;
-            try{
-                file = new FileWriter("/home/dchaves/TFM/salidas/documents/"+fileName+".txt");
-                pw = new PrintWriter(file);
-                pw.println(fileContent);
-                pw.close();file.close();
-            }catch(Exception e){
-                System.out.println(e.getMessage());
-            }
+            addPaper(paper);
         }
         return paper;
     }

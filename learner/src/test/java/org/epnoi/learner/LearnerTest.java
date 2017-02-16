@@ -48,45 +48,51 @@ public class LearnerTest {
 
     @Test
     public void LearnerTest() {
-        FileWriter file = null; PrintWriter pw = null;
-        System.out.println("Starting an ontology learning test");
-        //System.out.println("Using the following parameters "+learnerProperties);
 
-        try{
-            file = new FileWriter("/home/dchaves/TFM/salidas/all.txt");
-            pw = new PrintWriter(file);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        //helper.getDemoDataLoader().erase();
-        Domain domain = Resource.newDomain();
-        domain.setUri("http://epnoi.org/domains/sample");
-        domain.setName("sample-domain");
+        for(int i=1; i<51; i++) {
+            FileWriter file = null;
+            PrintWriter pw = null;
+            System.out.println("Starting an ontology learning test");
+            //System.out.println("Using the following parameters "+learnerProperties);
+            String path="home/dchaves/OEG/vadim/";
 
-
-        LOG.info("Loading data");
-
-
-        helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
-
-
-        LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-
-        List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
-
-        if(terms!=null) {
-            System.out.println("Number of terms found in domain: " + terms.size());
-            if (terms.size() <= 0) {
-                System.out.println("No terms found in domain: " + domain.getUri());
-                return;
+            try {
+                if(i>1)
+                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* home/dchaves/OEG/vadim/1");
+                file = new FileWriter("/home/dchaves/TFM/salidas/+"+i+".txt");
+                pw = new PrintWriter(file);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
+            //helper.getDemoDataLoader().erase();
+            Domain domain = Resource.newDomain();
+            domain.setUri("http://epnoi.org/domains/sample");
+            domain.setName("sample-domain");
 
 
-            Collections.sort(terms, new Term());
-            pw.println("Terms; C-Value; Termhood");
-            for (Term term : terms) {
-                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+";"+term.getAnnotatedTerm().getAnnotation().getTermhood());
-            }
+            LOG.info("Loading data");
+
+
+            helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+
+
+            LOG.info("Learning terms and relations from domain: " + domain + "src/main");
+
+            List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
+
+            if (terms != null) {
+                System.out.println("Number of terms found in domain: " + terms.size());
+                if (terms.size() <= 0) {
+                    System.out.println("No terms found in domain: " + domain.getUri());
+                    return;
+                }
+
+
+                Collections.sort(terms, new Term());
+                pw.println("Terms; C-Value; Termhood");
+                for (Term term : terms) {
+                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
+                }
 
             /*
             LOG.info("Retrieving relations from domain..");
@@ -101,15 +107,15 @@ public class LearnerTest {
 
             LOG.info("Number of relations found in domain: " + relations.size());
             */
-        }
-        else{
-            System.out.println("Terms=null");
-        }
+            } else {
+                System.out.println("Terms=null");
+            }
 
-        try {
-            file.close();
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+            try {
+                file.close();
+            } catch (Exception ex) {
+                System.out.println("Error: " + ex.getMessage());
+            }
         }
         assert (true);
 
@@ -117,7 +123,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/vadim/");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/vadim/1");
     }
 
 /*

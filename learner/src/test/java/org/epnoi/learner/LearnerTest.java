@@ -49,17 +49,17 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=1; i<51; i++) {
+        for(int i=1; i<3; i++) {
             FileWriter file = null;
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
-            String path="home/dchaves/OEG/vadim/";
+            String path="home/dchaves/corpus/vadim/D";
 
             try {
                 if(i>1)
-                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* home/dchaves/OEG/vadim/1");
-                file = new FileWriter("/home/dchaves/TFM/salidas/+"+i+".txt");
+                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* home/dchaves/corpus/vadim/D1");
+                file = new FileWriter("/home/dchaves/corpus/salidas/+"+i+".txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -123,7 +123,7 @@ public class LearnerTest {
 
 
     private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/OEG/vadim/1");
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/D1");
     }
 
 /*

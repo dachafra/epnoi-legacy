@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RDFDAOQueryResolver {
-	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
+	private String virtuosoURL = "jdbc:virtuoso://localhost:1112";
 
 	protected VirtuosoInformationStoreParameters parameters;
 	private static final Node typePropertyNode = Node

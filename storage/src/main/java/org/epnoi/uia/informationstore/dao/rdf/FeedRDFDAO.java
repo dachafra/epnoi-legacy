@@ -288,7 +288,7 @@ public class FeedRDFDAO extends RDFDAO {
 	// ---------------------------------------------------------------------------------------------------------------------------------------
 
 	public static void main(String[] args) {
-		String virtuosoURL = "jdbc:virtuoso://localhost:1111";
+		String virtuosoURL = "jdbc:virtuoso://localhost:1112";
 		List<Feed> feeds = _generateData();
 		String feedURI = "http://feedB";
 
@@ -296,7 +296,7 @@ public class FeedRDFDAO extends RDFDAO {
 		VirtuosoInformationStoreParameters parameters = new VirtuosoInformationStoreParameters();
 		parameters.setGraph("http://feedTest");
 		parameters.setHost("localhost");
-		parameters.setPort("1111");
+		parameters.setPort("1112");
 		parameters.setUser("dba");
 		parameters.setPassword("dba");
 

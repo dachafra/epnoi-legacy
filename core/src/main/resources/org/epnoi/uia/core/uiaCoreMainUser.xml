@@ -4,7 +4,7 @@
 		<URI>http://virtuosoInformationStore</URI>
 		<path></path>
 		<host>localhost</host>
-		<port>1111</port>
+		<port>1112</port>
 		<graph>http://informationSourceTest2</graph>
 		<user>dba</user>
 		<password>dba</password>

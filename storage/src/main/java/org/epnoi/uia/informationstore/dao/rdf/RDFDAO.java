@@ -19,7 +19,7 @@ import java.util.List;
 
 public abstract class RDFDAO {
 
-	private String virtuosoURL = "jdbc:virtuoso://localhost:1111";
+	private String virtuosoURL = "jdbc:virtuoso://localhost:1112";
 
 	protected static VirtuosoInformationStoreParameters parameters;
 	protected static VirtGraph graph = null;

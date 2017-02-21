@@ -1,5 +1,7 @@
 package org.epnoi.learner.filesystem;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import gate.Document;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -268,11 +270,17 @@ public class FilesystemHarvester {
     public Paper _harvestFile(String filePath, String fileName) {
 
         Paper paper = new Paper();
+        String fileContent="";
         paper.setUri("file://" + filePath);
         paper.setTitle(fileName);
         paper.setPubDate("2015-07-07");
         if(!uris.contains(paper.getUri())) {
-            String fileContent = _scanContent("file://" + filePath);
+            try {
+                fileContent = Files.toString(new File(filePath), Charsets.UTF_8);
+            }catch (Exception e){
+                System.out.println("Error no encuentro el archivo");
+            }
+            // /String fileContent = _scanContent("file://" + filePath);
             paper.setDescription(fileContent);
             addPaper(paper);
         }

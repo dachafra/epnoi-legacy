@@ -68,7 +68,7 @@ public class LearnerTest {
                 System.out.println(e.getMessage());
             }
 
-            //helper.getDemoDataLoader().erase();
+            helper.getDemoDataLoader().erase();
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
             domain.setName("sample-domain");

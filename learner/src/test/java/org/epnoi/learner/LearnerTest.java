@@ -54,11 +54,13 @@ public class LearnerTest {
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
-            String path="/home/dchaves/corpus/vadim/D";
 
             try {
-                if(i>1)
-                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* /home/dchaves/corpus/vadim/D1");
+                if(i>1) {
+                    String s ="cp -rf /home/dchaves/corpus/vadim/D"+i+"/* /home/dchaves/corpus/vadim/D1";
+                    Runtime.getRuntime().exec(s);
+                    System.out.println(s);
+                }
                 file = new FileWriter("/home/dchaves/corpus/salidas/D"+i+".txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {

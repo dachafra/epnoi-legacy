@@ -54,16 +54,17 @@ public class LearnerTest {
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
-            String path="home/dchaves/corpus/vadim/D";
+            String path="/home/dchaves/corpus/vadim/D";
 
             try {
                 if(i>1)
-                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* home/dchaves/corpus/vadim/D1");
-                file = new FileWriter("/home/dchaves/corpus/salidas/+"+i+".txt");
+                    Runtime.getRuntime().exec("cp -rf " + path + i + "/* /home/dchaves/corpus/vadim/D1");
+                file = new FileWriter("/home/dchaves/corpus/salidas/D"+i+".txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            /*
             //helper.getDemoDataLoader().erase();
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
@@ -89,6 +90,14 @@ public class LearnerTest {
 
 
                 Collections.sort(terms, new Term());
+                for(int j=0; j<terms.size(); j++){
+                    for(int q=0; q< terms.size();q++){
+                        if(j!=q && terms.get(j).getAnnotatedTerm().getWord().equals(terms.get(q).getAnnotatedTerm().getWord())){
+                            terms.remove(q);
+                            q--;
+                        }
+                    }
+                }
                 pw.println("Terms; C-Value; Termhood");
                 for (Term term : terms) {
                     pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
@@ -106,7 +115,7 @@ public class LearnerTest {
             }
 
             LOG.info("Number of relations found in domain: " + relations.size());
-            */
+
             } else {
                 System.out.println("Terms=null");
             }
@@ -116,6 +125,7 @@ public class LearnerTest {
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
+            */
         }
         assert (true);
 

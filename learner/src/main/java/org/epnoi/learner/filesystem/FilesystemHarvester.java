@@ -271,7 +271,7 @@ public class FilesystemHarvester {
 
         Paper paper = new Paper();
         String fileContent="";
-        paper.setUri("file://" + filePath);
+        paper.setUri("file:/" + filePath);
         paper.setTitle(fileName);
         paper.setPubDate("2015-07-07");
         if(!uris.contains(paper.getUri())) {

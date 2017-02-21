@@ -50,7 +50,7 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=1; i<3; i++) {
+        for(int i=1; i<52; i++) {
             FileWriter file = null;
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
@@ -67,7 +67,7 @@ public class LearnerTest {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            /*
+
             //helper.getDemoDataLoader().erase();
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
@@ -101,9 +101,9 @@ public class LearnerTest {
                         }
                     }
                 }
-                pw.println("Terms; C-Value; Termhood");
+                pw.println("Terms; C-Value");
                 for (Term term : terms) {
-                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue() + ";" + term.getAnnotatedTerm().getAnnotation().getTermhood());
+                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue());
                 }
 
             /*
@@ -118,7 +118,7 @@ public class LearnerTest {
             }
 
             LOG.info("Number of relations found in domain: " + relations.size());
-
+            */
             } else {
                 System.out.println("Terms=null");
             }
@@ -128,7 +128,7 @@ public class LearnerTest {
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
-            */
+
         }
         assert (true);
 

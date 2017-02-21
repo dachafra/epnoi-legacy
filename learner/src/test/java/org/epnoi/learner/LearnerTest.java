@@ -3,6 +3,7 @@ package org.epnoi.learner;
 import edu.stanford.nlp.ling.*;
 import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.util.*;
+import org.apache.commons.io.FileUtils;
 import org.epnoi.learner.filesystem.FolderUtils;
 import org.epnoi.learner.helper.LearnerHelper;
 import org.epnoi.model.Paper;
@@ -57,9 +58,9 @@ public class LearnerTest {
 
             try {
                 if(i>1) {
-                    String s ="cp -rf /home/dchaves/corpus/vadim/D"+i+"/* /home/dchaves/corpus/vadim/D1";
-                    Runtime.getRuntime().exec(s);
-                    System.out.println(s);
+                    File srcDir = new File("/home/dchaves/corpus/vadim/D"+i);
+                    File destDir = new File("/home/dchaves/corpus/vadim/D1");
+                    FileUtils.copyDirectory(srcDir, destDir);
                 }
                 file = new FileWriter("/home/dchaves/corpus/salidas/D"+i+".txt");
                 pw = new PrintWriter(file);

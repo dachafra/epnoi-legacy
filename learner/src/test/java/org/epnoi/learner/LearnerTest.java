@@ -68,7 +68,7 @@ public class LearnerTest {
                 System.out.println(e.getMessage());
             }
 
-            helper.getDemoDataLoader().erase();
+            //helper.getDemoDataLoader().erase();
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
             domain.setName("sample-domain");
@@ -93,6 +93,8 @@ public class LearnerTest {
 
 
                 Collections.sort(terms, new Term());
+                if(terms.size()>4000)
+                    terms=terms.subList(0,4000);
                 for(int j=0; j<terms.size(); j++){
                     for(int q=0; q< terms.size();q++){
                         if(j!=q && terms.get(j).getAnnotatedTerm().getWord().equals(terms.get(q).getAnnotatedTerm().getWord())){
@@ -104,6 +106,8 @@ public class LearnerTest {
                 pw.println("Terms; C-Value");
                 for (Term term : terms) {
                     pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue());
+                    if( term.getAnnotatedTerm().getAnnotation().getCValue()<0.005)
+                        break;
                 }
 
             /*

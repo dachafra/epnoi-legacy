@@ -81,22 +81,18 @@ public class TermsExtractor {
 
 	private void _indexDomainResoures(String domain) {
 
-		List<String> resourcesURIs = this.domainsTable.getDomainResources()
-				.get(domain);
+		List<String> resourcesURIs = this.domainsTable.getDomainResources().get(domain);
 		//System.out.println(" resourceURIS" + resourcesURIs);
 		for (String resourceURI : resourcesURIs) {
 			logger.info("Indexing the resource " + resourceURI);
 			_indexResource(domain, resourceURI);
 		}
 		long total = 0;
-		for (AnnotatedWord<ResourceMetadata> resource : this.resourcesIndex
-				.getResources(domain)) {
+		for (AnnotatedWord<ResourceMetadata> resource : this.resourcesIndex.getResources(domain)) {
 			total += resource.getAnnotation().getNumberOfTerms();
 		}
-		AnnotatedWord<DomainMetadata> indexedDomain = this.domainsIndex
-				.lookUp(domain);
+		AnnotatedWord<DomainMetadata> indexedDomain = this.domainsIndex.lookUp(domain);
 		if (indexedDomain != null) {
-
 			indexedDomain.getAnnotation().setNumberOfTerms(total);
 		}
 	}
@@ -113,22 +109,18 @@ public class TermsExtractor {
 		}
 
 		Document annotatedDocument = (Document) annotatedResource.getContent();
-		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(
-				annotatedDocument);
+		TermCandidateBuilder termCandidateBuilder = new TermCandidateBuilder(annotatedDocument);
 
-		for (Annotation annotation : annotatedDocument.getAnnotations().get(
-				NLPAnnotationsConstants.TERM_CANDIDATE)) {
+		for (Annotation annotation : annotatedDocument.getAnnotations().get(NLPAnnotationsConstants.TERM_CANDIDATE)) {
 
-			AnnotatedWord<TermMetadata> termCandidate = termCandidateBuilder
-					.buildTermCandidate(annotation);
+			AnnotatedWord<TermMetadata> termCandidate = termCandidateBuilder.buildTermCandidate(annotation);
 			String word = termCandidate.getWord();
 
 			if ((word.length() > MIN_TERM_LENGTH) && !stopwords.contains(word)) {
 				this.termsIndex.updateTerm(domain, termCandidate);
 				this.resourcesIndex.updateTerm(domain, URI, termCandidate);
 
-				for (AnnotatedWord<TermMetadata> subTerm : termCandidateBuilder
-						.splitTermCandidate(termCandidate)) {
+				for (AnnotatedWord<TermMetadata> subTerm : termCandidateBuilder.splitTermCandidate(termCandidate)) {
 					this.resourcesIndex.updateTerm(domain, URI, subTerm);
 				}
 
@@ -169,8 +161,7 @@ public class TermsExtractor {
 	public void extractTerms() {
 
 		this.indexResources();
-		if (!this.domainsTable.getDomainResources().get(this.targetDomain)
-				.isEmpty()) {
+		if (!this.domainsTable.getDomainResources().get(this.targetDomain).isEmpty()) {
 			this.calculateCValues();
 			this.calculateDomainConsensus();
 			this.calculateDomainPertinence();

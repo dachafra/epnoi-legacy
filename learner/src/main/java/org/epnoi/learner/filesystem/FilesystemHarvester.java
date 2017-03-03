@@ -280,7 +280,7 @@ public class FilesystemHarvester {
             }catch (Exception e){
                 System.out.println("Error no encuentro el archivo");
             }
-            // /String fileContent = _scanContent("file://" + filePath);
+            // String fileContent = _scanContent("file://" + filePath);
             paper.setDescription(fileContent);
             addPaper(paper);
         }

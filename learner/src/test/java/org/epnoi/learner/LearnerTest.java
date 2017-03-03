@@ -50,7 +50,7 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=1; i<23; i++) {
+        for(int i=23; i<52; i++) {
             FileWriter file = null;
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");

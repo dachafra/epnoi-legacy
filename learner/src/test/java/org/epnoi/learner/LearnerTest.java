@@ -26,6 +26,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -50,25 +51,21 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=23; i<52; i++) {
+        for(int i=1; i<23; i++) {
+            System.gc();
             FileWriter file = null;
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
-                if(i>1) {
-                    File srcDir = new File("/home/dchaves/corpus/vadim/D"+i);
-                    File destDir = new File("/home/dchaves/corpus/vadim/D1");
-                    FileUtils.copyDirectory(srcDir, destDir);
-                }
                 file = new FileWriter("/home/dchaves/corpus/salidas/D"+i+".txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
-            //helper.getDemoDataLoader().erase();
+            helper.getDemoDataLoader().erase();
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
             domain.setName("sample-domain");
@@ -77,7 +74,7 @@ public class LearnerTest {
             LOG.info("Loading data");
 
 
-            helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
+            helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers(i));
 
 
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -91,23 +88,12 @@ public class LearnerTest {
                     return;
                 }
 
-
+                HashSet<Term> terms2  = new HashSet<>(terms);
+                terms = new ArrayList(terms2);
                 Collections.sort(terms, new Term());
-                if(terms.size()>4000)
-                    terms=terms.subList(0,4000);
-                for(int j=0; j<terms.size(); j++){
-                    for(int q=0; q< terms.size();q++){
-                        if(j!=q && terms.get(j).getAnnotatedTerm().getWord().equals(terms.get(q).getAnnotatedTerm().getWord())){
-                            terms.remove(q);
-                            q--;
-                        }
-                    }
-                }
                 pw.println("Terms; C-Value");
                 for (Term term : terms) {
-                    pw.println(term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue());
-                    if( term.getAnnotatedTerm().getAnnotation().getCValue()<0.005)
-                        break;
+                    pw.println(term.getAnnotatedTerm().getWord() + ";" + (term.getAnnotatedTerm().getAnnotation().getCValue()));
                 }
 
             /*
@@ -139,8 +125,8 @@ public class LearnerTest {
     }
 
 
-    private List<Paper> loadPapers(){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/D1");
+    private List<Paper> loadPapers(int i){
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/D"+i+".txt");
     }
 
 /*

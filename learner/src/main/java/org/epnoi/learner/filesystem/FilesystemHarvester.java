@@ -154,19 +154,19 @@ public class FilesystemHarvester {
     public List<Paper> harvest(String directoryToHarvest) {
         List<Paper> harvestedPapers = new ArrayList<>();
         try {
-            File harvestDirectory = new File(directoryToHarvest);
+            //File harvestDirectory = new File(directoryToHarvest);
             uris = (ArrayList<String>) core.getInformationHandler().getAll(RDFHelper.PAPER_CLASS);
-            String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
+           // String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
 
             // System.out.println("..........> "
             // + Arrays.toString(filesToHarvest));
-            for (String fileToHarvest : filesToHarvest) {
-                logger.info("Harvesting the file " + fileToHarvest);
-                File file = new File(fileToHarvest);
+          //  for (String fileToHarvest : filesToHarvest) {
+                logger.info("Harvesting the file " + directoryToHarvest);
+                File file = new File(directoryToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
                 uris.add(paper.getUri());
-            }
+       //     }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,29 +195,18 @@ public class FilesystemHarvester {
             startTme = System.currentTimeMillis();
             Document annotatedContent = null;
             try {
-                annotatedContent = this.core.getNLPHandler()
-                        .process(paper.getDescription());
+                annotatedContent = this.core.getNLPHandler().process(paper.getDescription());
             } catch (EpnoiResourceAccessException e) {
-
                 e.printStackTrace();
             }
 
             Selector annotationSelector = new Selector();
             annotationSelector.setProperty(SelectorHelper.URI, paper.getUri());
-            annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,
-                    paper.getUri() + "/"
-                            + AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
-            annotationSelector.setProperty(SelectorHelper.TYPE,
-                    RDFHelper.PAPER_CLASS);
-
-            core.getInformationHandler().setAnnotatedContent(
-                    annotationSelector,
-                    new Content<Object>(annotatedContent,
-                            AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
-
+            annotationSelector.setProperty(SelectorHelper.ANNOTATED_CONTENT_URI,paper.getUri() + "/"+ AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE);
+            annotationSelector.setProperty(SelectorHelper.TYPE,RDFHelper.PAPER_CLASS);
+            core.getInformationHandler().setAnnotatedContent(annotationSelector, new Content<Object>(annotatedContent,AnnotatedContentHelper.CONTENT_TYPE_OBJECT_XML_GATE));
             totalTime = Math.abs(startTme - System.currentTimeMillis());
-            logger.info("It took " + totalTime
-                    + "ms to add it to annotate its content and add it to the UIA");
+            logger.info("It took " + totalTime+ "ms to add it to annotate its content and add it to the UIA");
         }
     }
 

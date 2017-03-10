@@ -154,19 +154,17 @@ public class FilesystemHarvester {
     public List<Paper> harvest(String directoryToHarvest) {
         List<Paper> harvestedPapers = new ArrayList<>();
         try {
-            //File harvestDirectory = new File(directoryToHarvest);
+            File harvestDirectory = new File(directoryToHarvest);
             uris = (ArrayList<String>) core.getInformationHandler().getAll(RDFHelper.PAPER_CLASS);
-           // String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
+            String[] filesToHarvest = scanFilesToHarverst(harvestDirectory);
 
-            // System.out.println("..........> "
-            // + Arrays.toString(filesToHarvest));
-          //  for (String fileToHarvest : filesToHarvest) {
-                logger.info("Harvesting the file " + directoryToHarvest);
-                File file = new File(directoryToHarvest);
+            for (String fileToHarvest : filesToHarvest) {
+                logger.info("Harvesting the file " + fileToHarvest);
+                File file = new File(fileToHarvest);
                 Paper paper = _harvestFile(file.getAbsolutePath(), file.getName());
                 harvestedPapers.add(paper);
                 uris.add(paper.getUri());
-       //     }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

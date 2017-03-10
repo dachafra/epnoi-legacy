@@ -51,15 +51,13 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=9; i<23; i++) {
-            System.gc();
             FileWriter file = null;
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/D"+i+".txt");
+                file = new FileWriter("/home/dchaves/corpus/salidas/D11.txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -74,7 +72,7 @@ public class LearnerTest {
             LOG.info("Loading data");
 
 
-            helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers(i));
+            helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
 
 
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
@@ -120,14 +118,14 @@ public class LearnerTest {
                 System.out.println("Error: " + ex.getMessage());
             }
 
-        }
+
         assert (true);
 
     }
 
 
-    private List<Paper> loadPapers(int i){
-        return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/D"+i+".txt");
+    private List<Paper> loadPapers(){
+        return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/");
     }
 
 /*

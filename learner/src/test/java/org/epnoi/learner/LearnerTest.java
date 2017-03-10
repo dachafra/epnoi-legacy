@@ -51,7 +51,7 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
 
-        for(int i=1; i<23; i++) {
+        for(int i=9; i<23; i++) {
             System.gc();
             FileWriter file = null;
             PrintWriter pw = null;
@@ -91,6 +91,7 @@ public class LearnerTest {
                 HashSet<Term> terms2  = new HashSet<>(terms);
                 terms = new ArrayList(terms2);
                 Collections.sort(terms, new Term());
+                System.out.println(terms.size());
                 pw.println("Terms; C-Value");
                 for (Term term : terms) {
                     pw.println(term.getAnnotatedTerm().getWord() + ";" + (term.getAnnotatedTerm().getAnnotation().getCValue()));

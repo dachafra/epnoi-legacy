@@ -268,6 +268,8 @@ public class FilesystemHarvester {
                 System.out.println("Error no encuentro el archivo");
             }
             // String fileContent = _scanContent("file://" + filePath);
+            fileContent = fileContent.replaceAll("\\r\\n|\\r|\\n", " ");
+            fileContent = fileContent.replaceAll("\\s+", " ");
             paper.setDescription(fileContent);
             addPaper(paper);
         }

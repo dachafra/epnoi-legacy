@@ -57,13 +57,14 @@ public class LearnerTest {
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/D11.txt");
+                file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
-            helper.getDemoDataLoader().erase();
+           // helper.getDemoDataLoader().erase();
+
             Domain domain = Resource.newDomain();
             domain.setUri("http://epnoi.org/domains/sample");
             domain.setName("sample-domain");

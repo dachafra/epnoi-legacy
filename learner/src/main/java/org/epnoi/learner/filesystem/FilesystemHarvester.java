@@ -175,7 +175,7 @@ public class FilesystemHarvester {
 
         if (!core.getInformationHandler().contains(paper.getUri(), RDFHelper.PAPER_CLASS)) {
             // First the paper is added to the UIA
-            core.getInformationHandler().put(paper, Context.getEmptyContext());
+            //core.getInformationHandler().put(paper, Context.getEmptyContext());
 
             // Later it is annotated as belonging to the harvested
             // corpus

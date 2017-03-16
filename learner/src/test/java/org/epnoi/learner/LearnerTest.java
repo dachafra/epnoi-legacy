@@ -57,7 +57,7 @@ public class LearnerTest {
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
+                file = new FileWriter("/home/dchaves/corpus/salidas/salida.csv");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -91,10 +91,16 @@ public class LearnerTest {
                 terms = new ArrayList(terms2);
                 Collections.sort(terms, new Term());
                 System.out.println(terms.size());
-                pw.println("Terms; C-Value");
+                String text="";
+                pw.println("Terms;C-Value;DomainConsensus;DomainPertinence;Termhood;TermProbability");
                 for (Term term : terms) {
-                    pw.println(term.getAnnotatedTerm().getWord() + ";" + (term.getAnnotatedTerm().getAnnotation().getCValue()));
+                    text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+
+                    ";"+term.getAnnotatedTerm().getAnnotation().getDomainConsensus()+
+                            ";"+term.getAnnotatedTerm().getAnnotation().getDomainPertinence()+
+                            ";"+term.getAnnotatedTerm().getAnnotation().getTermhood()+
+                            ";"+term.getAnnotatedTerm().getAnnotation().getTermProbability()+"\n";
                 }
+                pw.println(text);
 
             /*
             LOG.info("Retrieving relations from domain..");

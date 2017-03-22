@@ -77,7 +77,7 @@ public class LearnerTest {
 
 
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-
+            /*
             List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
 
             if (terms != null) {
@@ -114,10 +114,10 @@ public class LearnerTest {
             }
 
             LOG.info("Number of relations found in domain: " + relations.size());
-            */
             } else {
                 System.out.println("Terms=null");
             }
+            */
 
             try {
                 file.close();

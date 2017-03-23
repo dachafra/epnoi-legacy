@@ -57,7 +57,7 @@ public class LearnerTest {
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/salida.csv");
+                file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -77,7 +77,7 @@ public class LearnerTest {
 
 
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
-            /*
+
             List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
 
             if (terms != null) {
@@ -92,13 +92,9 @@ public class LearnerTest {
                 Collections.sort(terms, new Term());
                 System.out.println(terms.size());
                 String text="";
-                pw.println("Terms;C-Value;DomainConsensus;DomainPertinence;Termhood;TermProbability");
+                pw.println("Terms;C-Value");
                 for (Term term : terms) {
-                    text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+
-                    ";"+term.getAnnotatedTerm().getAnnotation().getDomainConsensus()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getDomainPertinence()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getTermhood()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getTermProbability()+"\n";
+                    text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+"\n";
                 }
                 pw.println(text);
 
@@ -114,10 +110,12 @@ public class LearnerTest {
             }
 
             LOG.info("Number of relations found in domain: " + relations.size());
-            } else {
+
+            */
+            }
+             else {
                 System.out.println("Terms=null");
             }
-            */
 
             try {
                 file.close();

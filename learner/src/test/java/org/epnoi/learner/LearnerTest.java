@@ -58,7 +58,7 @@ public class LearnerTest {
             //System.out.println("Using the following parameters "+learnerProperties);
             long startTme = System.currentTimeMillis();
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/salida.csv");
+                file = new FileWriter("/home/dchaves/corpus/salidas/output.csv");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -93,6 +93,7 @@ public class LearnerTest {
                 Collections.sort(terms, new Term());
                 System.out.println(terms.size());
                 String text="";
+                 /*
                 pw.println("Terms;C-Value;DomainConsensus;DomainPertinence;Termhood;TermProbability");
                 for (Term term : terms) {
                     text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+
@@ -102,7 +103,7 @@ public class LearnerTest {
                             ";"+term.getAnnotatedTerm().getAnnotation().getTermProbability()+"\n";
                 }
                 pw.println(text);
-                /*
+               */
                 pw.println("Terms;C-Value");
                 for (Term term : terms) {
                     text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+"\n";
@@ -137,7 +138,7 @@ public class LearnerTest {
         pw = null;
 
         try {
-            File file2 = new File("/home/dchaves/corpus/salidas/tiempos.txt");
+            File file2 = new File("/home/dchaves/corpus/salidas/times.txt");
             FileWriter fw = new FileWriter(file2, true);
             pw = new PrintWriter(fw);
             pw.println(totalTime);

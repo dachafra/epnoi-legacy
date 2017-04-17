@@ -165,7 +165,7 @@ public class TermsExtractor {
 			this.calculateCValues();
 			this.calculateDomainConsensus();
 			this.calculateDomainPertinence();
-			//this.normalizeAnDeriveMeasures();
+			this.normalizeAnDeriveMeasures();
 		}
 	}
 

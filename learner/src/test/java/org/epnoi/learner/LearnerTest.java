@@ -93,7 +93,7 @@ public class LearnerTest {
                 Collections.sort(terms, new Term());
                 System.out.println(terms.size());
                 String text="";
-                 /*
+
                 pw.println("Terms;C-Value;DomainConsensus;DomainPertinence;Termhood;TermProbability");
                 for (Term term : terms) {
                     text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+
@@ -103,7 +103,7 @@ public class LearnerTest {
                             ";"+term.getAnnotatedTerm().getAnnotation().getTermProbability()+"\n";
                 }
                 pw.println(text);
-               */
+               /*
                 pw.println("Terms;C-Value");
                 for (Term term : terms) {
                     text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+"\n";

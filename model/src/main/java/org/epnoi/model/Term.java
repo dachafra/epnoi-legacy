@@ -49,9 +49,9 @@ public class Term implements Resource, Comparator<Term> {
 
 	@Override
 	public int compare(Term t1, Term t2){
-		if(t1.getAnnotatedTerm().getAnnotation().getTermhood()<t2.getAnnotatedTerm().getAnnotation().getTermhood())
+		if(t1.getAnnotatedTerm().getAnnotation().getCValue()<t2.getAnnotatedTerm().getAnnotation().getCValue())
 			return 1;
-		else if(t1.getAnnotatedTerm().getAnnotation().getTermhood()>t2.getAnnotatedTerm().getAnnotation().getTermhood())
+		else if(t1.getAnnotatedTerm().getAnnotation().getCValue()>t2.getAnnotatedTerm().getAnnotation().getCValue())
 			return -1;
 		else
 			return 0;

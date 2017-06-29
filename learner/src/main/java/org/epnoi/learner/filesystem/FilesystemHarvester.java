@@ -258,18 +258,18 @@ public class FilesystemHarvester {
 
         Paper paper = new Paper();
         String fileContent="";
-        paper.setUri("file://" + filePath);
+        paper.setUri("file:/" + filePath);
         paper.setTitle(fileName);
         paper.setPubDate("2015-07-07");
         if(!uris.contains(paper.getUri())) {
-           /* try {
-                //  fileContent = Files.toString(new File(filePath), Charsets.UTF_8);
+            try {
+                fileContent = Files.toString(new File(filePath), Charsets.UTF_8);
             }catch (Exception e){
                 System.out.println("Error no encuentro el archivo");
-            }*/
-            fileContent = _scanContent("file://" + filePath);
-            //fileContent = fileContent.replaceAll("\\r\\n|\\r|\\n", " ");
-            //fileContent = fileContent.replaceAll("\\s+", " ");
+            }
+            // String fileContent = _scanContent("file://" + filePath);
+            fileContent = fileContent.replaceAll("\\r\\n|\\r|\\n", " ");
+            fileContent = fileContent.replaceAll("\\s+", " ");
             paper.setDescription(fileContent);
             addPaper(paper);
         }

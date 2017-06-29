@@ -25,7 +25,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -56,9 +55,9 @@ public class LearnerTest {
             PrintWriter pw = null;
             System.out.println("Starting an ontology learning test");
             //System.out.println("Using the following parameters "+learnerProperties);
-            long startTme = System.currentTimeMillis();
+
             try {
-                file = new FileWriter("/home/dchaves/corpus/salidas/output.csv");
+                file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
                 pw = new PrintWriter(file);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -93,17 +92,6 @@ public class LearnerTest {
                 Collections.sort(terms, new Term());
                 System.out.println(terms.size());
                 String text="";
-
-                pw.println("Terms;C-Value;DomainConsensus;DomainPertinence;Termhood;TermProbability");
-                for (Term term : terms) {
-                    text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getDomainConsensus()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getDomainPertinence()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getTermhood()+
-                            ";"+term.getAnnotatedTerm().getAnnotation().getTermProbability()+"\n";
-                }
-                pw.println(text);
-               /*
                 pw.println("Terms;C-Value");
                 for (Term term : terms) {
                     text=text+term.getAnnotatedTerm().getWord() + ";" + term.getAnnotatedTerm().getAnnotation().getCValue()+"\n";
@@ -134,21 +122,6 @@ public class LearnerTest {
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
-        long totalTime = Math.abs(startTme - System.currentTimeMillis());
-        pw = null;
-
-        try {
-            File file2 = new File("/home/dchaves/corpus/salidas/times.txt");
-            FileWriter fw = new FileWriter(file2, true);
-            pw = new PrintWriter(fw);
-            pw.println(totalTime);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (pw != null) {
-                pw.close();
-            }
-        }
 
 
         assert (true);

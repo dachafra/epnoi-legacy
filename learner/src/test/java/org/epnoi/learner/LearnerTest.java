@@ -23,10 +23,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -53,15 +50,16 @@ public class LearnerTest {
     public void LearnerTest() {
             ResourcesInfo resourcesInfo = new ResourcesInfo();
             FileWriter file = null;
-            PrintWriter pw = null, pw2=null;
+            PrintWriter pw = null;
+            BufferedWriter pw2=null;
             System.out.println("Starting an ontology learning test");
-            long startTime = System.currentTimeMillis();
+
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
                 file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
                 pw = new PrintWriter(file);
-                pw2 = new PrintWriter(new FileOutputStream("/home/dchaves/corpus/times.csv"),true);
+                pw2 = new BufferedWriter(new FileWriter("/home/dchaves/corpus/times.csv", true));
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -75,13 +73,15 @@ public class LearnerTest {
 
             LOG.info("Loading data");
 
-
+            long startTime = System.currentTimeMillis();
             helper.getDemoDataLoader().loadDomain(domain.getUri(), domain.getName(), loadPapers());
-
+            long linguisticTime =  System.currentTimeMillis() - startTime;
+            startTime = System.currentTimeMillis();
 
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
 
             List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
+            long valueTime = System.currentTimeMillis() - startTime;
             long memory = resourcesInfo.getCosumtionMemory();
             if (terms != null) {
                 System.out.println("Number of terms found in domain: " + terms.size());
@@ -119,10 +119,11 @@ public class LearnerTest {
              else {
                 System.out.println("Terms=null");
             }
-            long endTime = System.currentTimeMillis() - startTime;
-            pw2.println(endTime+","+memory);
+
 
             try {
+                pw2.write(linguisticTime+","+valueTime+","+memory);
+
                 file.close();
                 pw2.close();
             } catch (Exception ex) {

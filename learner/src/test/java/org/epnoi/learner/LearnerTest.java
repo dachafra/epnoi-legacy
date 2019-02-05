@@ -50,15 +50,18 @@ public class LearnerTest {
 
     @Test
     public void LearnerTest() {
-
-            FileWriter file = null;
-            PrintWriter pw = null;
+            ResourcesInfo resourcesInfo = new ResourcesInfo();
+            FileWriter file = null, file2=null;
+            PrintWriter pw = null, pw2=null;
             System.out.println("Starting an ontology learning test");
+            long startTime = System.currentTimeMillis();
             //System.out.println("Using the following parameters "+learnerProperties);
 
             try {
                 file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
+                file2 = new FileWriter("/home/dchaves/corpus/times.csv");
                 pw = new PrintWriter(file);
+                pw2 = new PrintWriter(file2);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -79,7 +82,7 @@ public class LearnerTest {
             LOG.info("Learning terms and relations from domain: " + domain + "src/main");
 
             List<Term> terms = new ArrayList<>(helper.getLearner().learn(domain.getUri()).getTerms());
-
+            long memory = resourcesInfo.getCosumtionMemory();
             if (terms != null) {
                 System.out.println("Number of terms found in domain: " + terms.size());
                 if (terms.size() <= 0) {
@@ -116,12 +119,16 @@ public class LearnerTest {
              else {
                 System.out.println("Terms=null");
             }
+            long endTime = System.currentTimeMillis() - startTime;
+            pw2.append(endTime+","+memory);
 
             try {
                 file.close();
+                file2.close();
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
+
 
 
         assert (true);
@@ -132,6 +139,7 @@ public class LearnerTest {
     private List<Paper> loadPapers(){
         return helper.getFilesystemHarvester().harvest("/home/dchaves/corpus/vadim/");
     }
+
 
 /*
     private void loadText(String text) {

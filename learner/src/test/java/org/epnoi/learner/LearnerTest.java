@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
@@ -51,7 +52,7 @@ public class LearnerTest {
     @Test
     public void LearnerTest() {
             ResourcesInfo resourcesInfo = new ResourcesInfo();
-            FileWriter file = null, file2=null;
+            FileWriter file = null;
             PrintWriter pw = null, pw2=null;
             System.out.println("Starting an ontology learning test");
             long startTime = System.currentTimeMillis();
@@ -59,9 +60,8 @@ public class LearnerTest {
 
             try {
                 file = new FileWriter("/home/dchaves/corpus/salidas/salida.txt");
-                file2 = new FileWriter("/home/dchaves/corpus/times.csv");
                 pw = new PrintWriter(file);
-                pw2 = new PrintWriter(file2);
+                pw2 = new PrintWriter(new FileOutputStream("/home/dchaves/corpus/times.csv"),true);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -120,11 +120,11 @@ public class LearnerTest {
                 System.out.println("Terms=null");
             }
             long endTime = System.currentTimeMillis() - startTime;
-            pw2.append(endTime+","+memory);
+            pw2.println(endTime+","+memory);
 
             try {
                 file.close();
-                file2.close();
+                pw2.close();
             } catch (Exception ex) {
                 System.out.println("Error: " + ex.getMessage());
             }
